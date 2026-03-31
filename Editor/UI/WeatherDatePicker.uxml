@@ -1,0 +1,29 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:Style src="WeatherDatePicker.uss" />
+
+    <ui:VisualElement name="date-picker-root" class="cfw-date-picker">
+        <ui:VisualElement class="cfw-date-picker__hero">
+            <ui:Label name="datePickerEyebrow" class="cfw-date-picker__eyebrow" text="Solar Calendar" />
+            <ui:Label name="datePickerTitle" class="cfw-date-picker__title" text="Choose a day profile" />
+            <ui:Label name="datePickerSummary" class="cfw-date-picker__summary" text="30 March" />
+        </ui:VisualElement>
+
+        <ui:VisualElement class="cfw-date-picker__month-bar">
+            <ui:Button name="previousMonthButton" class="cfw-date-picker__nav-button" text="&lt;" />
+            <ui:Label name="monthLabel" class="cfw-date-picker__month-label" text="March" />
+            <ui:Button name="nextMonthButton" class="cfw-date-picker__nav-button" text="&gt;" />
+        </ui:VisualElement>
+
+        <ui:VisualElement class="cfw-date-picker__weekdays">
+            <ui:Label class="cfw-date-picker__weekday" text="S" />
+            <ui:Label class="cfw-date-picker__weekday" text="T" />
+            <ui:Label class="cfw-date-picker__weekday" text="Q" />
+            <ui:Label class="cfw-date-picker__weekday" text="Q" />
+            <ui:Label class="cfw-date-picker__weekday" text="S" />
+            <ui:Label class="cfw-date-picker__weekday" text="S" />
+            <ui:Label class="cfw-date-picker__weekday" text="D" />
+        </ui:VisualElement>
+
+        <ui:VisualElement name="dayGrid" class="cfw-date-picker__day-grid" />
+    </ui:VisualElement>
+</ui:UXML>

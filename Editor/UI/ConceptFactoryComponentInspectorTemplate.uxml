@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:Style src="ConceptFactoryComponentInspectorTemplate.uss" />
+    <ui:VisualElement class="root">
+        <ui:VisualElement name="Header" class="hero">
+            <ui:VisualElement name="heroIcon" class="hero-icon" />
+            <ui:VisualElement class="hero-text">
+                <ui:Label text="Concept Factory Component" class="hero-title" />
+                <ui:Label text="Inspector template base" class="hero-subtitle" />
+            </ui:VisualElement>
+            <ui:VisualElement style="width: 102px; height: 26px; position: absolute; top: 4px; right: 2px;">
+                <ui:Label text="CONCEPT FACTORY" style="font-size: 9px; color: rgb(255, 255, 255); flex-grow: 1; align-self: flex-end; -unity-text-align: lower-right; margin-right: 6px; margin-bottom: 0; position: absolute; bottom: 0; right: 0; -unity-font-style: bold;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,23 @@
+{
+    "name": "com.conceptfactory.weather",
+    "displayName": "Concept Factory - Weather System",
+    "version": "1.0.0",
+    "type": "tool",
+    "unity": "6000.0",
+    "unityRelease": "43f1",
+    "description": "Physically grounded weather and environment systems for Unity, including real-world solar simulation.",
+    "documentationUrl": "README.md",
+    "changelogUrl": "CHANGELOG.md",
+    "license": "Source-Available \u2013 No Modification",
+    "licensesUrl": "SEE LICENSE FILE",
+    "keywords": [],
+    "author": {
+        "name": "Concept Factory",
+        "email": "conceptfac@gmail.com",
+        "url": ""
+    },
+    "repository": {
+        "type": "git",
+        "url": ""
+    }
+}

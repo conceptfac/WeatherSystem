@@ -1,0 +1,4 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:Style src="WeatherDatePickerPopupWindow.uss" />
+    <ui:VisualElement name="popupRoot" class="cfw-date-popup-window" />
+</ui:UXML>

@@ -1,0 +1,68 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Packages/com.conceptfactory.weather/Editor/UI/ConceptFactoryComponentInspectorTemplate.uss?fileID=7433441132597879392&amp;guid=3c25bbe269954304f8a222c3c24c084b&amp;type=3#ConceptFactoryComponentInspectorTemplate"/>
+    <Style src="project://database/Packages/com.conceptfactory.weather/Editor/UI/WeatherSolarControllerEditor.uss?fileID=7433441132597879392&amp;guid=f6012913351b345428e741bc1d6ad735&amp;type=3#WeatherSolarControllerEditor"/>
+    <ui:VisualElement class="root cfw-solar-root">
+        <ui:VisualElement name="Header" class="hero cfw-solar-hero">
+            <ui:Image name="heroBanner" class="cfw-solar-hero__banner" scale-mode="scale-and-crop"/>
+            <ui:Image name="heroSeasonTitle" class="cfw-solar-hero__season-title" scale-mode="scale-to-fit"/>
+            <ui:VisualElement name="heroContent" class="cfw-solar-hero__content">
+                <ui:VisualElement name="heroIcon" class="hero-icon cfw-solar-hero__icon"/>
+                <ui:VisualElement class="hero-text">
+                    <ui:Label name="heroTitle" text="Weather Solar Controller" class="hero-title"/>
+                    <ui:Label name="heroSubtitle" text="Physically plausible solar motion for geographic locations and seasonal daylight." class="hero-subtitle"/>
+                    <ui:Label name="heroStatus" text="Editor-ready timelapse and solar debugging" class="cfw-solar-hero__status"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement class="cfw-solar-grid">
+            <ui:VisualElement name="dateTimeCard" class="section cfw-card cfw-card--highlight">
+                <ui:Label text="Date &amp; Time" class="section-title cfw-card__title"/>
+                <ui:Label text="Tune the simulated day profile and scrub the local time without exposing the year." class="inline-note cfw-card__note"/>
+                <ui:VisualElement class="cfw-date-popup-row">
+                    <ui:Button name="openDatePickerButton" text="30 Marco" class="cfw-date-popup-button"/>
+                    <ui:Label name="dateSummaryLabel" text="30 Marco" class="cfw-date-popup-summary"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="timeFields" class="fields"/>
+                <ui:Label name="digitalTimeLabel" text="12:00" class="cfw-digital-time"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="locationCard" class="section cfw-card">
+                <ui:VisualElement class="cfw-card__header-row">
+                    <ui:Label text="Location" class="section-title cfw-card__title"/>
+                    <ui:Label name="locationFeedbackLabel" text="Resolving..." class="cfw-location-feedback"/>
+                </ui:VisualElement>
+                <ui:Label text="Latitude, longitude and UTC offset drive the real solar path." class="inline-note cfw-card__note"/>
+                <ui:VisualElement name="locationFields" class="fields"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="referencesCard" class="section cfw-card">
+                <ui:Label text="References" class="section-title cfw-card__title"/>
+                <ui:Label text="Optional artistic overrides layered on top of the astronomical solution." class="inline-note cfw-card__note"/>
+                <ui:VisualElement name="referenceFields" class="fields"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="simulationCard" class="section cfw-card">
+                <ui:Label text="Simulation" class="section-title cfw-card__title"/>
+                <ui:Label text="Control editor refresh and the duration of a full 24-hour cycle." class="inline-note cfw-card__note"/>
+                <ui:VisualElement name="simulationTransportRow" class="cfw-transport-row">
+                    <ui:Button name="playSimulationButton" text="Play" class="cfw-transport-button cfw-transport-button--play"/>
+                    <ui:Button name="pauseSimulationButton" text="Pause" class="cfw-transport-button cfw-transport-button--pause"/>
+                    <ui:Button name="stopSimulationButton" text="Stop" class="cfw-transport-button cfw-transport-button--stop"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="simulationFields" class="fields"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="runtimeCard" class="section cfw-card">
+                <ui:Label text="Runtime" class="section-title cfw-card__title"/>
+                <ui:Label text="Startup options that only apply when the game actually enters Play Mode." class="inline-note cfw-card__note"/>
+                <ui:VisualElement name="runtimeFields" class="fields"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="lightingCard" class="section cfw-card">
+                <ui:Label text="Lighting" class="section-title cfw-card__title"/>
+                <ui:Label text="Blend physically-based direction with your preferred artistic light response." class="inline-note cfw-card__note"/>
+                <ui:VisualElement name="lightingFields" class="fields"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="debugCard" class="section cfw-card cfw-card--debug">
+                <ui:Label text="Debug Readout" class="section-title cfw-card__title"/>
+                <ui:Label text="Live solar diagnostics for validation during authoring." class="inline-note cfw-card__note"/>
+                <ui:VisualElement name="debugFields" class="fields"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

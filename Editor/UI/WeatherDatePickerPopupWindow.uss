@@ -1,0 +1,7 @@
+.cfw-date-popup-window {
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background-color: rgb(20, 26, 36);
+}
