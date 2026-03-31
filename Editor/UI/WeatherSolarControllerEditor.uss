@@ -27,7 +27,6 @@
     position: relative;
     flex-direction: row;
     align-items: center;
-    z-index: 2;
 }
 
 .cfw-solar-hero__season-title {
@@ -148,6 +147,14 @@
     margin-bottom: 4px;
 }
 
+#locationFields TextField,
+#locationFields FloatField,
+#locationFields DoubleField,
+#locationFields IntegerField,
+#locationFields .unity-text-input {
+    min-width: 96px;
+}
+
 .cfw-date-popup-row {
     flex-direction: row;
     align-items: center;
@@ -173,6 +180,13 @@
     border-top-width: 0;
     border-bottom-width: 0;
     -unity-font-style: bold;
+}
+
+.cfw-date-popup-button--secondary {
+    min-width: 74px;
+    margin-left: 6px;
+    color: rgb(238, 241, 246);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .cfw-date-popup-summary {

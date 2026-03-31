@@ -1,4 +1,5 @@
 using ConceptFactory.Weather.Editor.Location;
+using System;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -59,6 +60,7 @@ namespace ConceptFactory.Weather.Editor
         private Label _dateSummaryLabel;
         private Label _digitalTimeLabel;
         private Button _openDatePickerButton;
+        private Button _setTodayButton;
         private Button _playSimulationButton;
         private Button _pauseSimulationButton;
         private Button _stopSimulationButton;
@@ -69,7 +71,10 @@ namespace ConceptFactory.Weather.Editor
         private VisualElement _heroIconElement;
         private Label _locationFeedbackLabel;
         private WeatherLocationLookupService _locationLookupService;
-        private string _lastLocationFeedbackKey;
+        private string _pendingLocationFeedbackKey;
+        private string _resolvedLocationFeedbackKey;
+        private string _currentCustomGmtLabel;
+        private string _resolvedLocationName;
 
         public override VisualElement CreateInspectorGUI()
         {
@@ -134,12 +139,18 @@ namespace ConceptFactory.Weather.Editor
         private void BuildDateTimeCard(VisualElement card)
         {
             _openDatePickerButton = card?.Q<Button>("openDatePickerButton");
+            _setTodayButton = card?.Q<Button>("setTodayButton");
             _dateSummaryLabel = card?.Q<Label>("dateSummaryLabel");
             _digitalTimeLabel = card?.Q<Label>("digitalTimeLabel");
 
             if (_openDatePickerButton != null)
             {
                 _openDatePickerButton.clicked += OpenDatePickerPopup;
+            }
+
+            if (_setTodayButton != null)
+            {
+                _setTodayButton.clicked += SetTodayDate;
             }
 
             VisualElement timeFields = card?.Q<VisualElement>("timeFields");
@@ -277,9 +288,10 @@ namespace ConceptFactory.Weather.Editor
             _utcDropdown.value = FindClosestGmtLabel(property.floatValue);
             _utcDropdown.RegisterValueChangedCallback(evt =>
             {
-                GmtOption option = GmtOptions.Find(item => item.Label == evt.newValue);
+                GmtOption option = FindOptionFromDropdownValue(evt.newValue, property.floatValue);
                 property.floatValue = option.OffsetHours;
                 ApplyDefaultLocationForGmt(option);
+                RemoveCustomGmtChoice();
                 serializedObject.ApplyModifiedProperties();
                 serializedObject.Update();
                 RefreshDateSummary();
@@ -355,9 +367,15 @@ namespace ConceptFactory.Weather.Editor
             utcOffset.floatValue = bestMatch.OffsetHours;
             serializedObject.ApplyModifiedProperties();
 
-            if (_utcDropdown.value != bestMatch.Label)
+            string targetLabel = IsDefaultLocation(bestMatch, latitude.floatValue, longitude.floatValue)
+                ? bestMatch.Label
+                : BuildCustomGmtLabel(bestMatch.OffsetHours, _resolvedLocationName);
+
+            EnsureCustomGmtChoice(targetLabel);
+
+            if (_utcDropdown.value != targetLabel)
             {
-                _utcDropdown.SetValueWithoutNotify(bestMatch.Label);
+                _utcDropdown.SetValueWithoutNotify(targetLabel);
             }
         }
 
@@ -378,34 +396,47 @@ namespace ConceptFactory.Weather.Editor
             }
 
             string queryKey = Mathf.Round(latitude.floatValue * 1000f) + ":" + Mathf.Round(longitude.floatValue * 1000f);
-            if (_lastLocationFeedbackKey == queryKey)
+            if (_pendingLocationFeedbackKey == queryKey)
             {
                 return;
             }
 
-            _lastLocationFeedbackKey = queryKey;
+            if (_resolvedLocationFeedbackKey == queryKey && !string.IsNullOrWhiteSpace(_resolvedLocationName))
+            {
+                return;
+            }
+
+            _pendingLocationFeedbackKey = queryKey;
             _locationFeedbackLabel.text = "Resolving...";
 
             try
             {
                 WeatherLocationLookupResult result = await _locationLookupService.LookupAsync(latitude.floatValue, longitude.floatValue);
-                if (_locationFeedbackLabel == null || _lastLocationFeedbackKey != queryKey)
+                if (_locationFeedbackLabel == null || _pendingLocationFeedbackKey != queryKey)
                 {
                     return;
                 }
 
+                _pendingLocationFeedbackKey = null;
+                _resolvedLocationFeedbackKey = queryKey;
                 _locationFeedbackLabel.text = result.ShortLabel;
                 _locationFeedbackLabel.tooltip = result.FullLabel;
+                _resolvedLocationName = result.Success ? result.ShortLabel : null;
+                RefreshUtcDropdownFromLocation();
             }
             catch
             {
-                if (_locationFeedbackLabel == null || _lastLocationFeedbackKey != queryKey)
+                if (_locationFeedbackLabel == null || _pendingLocationFeedbackKey != queryKey)
                 {
                     return;
                 }
 
-                _locationFeedbackLabel.text = "Location unavailable";
-                _locationFeedbackLabel.tooltip = "Reverse geocoding failed";
+                _pendingLocationFeedbackKey = null;
+                _resolvedLocationFeedbackKey = null;
+                _locationFeedbackLabel.text = "Custom Location";
+                _locationFeedbackLabel.tooltip = "Reverse geocoding unavailable";
+                _resolvedLocationName = null;
+                RefreshUtcDropdownFromLocation();
             }
         }
 
@@ -454,6 +485,89 @@ namespace ConceptFactory.Weather.Editor
             return (latitudeDelta * latitudeDelta) + (longitudeDelta * longitudeDelta);
         }
 
+        private static bool IsDefaultLocation(GmtOption option, float latitude, float longitude)
+        {
+            const float threshold = 0.01f;
+            return Mathf.Abs(latitude - option.DefaultLatitude) <= threshold &&
+                   Mathf.Abs(longitude - option.DefaultLongitude) <= threshold;
+        }
+
+        private void EnsureCustomGmtChoice(string label)
+        {
+            if (_utcDropdown == null)
+            {
+                return;
+            }
+
+            RemoveCustomGmtChoice();
+
+            if (GmtOptions.Exists(option => option.Label == label))
+            {
+                _currentCustomGmtLabel = null;
+                return;
+            }
+
+            _currentCustomGmtLabel = label;
+            if (!_utcDropdown.choices.Contains(label))
+            {
+                _utcDropdown.choices.Add(label);
+            }
+        }
+
+        private void RemoveCustomGmtChoice()
+        {
+            if (_utcDropdown == null || string.IsNullOrWhiteSpace(_currentCustomGmtLabel))
+            {
+                return;
+            }
+
+            _utcDropdown.choices.Remove(_currentCustomGmtLabel);
+            _currentCustomGmtLabel = null;
+        }
+
+        private static string BuildCustomGmtLabel(float offsetHours, string resolvedLocationName)
+        {
+            string sign = offsetHours >= 0f ? "+" : "-";
+            float absolute = Mathf.Abs(offsetHours);
+            int hours = Mathf.FloorToInt(absolute);
+            int minutes = Mathf.RoundToInt((absolute - hours) * 60f);
+            if (string.IsNullOrWhiteSpace(resolvedLocationName))
+            {
+                return $"GMT{sign}{hours:00}:{minutes:00} Custom Location";
+            }
+
+            return $"GMT{sign}{hours:00}:{minutes:00} Custom - {resolvedLocationName}";
+        }
+
+        private static GmtOption FindOptionFromDropdownValue(string label, float fallbackOffset)
+        {
+            GmtOption existingOption = GmtOptions.Find(item => item.Label == label);
+            if (!string.IsNullOrWhiteSpace(existingOption.Label))
+            {
+                return existingOption;
+            }
+
+            return FindClosestGmtByOffset(fallbackOffset);
+        }
+
+        private static GmtOption FindClosestGmtByOffset(float offsetHours)
+        {
+            GmtOption bestMatch = GmtOptions[0];
+            float bestDistance = Mathf.Abs(bestMatch.OffsetHours - offsetHours);
+
+            for (int index = 1; index < GmtOptions.Count; index++)
+            {
+                float distance = Mathf.Abs(GmtOptions[index].OffsetHours - offsetHours);
+                if (distance < bestDistance)
+                {
+                    bestDistance = distance;
+                    bestMatch = GmtOptions[index];
+                }
+            }
+
+            return bestMatch;
+        }
+
         private void OpenDatePickerPopup()
         {
             if (_openDatePickerButton == null)
@@ -466,6 +580,38 @@ namespace ConceptFactory.Weather.Editor
             Rect popupRect = new Rect(screenPosition.x, screenPosition.y, worldBound.width, worldBound.height);
 
             WeatherDatePickerPopupWindow.Show(popupRect, serializedObject, RefreshDateSummary);
+        }
+
+        private void SetTodayDate()
+        {
+            DateTimeOffset now = DateTimeOffset.Now;
+            DateTime today = now.DateTime.Date;
+            float localUtcOffsetHours = (float)now.Offset.TotalHours;
+            GmtOption machineOption = FindClosestGmtByOffset(localUtcOffsetHours);
+
+            foreach (UnityEngine.Object currentTarget in targets)
+            {
+                if (currentTarget is not WeatherSolarController controller)
+                {
+                    continue;
+                }
+
+                SerializedObject controllerObject = new SerializedObject(controller);
+                controllerObject.Update();
+                controllerObject.FindProperty("_month").intValue = today.Month;
+                controllerObject.FindProperty("_day").intValue = today.Day;
+                controllerObject.FindProperty("_utcOffsetHours").floatValue = machineOption.OffsetHours;
+                controllerObject.FindProperty("_latitude").floatValue = machineOption.DefaultLatitude;
+                controllerObject.FindProperty("_longitude").floatValue = machineOption.DefaultLongitude;
+                controllerObject.ApplyModifiedProperties();
+                EditorUtility.SetDirty(controller);
+            }
+
+            serializedObject.Update();
+            RefreshUtcDropdownFromLocation();
+            RefreshLocationFeedback();
+            RefreshDateSummary();
+            RefreshSeasonHero();
         }
 
         private void RefreshDateSummary()

@@ -20,6 +20,7 @@
                 <ui:Label text="Tune the simulated day profile and scrub the local time without exposing the year." class="inline-note cfw-card__note"/>
                 <ui:VisualElement class="cfw-date-popup-row">
                     <ui:Button name="openDatePickerButton" text="30 Marco" class="cfw-date-popup-button"/>
+                    <ui:Button name="setTodayButton" text="Today" class="cfw-date-popup-button cfw-date-popup-button--secondary"/>
                     <ui:Label name="dateSummaryLabel" text="30 Marco" class="cfw-date-popup-summary"/>
                 </ui:VisualElement>
                 <ui:VisualElement name="timeFields" class="fields"/>

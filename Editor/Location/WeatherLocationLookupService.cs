@@ -70,6 +70,7 @@ namespace ConceptFactory.Weather.Editor.Location
                 longitude);
 
             using UnityWebRequest request = UnityWebRequest.Get(url);
+            request.timeout = 5;
             request.SetRequestHeader("User-Agent", "ConceptFactoryWeatherEditor/1.0");
             UnityWebRequestAsyncOperation operation = request.SendWebRequest();
 
