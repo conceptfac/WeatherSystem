@@ -87,10 +87,11 @@ namespace ConceptFactory.Weather.Editor
             ConfigureHeader(root);
             BuildDateTimeCard(root.Q<VisualElement>("dateTimeCard"));
             BuildLocationFields(root.Q<VisualElement>("locationFields"));
-            PopulateFields(root.Q<VisualElement>("referenceFields"), "_sunTransformOverride", "_lightColorOverDay", "_lightIntensityOverDay");
+            PopulateFields(root.Q<VisualElement>("referenceFields"), "_sunTransformOverride");
             BuildSimulationFields(root.Q<VisualElement>("simulationCard"));
             PopulateFields(root.Q<VisualElement>("runtimeFields"), "_playOnAwake");
-            PopulateFields(root.Q<VisualElement>("lightingFields"), "_baseIntensity", "_disableLightAtNight", "_nightDisableThreshold");
+            PopulateFields(root.Q<VisualElement>("lightingFields"), "_baseIntensity", "_disableLightAtNight", "_nightDisableThreshold", "_lightColorOverDay", "_lightIntensityOverDay");
+            BuildSkyboxFields(root.Q<VisualElement>("lightingFields"));
             PopulateDebugFields(root.Q<VisualElement>("debugFields"));
 
             root.TrackSerializedObjectValue(serializedObject, _ =>
@@ -218,6 +219,46 @@ namespace ConceptFactory.Weather.Editor
             RefreshSimulationTransportState();
         }
 
+        private void BuildSkyboxFields(VisualElement container)
+        {
+            if (container == null)
+            {
+                return;
+            }
+
+            VisualElement section = new VisualElement();
+            section.style.marginTop = 12;
+
+            Label title = new Label("Skybox");
+            title.style.unityFontStyleAndWeight = FontStyle.Bold;
+            title.style.marginBottom = 6;
+            section.Add(title);
+
+            AddField(section, "_driveSkyboxMaterial", "Drive Skybox");
+            AddField(section, "_skyColorOverDay", "Sky Color Over Day");
+            AddField(section, "_horizonColorOverDay", "Horizon Color Over Day");
+            AddField(section, "_groundColorOverDay", "Ground Color Over Day");
+            AddField(section, "_skyIntensityOverDay", "Sky Intensity Curve");
+            AddField(section, "_skyboxSunColorOverDay", "Sun Color Over Day");
+            AddField(section, "_skyTopFalloff", "Sky Falloff");
+            AddField(section, "_skyBottomFalloff", "Ground Falloff");
+            AddField(section, "_skyboxSunIntensity", "Sun Intensity");
+            AddField(section, "_skyboxSunFalloff", "Sun Falloff");
+            AddField(section, "_skyboxSunSize", "Sun Size");
+            AddField(section, "_skyboxSunSizeOverDay", "Sun Size Curve");
+
+            container.Add(section);
+        }
+
+        private void AddField(VisualElement container, string propertyName, string labelOverride = null)
+        {
+            PropertyField field = CreatePropertyField(propertyName, labelOverride);
+            if (field != null)
+            {
+                container.Add(field);
+            }
+        }
+
         private void PopulateFields(VisualElement container, params string[] propertyNames)
         {
             if (container == null)
@@ -259,6 +300,11 @@ namespace ConceptFactory.Weather.Editor
 
             PropertyField field = labelOverride == null ? new PropertyField(property) : new PropertyField(property, labelOverride);
             field.Bind(serializedObject);
+
+            if (property.propertyType == SerializedPropertyType.AnimationCurve)
+            {
+                field.AddToClassList("cfw-curve-field");
+            }
 
             if (readOnly)
             {

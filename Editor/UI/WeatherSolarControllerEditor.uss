@@ -147,6 +147,12 @@
     margin-bottom: 4px;
 }
 
+.cfw-card PropertyField.cfw-curve-field {
+    margin-top: 4px;
+    margin-bottom: 8px;
+    min-height: 56px;
+}
+
 #locationFields TextField,
 #locationFields FloatField,
 #locationFields DoubleField,

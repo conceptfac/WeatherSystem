@@ -84,6 +84,68 @@ namespace ConceptFactory.Weather
         [Range(-18f, 5f)]
         [SerializeField] private float _nightDisableThreshold = -4f;
 
+        [Header("Skybox")]
+        [Tooltip("Whether this controller should also update the global weather sky shader values.")]
+        [SerializeField] private bool _driveSkyboxMaterial = true;
+
+        [Tooltip("Optional top sky gradient sampled over the local 24-hour cycle.")]
+        [SerializeField] private Gradient _skyColorOverDay;
+
+        [Tooltip("Optional horizon gradient sampled over the local 24-hour cycle.")]
+        [SerializeField] private Gradient _horizonColorOverDay;
+
+        [Tooltip("Optional ground hemisphere gradient sampled over the local 24-hour cycle.")]
+        [SerializeField] private Gradient _groundColorOverDay;
+
+        [Tooltip("Optional skybox intensity curve sampled over the local 24-hour cycle.")]
+        [SerializeField] private AnimationCurve _skyIntensityOverDay = DefaultSkyIntensityCurve();
+
+        [Tooltip("Optional sun disk color gradient used specifically by the weather sky shader.")]
+        [SerializeField] private Gradient _skyboxSunColorOverDay;
+
+        [Tooltip("Global sky top falloff sent to the weather sky shader.")]
+        [Min(0.01f)]
+        [SerializeField] private float _skyTopFalloff = 5.8f;
+
+        [Tooltip("Global sky bottom falloff sent to the weather sky shader.")]
+        [Min(0.01f)]
+        [SerializeField] private float _skyBottomFalloff = 15.2f;
+
+        [Tooltip("Global sun disk intensity multiplier sent to the weather sky shader.")]
+        [Min(0f)]
+        [SerializeField] private float _skyboxSunIntensity = 0.45f;
+
+        [Tooltip("Global sun disk sharpness sent to the weather sky shader.")]
+        [Min(1f)]
+        [SerializeField] private float _skyboxSunFalloff = 900f;
+
+        [Tooltip("Global sun disk size sent to the weather sky shader.")]
+        [Min(0f)]
+        [SerializeField] private float _skyboxSunSize = 0.65f;
+
+        [Header("Horizon Illusion")]
+        [Tooltip("Applies a perceptual boost near the horizon so the sun disk feels larger at sunrise and sunset.")]
+        [SerializeField] private bool _enableHorizonSunIllusion = true;
+
+        [Tooltip("Maximum absolute solar elevation, in degrees, where the horizon-size illusion fades out.")]
+        [Range(0.1f, 30f)]
+        [SerializeField] private float _horizonIllusionMaxElevation = 12f;
+
+        [Tooltip("Multiplier applied to the sun disk size when the sun is on the horizon.")]
+        [Min(1f)]
+        [SerializeField] private float _horizonSunSizeMultiplier = 1.8f;
+
+        [Tooltip("Optional size curve sampled over the local 24-hour cycle. This multiplier is applied on top of the base sun size and horizon illusion.")]
+        [SerializeField] private AnimationCurve _skyboxSunSizeOverDay = DefaultSunSizeCurve();
+
+        [Tooltip("Multiplier applied to sun disk intensity when the sun is on the horizon.")]
+        [Min(0f)]
+        [SerializeField] private float _horizonSunIntensityMultiplier = 1.15f;
+
+        [Tooltip("Multiplier applied to sun disk falloff when the sun is on the horizon. Lower values create a softer, wider disk.")]
+        [Min(0.01f)]
+        [SerializeField] private float _horizonSunFalloffMultiplier = 0.55f;
+
         [Header("Debug")]
         [Tooltip("Latest apparent solar elevation in degrees.")]
         [SerializeField] private float _currentElevation;
@@ -107,6 +169,17 @@ namespace ConceptFactory.Weather
         private DateTime _localDateTime;
         private SimulationSnapshot _defaultSimulationSnapshot;
         private bool _hasDefaultSimulationSnapshot;
+        private static readonly int WeatherSunDirectionShaderId = Shader.PropertyToID("_WeatherSunDirection");
+        private static readonly int WeatherSunColorShaderId = Shader.PropertyToID("_WeatherSunColor");
+        private static readonly int WeatherAmbientSkyShaderId = Shader.PropertyToID("_WeatherAmbientSky");
+        private static readonly int WeatherAmbientHorizonShaderId = Shader.PropertyToID("_WeatherAmbientHorizon");
+        private static readonly int WeatherAmbientGroundShaderId = Shader.PropertyToID("_WeatherAmbientGround");
+        private static readonly int WeatherSkyIntensityShaderId = Shader.PropertyToID("_WeatherSkyIntensity");
+        private static readonly int WeatherSunIntensityShaderId = Shader.PropertyToID("_WeatherSunIntensity");
+        private static readonly int WeatherSunFalloffShaderId = Shader.PropertyToID("_WeatherSunFalloff");
+        private static readonly int WeatherSunSizeShaderId = Shader.PropertyToID("_WeatherSunSize");
+        private static readonly int WeatherTopSkyFalloffShaderId = Shader.PropertyToID("_WeatherTopSkyFalloff");
+        private static readonly int WeatherBottomSkyFalloffShaderId = Shader.PropertyToID("_WeatherBottomSkyFalloff");
 #if UNITY_EDITOR
         private double _lastEditorTime;
 #endif
@@ -130,6 +203,26 @@ namespace ConceptFactory.Weather
             if (_lightColorOverDay == null || _lightColorOverDay.colorKeys.Length == 0)
             {
                 _lightColorOverDay = CreateDefaultGradient();
+            }
+
+            if (_skyColorOverDay == null || _skyColorOverDay.colorKeys.Length == 0)
+            {
+                _skyColorOverDay = CreateDefaultSkyGradient();
+            }
+
+            if (_horizonColorOverDay == null || _horizonColorOverDay.colorKeys.Length == 0)
+            {
+                _horizonColorOverDay = CreateDefaultHorizonGradient();
+            }
+
+            if (_groundColorOverDay == null || _groundColorOverDay.colorKeys.Length == 0)
+            {
+                _groundColorOverDay = CreateDefaultGroundGradient();
+            }
+
+            if (_skyboxSunColorOverDay == null || _skyboxSunColorOverDay.colorKeys.Length == 0)
+            {
+                _skyboxSunColorOverDay = CreateDefaultSkyboxSunGradient();
             }
         }
 
@@ -190,6 +283,15 @@ namespace ConceptFactory.Weather
             _dayDurationMinutes = Mathf.Max(0.01f, _dayDurationMinutes);
             _timeScaleMultiplier = Mathf.Max(0f, _timeScaleMultiplier);
             _baseIntensity = Mathf.Max(0f, _baseIntensity);
+            _skyTopFalloff = Mathf.Max(0.01f, _skyTopFalloff);
+            _skyBottomFalloff = Mathf.Max(0.01f, _skyBottomFalloff);
+            _skyboxSunIntensity = Mathf.Max(0f, _skyboxSunIntensity);
+            _skyboxSunFalloff = Mathf.Max(1f, _skyboxSunFalloff);
+            _skyboxSunSize = Mathf.Max(0f, _skyboxSunSize);
+            _horizonIllusionMaxElevation = Mathf.Max(0.1f, _horizonIllusionMaxElevation);
+            _horizonSunSizeMultiplier = Mathf.Max(1f, _horizonSunSizeMultiplier);
+            _horizonSunIntensityMultiplier = Mathf.Max(0f, _horizonSunIntensityMultiplier);
+            _horizonSunFalloffMultiplier = Mathf.Max(0.01f, _horizonSunFalloffMultiplier);
             _day = Mathf.Clamp(_day, 1, DateTime.DaysInMonth(Mathf.Clamp(_year, 1, 9999), Mathf.Clamp(_month, 1, 12)));
             _timeOfDayMinutes = Mathf.Clamp(_timeOfDayMinutes, 0f, 1439f);
 
@@ -246,6 +348,36 @@ namespace ConceptFactory.Weather
             if (_lightIntensityOverDay == null || _lightIntensityOverDay.length == 0)
             {
                 _lightIntensityOverDay = DefaultIntensityCurve();
+            }
+
+            if (_skyColorOverDay == null || _skyColorOverDay.colorKeys.Length == 0)
+            {
+                _skyColorOverDay = CreateDefaultSkyGradient();
+            }
+
+            if (_horizonColorOverDay == null || _horizonColorOverDay.colorKeys.Length == 0)
+            {
+                _horizonColorOverDay = CreateDefaultHorizonGradient();
+            }
+
+            if (_groundColorOverDay == null || _groundColorOverDay.colorKeys.Length == 0)
+            {
+                _groundColorOverDay = CreateDefaultGroundGradient();
+            }
+
+            if (_skyboxSunColorOverDay == null || _skyboxSunColorOverDay.colorKeys.Length == 0)
+            {
+                _skyboxSunColorOverDay = CreateDefaultSkyboxSunGradient();
+            }
+
+            if (_skyIntensityOverDay == null || _skyIntensityOverDay.length == 0)
+            {
+                _skyIntensityOverDay = DefaultSkyIntensityCurve();
+            }
+
+            if (_skyboxSunSizeOverDay == null || _skyboxSunSizeOverDay.length == 0)
+            {
+                _skyboxSunSizeOverDay = DefaultSunSizeCurve();
             }
         }
 
@@ -323,6 +455,7 @@ namespace ConceptFactory.Weather
 
             ApplyLightTransform(CurrentSolarData.SunDirection);
             ApplyLightAppearance();
+            ApplySkyboxAppearance();
         }
 
         private void ApplyLightTransform(Vector3 sunDirection)
@@ -369,6 +502,57 @@ namespace ConceptFactory.Weather
             {
                 _sunLight.enabled = true;
             }
+        }
+
+        private void ApplySkyboxAppearance()
+        {
+            if (!_driveSkyboxMaterial)
+            {
+                return;
+            }
+
+            float dayFraction = GetCurrentDayFraction();
+            Color sunColor = _skyboxSunColorOverDay != null && _skyboxSunColorOverDay.colorKeys.Length > 0
+                ? _skyboxSunColorOverDay.Evaluate(dayFraction)
+                : (_sunLight != null ? _sunLight.color : Color.white);
+
+            float skyIntensity = _skyIntensityOverDay != null && _skyIntensityOverDay.length > 0
+                ? Mathf.Max(0f, _skyIntensityOverDay.Evaluate(dayFraction))
+                : 1f;
+            float sunSizeOverDay = _skyboxSunSizeOverDay != null && _skyboxSunSizeOverDay.length > 0
+                ? Mathf.Max(0f, _skyboxSunSizeOverDay.Evaluate(dayFraction))
+                : 1f;
+
+            float horizonIllusion = EvaluateHorizonIllusionFactor();
+            float sunIntensity = Mathf.Lerp(_skyboxSunIntensity, _skyboxSunIntensity * _horizonSunIntensityMultiplier, horizonIllusion);
+            float sunFalloff = Mathf.Lerp(_skyboxSunFalloff, _skyboxSunFalloff * _horizonSunFalloffMultiplier, horizonIllusion);
+            float sunSize = Mathf.Lerp(_skyboxSunSize, _skyboxSunSize * _horizonSunSizeMultiplier, horizonIllusion) * sunSizeOverDay;
+
+            Shader.SetGlobalVector(WeatherSunDirectionShaderId, _currentSunDirection.normalized);
+            Shader.SetGlobalColor(WeatherSunColorShaderId, sunColor);
+            Shader.SetGlobalColor(WeatherAmbientSkyShaderId, _skyColorOverDay.Evaluate(dayFraction));
+            Shader.SetGlobalColor(WeatherAmbientHorizonShaderId, _horizonColorOverDay.Evaluate(dayFraction));
+            Shader.SetGlobalColor(WeatherAmbientGroundShaderId, _groundColorOverDay.Evaluate(dayFraction));
+            Shader.SetGlobalFloat(WeatherSkyIntensityShaderId, skyIntensity);
+            Shader.SetGlobalFloat(WeatherSunIntensityShaderId, sunIntensity);
+            Shader.SetGlobalFloat(WeatherSunFalloffShaderId, sunFalloff);
+            Shader.SetGlobalFloat(WeatherSunSizeShaderId, sunSize);
+            Shader.SetGlobalFloat(WeatherTopSkyFalloffShaderId, _skyTopFalloff);
+            Shader.SetGlobalFloat(WeatherBottomSkyFalloffShaderId, _skyBottomFalloff);
+
+            DynamicGI.UpdateEnvironment();
+        }
+
+        private float EvaluateHorizonIllusionFactor()
+        {
+            if (!_enableHorizonSunIllusion)
+            {
+                return 0f;
+            }
+
+            float normalizedDistanceFromHorizon = Mathf.Clamp01(Mathf.Abs(_currentElevation) / _horizonIllusionMaxElevation);
+            float proximityToHorizon = 1f - normalizedDistanceFromHorizon;
+            return proximityToHorizon * proximityToHorizon * (3f - (2f * proximityToHorizon));
         }
 
         private Transform GetTargetTransform()
@@ -489,6 +673,30 @@ namespace ConceptFactory.Weather
                 new Keyframe(1f, 0f));
         }
 
+        private static AnimationCurve DefaultSkyIntensityCurve()
+        {
+            return new AnimationCurve(
+                new Keyframe(0f, 0.03f),
+                new Keyframe(0.22f, 0.08f),
+                new Keyframe(0.27f, 0.55f),
+                new Keyframe(0.5f, 1.1f),
+                new Keyframe(0.73f, 0.55f),
+                new Keyframe(0.78f, 0.08f),
+                new Keyframe(1f, 0.03f));
+        }
+
+        private static AnimationCurve DefaultSunSizeCurve()
+        {
+            return new AnimationCurve(
+                new Keyframe(0f, 1f),
+                new Keyframe(0.22f, 1f),
+                new Keyframe(0.27f, 1.18f),
+                new Keyframe(0.5f, 1f),
+                new Keyframe(0.73f, 1.18f),
+                new Keyframe(0.78f, 1f),
+                new Keyframe(1f, 1f));
+        }
+
         private static Gradient CreateDefaultGradient()
         {
             Gradient gradient = new Gradient();
@@ -500,6 +708,94 @@ namespace ConceptFactory.Weather
                     new GradientColorKey(new Color(1f, 0.97f, 0.9f), 0.5f),
                     new GradientColorKey(new Color(1f, 0.58f, 0.3f), 0.76f),
                     new GradientColorKey(new Color(0.07f, 0.1f, 0.18f), 1f)
+                },
+                new[]
+                {
+                    new GradientAlphaKey(1f, 0f),
+                    new GradientAlphaKey(1f, 1f)
+                });
+            return gradient;
+        }
+
+        private static Gradient CreateDefaultSkyGradient()
+        {
+            Gradient gradient = new Gradient();
+            gradient.SetKeys(
+                new[]
+                {
+                    new GradientColorKey(new Color(0.02f, 0.03f, 0.07f), 0f),
+                    new GradientColorKey(new Color(0.18f, 0.22f, 0.38f), 0.22f),
+                    new GradientColorKey(new Color(0.9f, 0.46f, 0.28f), 0.26f),
+                    new GradientColorKey(new Color(0.25f, 0.49f, 0.84f), 0.5f),
+                    new GradientColorKey(new Color(0.92f, 0.48f, 0.3f), 0.74f),
+                    new GradientColorKey(new Color(0.18f, 0.22f, 0.38f), 0.78f),
+                    new GradientColorKey(new Color(0.02f, 0.03f, 0.07f), 1f)
+                },
+                new[]
+                {
+                    new GradientAlphaKey(1f, 0f),
+                    new GradientAlphaKey(1f, 1f)
+                });
+            return gradient;
+        }
+
+        private static Gradient CreateDefaultHorizonGradient()
+        {
+            Gradient gradient = new Gradient();
+            gradient.SetKeys(
+                new[]
+                {
+                    new GradientColorKey(new Color(0.03f, 0.04f, 0.08f), 0f),
+                    new GradientColorKey(new Color(0.42f, 0.32f, 0.36f), 0.22f),
+                    new GradientColorKey(new Color(1f, 0.63f, 0.4f), 0.26f),
+                    new GradientColorKey(new Color(0.84f, 0.9f, 0.98f), 0.5f),
+                    new GradientColorKey(new Color(1f, 0.6f, 0.38f), 0.74f),
+                    new GradientColorKey(new Color(0.42f, 0.32f, 0.36f), 0.78f),
+                    new GradientColorKey(new Color(0.03f, 0.04f, 0.08f), 1f)
+                },
+                new[]
+                {
+                    new GradientAlphaKey(1f, 0f),
+                    new GradientAlphaKey(1f, 1f)
+                });
+            return gradient;
+        }
+
+        private static Gradient CreateDefaultGroundGradient()
+        {
+            Gradient gradient = new Gradient();
+            gradient.SetKeys(
+                new[]
+                {
+                    new GradientColorKey(new Color(0.01f, 0.015f, 0.03f), 0f),
+                    new GradientColorKey(new Color(0.08f, 0.08f, 0.12f), 0.24f),
+                    new GradientColorKey(new Color(0.2f, 0.18f, 0.18f), 0.28f),
+                    new GradientColorKey(new Color(0.21f, 0.24f, 0.29f), 0.5f),
+                    new GradientColorKey(new Color(0.2f, 0.17f, 0.17f), 0.72f),
+                    new GradientColorKey(new Color(0.08f, 0.08f, 0.12f), 0.76f),
+                    new GradientColorKey(new Color(0.01f, 0.015f, 0.03f), 1f)
+                },
+                new[]
+                {
+                    new GradientAlphaKey(1f, 0f),
+                    new GradientAlphaKey(1f, 1f)
+                });
+            return gradient;
+        }
+
+        private static Gradient CreateDefaultSkyboxSunGradient()
+        {
+            Gradient gradient = new Gradient();
+            gradient.SetKeys(
+                new[]
+                {
+                    new GradientColorKey(new Color(0.95f, 0.42f, 0.18f), 0f),
+                    new GradientColorKey(new Color(1f, 0.62f, 0.3f), 0.22f),
+                    new GradientColorKey(new Color(1f, 0.78f, 0.5f), 0.26f),
+                    new GradientColorKey(new Color(1f, 0.96f, 0.86f), 0.5f),
+                    new GradientColorKey(new Color(1f, 0.76f, 0.48f), 0.74f),
+                    new GradientColorKey(new Color(1f, 0.6f, 0.28f), 0.78f),
+                    new GradientColorKey(new Color(0.95f, 0.42f, 0.18f), 1f)
                 },
                 new[]
                 {
