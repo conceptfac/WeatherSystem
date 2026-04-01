@@ -5,6 +5,9 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Text;
+
 namespace ConceptFactory.Weather.Editor
 {
     [CustomEditor(typeof(WeatherSolarController))]
@@ -70,6 +73,8 @@ namespace ConceptFactory.Weather.Editor
         private Image _heroSeasonTitleElement;
         private VisualElement _heroIconElement;
         private Label _locationFeedbackLabel;
+        private VisualElement _locationSearchPopupHost;
+        private WeatherLocationSearchPopupElement _locationSearchPopupElement;
         private WeatherLocationLookupService _locationLookupService;
         private string _pendingLocationFeedbackKey;
         private string _resolvedLocationFeedbackKey;
@@ -89,9 +94,7 @@ namespace ConceptFactory.Weather.Editor
             BuildLocationFields(root.Q<VisualElement>("locationFields"));
             PopulateFields(root.Q<VisualElement>("referenceFields"), "_sunTransformOverride");
             BuildSimulationFields(root.Q<VisualElement>("simulationCard"));
-            PopulateFields(root.Q<VisualElement>("runtimeFields"), "_playOnAwake");
-            PopulateFields(root.Q<VisualElement>("lightingFields"), "_baseIntensity", "_disableLightAtNight", "_nightDisableThreshold", "_lightColorOverDay", "_lightIntensityOverDay");
-            BuildSkyboxFields(root.Q<VisualElement>("lightingFields"));
+            BuildLightingSections(root.Q<VisualElement>("lightingFields"));
             PopulateDebugFields(root.Q<VisualElement>("debugFields"));
 
             root.TrackSerializedObjectValue(serializedObject, _ =>
@@ -108,6 +111,7 @@ namespace ConceptFactory.Weather.Editor
 
         private void OnDisable()
         {
+            CloseLocationSearchPopup();
             _locationLookupService?.Dispose();
             _locationLookupService = null;
         }
@@ -160,8 +164,57 @@ namespace ConceptFactory.Weather.Editor
                 return;
             }
 
-            timeFields.Add(CreatePropertyField("_timeOfDayMinutes", "Time Of Day"));
+            timeFields.Add(CreateTimeOfDayControl());
             RefreshDateSummary();
+            RefreshDigitalTime();
+        }
+
+        private VisualElement CreateTimeOfDayControl()
+        {
+            SerializedProperty property = serializedObject.FindProperty("_timeOfDayMinutes");
+            if (property == null)
+            {
+                return new VisualElement();
+            }
+
+            VisualElement row = new VisualElement();
+            row.AddToClassList("cfw-time-row");
+
+            PropertyField timeField = new PropertyField(property, "Time Of Day");
+            timeField.Bind(serializedObject);
+            timeField.AddToClassList("cfw-time-row__field");
+
+            Button decrementButton = new Button(() => AdjustTimeOfDayMinutes(-1))
+            {
+                text = "-"
+            };
+            decrementButton.AddToClassList("cfw-time-step-button");
+
+            Button incrementButton = new Button(() => AdjustTimeOfDayMinutes(1))
+            {
+                text = "+"
+            };
+            incrementButton.AddToClassList("cfw-time-step-button");
+
+            row.Add(timeField);
+            row.Add(decrementButton);
+            row.Add(incrementButton);
+            return row;
+        }
+
+        private void AdjustTimeOfDayMinutes(int deltaMinutes)
+        {
+            SerializedProperty property = serializedObject.FindProperty("_timeOfDayMinutes");
+            if (property == null)
+            {
+                return;
+            }
+
+            serializedObject.Update();
+            float nextValue = Mathf.Repeat(property.floatValue + deltaMinutes, 1440f);
+            property.floatValue = nextValue;
+            serializedObject.ApplyModifiedProperties();
+            serializedObject.Update();
             RefreshDigitalTime();
         }
 
@@ -173,6 +226,8 @@ namespace ConceptFactory.Weather.Editor
             }
 
             _locationFeedbackLabel = container.parent?.Q<Label>("locationFeedbackLabel");
+            _locationSearchPopupHost = container.parent?.Q<VisualElement>("locationSearchPopupHost");
+            ConfigureLocationFeedbackTrigger();
 
             PropertyField latitudeField = CreatePropertyField("_latitude");
             PropertyField longitudeField = CreatePropertyField("_longitude");
@@ -215,39 +270,64 @@ namespace ConceptFactory.Weather.Editor
                 _stopSimulationButton.clicked += () => InvokeSimulationControl(controller => controller.StopSimulation());
             }
 
-            PopulateFields(card.Q<VisualElement>("simulationFields"), "_dayDurationMinutes");
+            PopulateFields(card.Q<VisualElement>("simulationFields"), "_dayDurationMinutes", "_playOnAwake");
             RefreshSimulationTransportState();
         }
 
-        private void BuildSkyboxFields(VisualElement container)
+        private void BuildLightingSections(VisualElement container)
         {
             if (container == null)
             {
                 return;
             }
 
-            VisualElement section = new VisualElement();
-            section.style.marginTop = 12;
+            AddSubsectionHeader(container, "DAY / SUN", "Solar light and daytime sky response.");
+            AddField(container, "_baseIntensity", "Base Intensity");
+            AddField(container, "_disableLightAtNight", "Disable Light At Night");
+            AddField(container, "_nightDisableThreshold", "Night Disable Threshold");
+            AddField(container, "_lightColorOverDay", "Light Color Over Day");
+            AddField(container, "_lightIntensityOverDay", "Light Intensity Over Day");
+            AddField(container, "_driveSkyboxMaterial", "Drive Skybox");
+            AddField(container, "_skyColorOverDay", "Sky Color Over Day");
+            AddField(container, "_horizonColorOverDay", "Horizon Color Over Day");
+            AddField(container, "_groundColorOverDay", "Ground Color Over Day");
+            AddField(container, "_skyIntensityOverDay", "Sky Intensity Curve");
+            AddField(container, "_skyboxSunColorOverDay", "Sun Color Over Day");
+            AddField(container, "_skyTopFalloff", "Sky Falloff");
+            AddField(container, "_skyBottomFalloff", "Ground Falloff");
+            AddField(container, "_skyboxSunIntensity", "Sun Intensity");
+            AddField(container, "_skyboxSunFalloff", "Sun Falloff");
+            AddField(container, "_skyboxSunSize", "Sun Size");
+            AddField(container, "_skyboxSunSizeOverDay", "Sun Size Curve");
 
-            Label title = new Label("Skybox");
-            title.style.unityFontStyleAndWeight = FontStyle.Bold;
-            title.style.marginBottom = 6;
-            section.Add(title);
+            AddSubsectionHeader(container, "NIGHT / STARS", "Night-only star appearance and variation.");
+            AddNumericInputField(container, "_starSize", "Star Size");
+            AddNumericInputField(container, "_starDensity", "Star Density");
+            AddGradientInputField(container, "_starColorGradient", "Star Color Gradient");
+            AddNumericInputField(container, "_starTwinkleAmount", "Star Twinkle");
+            AddNumericInputField(container, "_starColorFlicker", "Color Flicker");
+            AddNumericInputField(container, "_starHorizonChromaticShift", "Horizon Color Shift");
+        }
 
-            AddField(section, "_driveSkyboxMaterial", "Drive Skybox");
-            AddField(section, "_skyColorOverDay", "Sky Color Over Day");
-            AddField(section, "_horizonColorOverDay", "Horizon Color Over Day");
-            AddField(section, "_groundColorOverDay", "Ground Color Over Day");
-            AddField(section, "_skyIntensityOverDay", "Sky Intensity Curve");
-            AddField(section, "_skyboxSunColorOverDay", "Sun Color Over Day");
-            AddField(section, "_skyTopFalloff", "Sky Falloff");
-            AddField(section, "_skyBottomFalloff", "Ground Falloff");
-            AddField(section, "_skyboxSunIntensity", "Sun Intensity");
-            AddField(section, "_skyboxSunFalloff", "Sun Falloff");
-            AddField(section, "_skyboxSunSize", "Sun Size");
-            AddField(section, "_skyboxSunSizeOverDay", "Sun Size Curve");
+        private void AddSubsectionHeader(VisualElement container, string title, string note)
+        {
+            Label titleLabel = new Label(title);
+            titleLabel.AddToClassList("cfw-subsection");
+            if (container.childCount == 0)
+            {
+                titleLabel.AddToClassList("cfw-subsection--first");
+            }
 
-            container.Add(section);
+            container.Add(titleLabel);
+
+            if (string.IsNullOrWhiteSpace(note))
+            {
+                return;
+            }
+
+            Label noteLabel = new Label(note);
+            noteLabel.AddToClassList("cfw-subsection-note");
+            container.Add(noteLabel);
         }
 
         private void AddField(VisualElement container, string propertyName, string labelOverride = null)
@@ -257,6 +337,38 @@ namespace ConceptFactory.Weather.Editor
             {
                 container.Add(field);
             }
+        }
+
+        private void AddNumericInputField(VisualElement container, string propertyName, string label)
+        {
+            SerializedProperty property = serializedObject.FindProperty(propertyName);
+            if (property == null || property.propertyType != SerializedPropertyType.Float)
+            {
+                return;
+            }
+
+            FloatField field = new FloatField(label)
+            {
+                bindingPath = property.propertyPath
+            };
+            field.Bind(serializedObject);
+            container.Add(field);
+        }
+
+        private void AddGradientInputField(VisualElement container, string propertyName, string label)
+        {
+            SerializedProperty property = serializedObject.FindProperty(propertyName);
+            if (property == null || property.propertyType != SerializedPropertyType.Gradient)
+            {
+                return;
+            }
+
+            GradientField field = new GradientField(label)
+            {
+                bindingPath = property.propertyPath
+            };
+            field.Bind(serializedObject);
+            container.Add(field);
         }
 
         private void PopulateFields(VisualElement container, params string[] propertyNames)
@@ -466,7 +578,7 @@ namespace ConceptFactory.Weather.Editor
                 _pendingLocationFeedbackKey = null;
                 _resolvedLocationFeedbackKey = queryKey;
                 _locationFeedbackLabel.text = result.ShortLabel;
-                _locationFeedbackLabel.tooltip = result.FullLabel;
+                _locationFeedbackLabel.tooltip = result.FullLabel + "\nClick to search for another city";
                 _resolvedLocationName = result.Success ? result.ShortLabel : null;
                 RefreshUtcDropdownFromLocation();
             }
@@ -480,10 +592,174 @@ namespace ConceptFactory.Weather.Editor
                 _pendingLocationFeedbackKey = null;
                 _resolvedLocationFeedbackKey = null;
                 _locationFeedbackLabel.text = "Custom Location";
-                _locationFeedbackLabel.tooltip = "Reverse geocoding unavailable";
+                _locationFeedbackLabel.tooltip = "Reverse geocoding unavailable\nClick to search for a city";
                 _resolvedLocationName = null;
                 RefreshUtcDropdownFromLocation();
             }
+        }
+
+        private void ConfigureLocationFeedbackTrigger()
+        {
+            if (_locationFeedbackLabel == null)
+            {
+                return;
+            }
+
+            _locationFeedbackLabel.AddToClassList("cfw-location-feedback--clickable");
+            _locationFeedbackLabel.tooltip = "Click to search for a city and replace this location";
+            _locationFeedbackLabel.UnregisterCallback<ClickEvent>(OnLocationFeedbackClicked);
+            _locationFeedbackLabel.RegisterCallback<ClickEvent>(OnLocationFeedbackClicked);
+        }
+
+        private void OnLocationFeedbackClicked(ClickEvent evt)
+        {
+            OpenLocationSearchPopup();
+            evt.StopPropagation();
+        }
+
+        private void OpenLocationSearchPopup()
+        {
+            if (_locationSearchPopupHost == null)
+            {
+                return;
+            }
+
+            if (_locationSearchPopupElement != null)
+            {
+                CloseLocationSearchPopup();
+                return;
+            }
+
+            _locationSearchPopupHost.Clear();
+            _locationSearchPopupHost.AddToClassList("cfw-location-search-host--open");
+            _locationSearchPopupElement = new WeatherLocationSearchPopupElement(
+                serializedObject,
+                _locationLookupService,
+                HandleLocationSearchApplied,
+                CloseLocationSearchPopup);
+            _locationSearchPopupHost.Add(_locationSearchPopupElement);
+        }
+
+        private void HandleLocationSearchApplied(WeatherLocationSearchResult selectedLocation)
+        {
+            TrySnapLocationToKnownGmtOption(selectedLocation);
+            _pendingLocationFeedbackKey = null;
+            _resolvedLocationFeedbackKey = null;
+            _resolvedLocationName = null;
+            serializedObject.Update();
+            RefreshUtcDropdownFromLocation();
+            RefreshLocationFeedback();
+            RefreshSeasonHero();
+            CloseLocationSearchPopup();
+        }
+
+        private void CloseLocationSearchPopup()
+        {
+            if (_locationSearchPopupHost != null)
+            {
+                _locationSearchPopupHost.Clear();
+                _locationSearchPopupHost.RemoveFromClassList("cfw-location-search-host--open");
+            }
+
+            _locationSearchPopupElement = null;
+        }
+
+        private void TrySnapLocationToKnownGmtOption(WeatherLocationSearchResult selectedLocation)
+        {
+            if (selectedLocation == null)
+            {
+                return;
+            }
+
+            GmtOption matchedOption = FindGmtOptionForLocation(selectedLocation);
+            if (string.IsNullOrWhiteSpace(matchedOption.Label))
+            {
+                return;
+            }
+
+            SerializedProperty latitude = serializedObject.FindProperty("_latitude");
+            SerializedProperty longitude = serializedObject.FindProperty("_longitude");
+            SerializedProperty utcOffset = serializedObject.FindProperty("_utcOffsetHours");
+            if (latitude == null || longitude == null || utcOffset == null)
+            {
+                return;
+            }
+
+            latitude.floatValue = matchedOption.DefaultLatitude;
+            longitude.floatValue = matchedOption.DefaultLongitude;
+            utcOffset.floatValue = matchedOption.OffsetHours;
+            serializedObject.ApplyModifiedProperties();
+        }
+
+        private static GmtOption FindGmtOptionForLocation(WeatherLocationSearchResult selectedLocation)
+        {
+            string normalizedLocationName = NormalizeLocationLabel(selectedLocation.ShortLabel);
+            if (string.IsNullOrWhiteSpace(normalizedLocationName))
+            {
+                return default;
+            }
+
+            for (int index = 0; index < GmtOptions.Count; index++)
+            {
+                GmtOption option = GmtOptions[index];
+                string normalizedOptionName = NormalizeLocationLabel(ExtractOptionLocationName(option.Label));
+                if (string.IsNullOrWhiteSpace(normalizedOptionName))
+                {
+                    continue;
+                }
+
+                if (normalizedLocationName == normalizedOptionName ||
+                    normalizedLocationName.StartsWith(normalizedOptionName, StringComparison.Ordinal) ||
+                    normalizedOptionName.StartsWith(normalizedLocationName, StringComparison.Ordinal))
+                {
+                    return option;
+                }
+            }
+
+            return default;
+        }
+
+        private static string ExtractOptionLocationName(string optionLabel)
+        {
+            if (string.IsNullOrWhiteSpace(optionLabel))
+            {
+                return string.Empty;
+            }
+
+            int separatorIndex = optionLabel.IndexOf('|');
+            if (separatorIndex < 0 || separatorIndex >= optionLabel.Length - 1)
+            {
+                return optionLabel.Trim();
+            }
+
+            return optionLabel[(separatorIndex + 1)..].Trim();
+        }
+
+        private static string NormalizeLocationLabel(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return string.Empty;
+            }
+
+            string locationOnly = value.Split(',')[0].Trim().ToLowerInvariant().Normalize(NormalizationForm.FormD);
+            StringBuilder builder = new(locationOnly.Length);
+            for (int index = 0; index < locationOnly.Length; index++)
+            {
+                char character = locationOnly[index];
+                UnicodeCategory category = CharUnicodeInfo.GetUnicodeCategory(character);
+                if (category == UnicodeCategory.NonSpacingMark)
+                {
+                    continue;
+                }
+
+                if (char.IsLetterOrDigit(character) || char.IsWhiteSpace(character))
+                {
+                    builder.Append(character);
+                }
+            }
+
+            return builder.ToString().Normalize(NormalizationForm.FormC).Trim();
         }
 
         private void InvokeSimulationControl(System.Action<WeatherSolarController> action)

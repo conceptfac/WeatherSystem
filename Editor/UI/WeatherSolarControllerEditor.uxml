@@ -26,19 +26,6 @@
                 <ui:VisualElement name="timeFields" class="fields"/>
                 <ui:Label name="digitalTimeLabel" text="12:00" class="cfw-digital-time"/>
             </ui:VisualElement>
-            <ui:VisualElement name="locationCard" class="section cfw-card">
-                <ui:VisualElement class="cfw-card__header-row">
-                    <ui:Label text="Location" class="section-title cfw-card__title"/>
-                    <ui:Label name="locationFeedbackLabel" text="Resolving..." class="cfw-location-feedback"/>
-                </ui:VisualElement>
-                <ui:Label text="Latitude, longitude and UTC offset drive the real solar path." class="inline-note cfw-card__note"/>
-                <ui:VisualElement name="locationFields" class="fields"/>
-            </ui:VisualElement>
-            <ui:VisualElement name="referencesCard" class="section cfw-card">
-                <ui:Label text="References" class="section-title cfw-card__title"/>
-                <ui:Label text="Optional artistic overrides layered on top of the astronomical solution." class="inline-note cfw-card__note"/>
-                <ui:VisualElement name="referenceFields" class="fields"/>
-            </ui:VisualElement>
             <ui:VisualElement name="simulationCard" class="section cfw-card">
                 <ui:Label text="Simulation" class="section-title cfw-card__title"/>
                 <ui:Label text="Control editor refresh and the duration of a full 24-hour cycle." class="inline-note cfw-card__note"/>
@@ -49,14 +36,23 @@
                 </ui:VisualElement>
                 <ui:VisualElement name="simulationFields" class="fields"/>
             </ui:VisualElement>
-            <ui:VisualElement name="runtimeCard" class="section cfw-card">
-                <ui:Label text="Runtime" class="section-title cfw-card__title"/>
-                <ui:Label text="Startup options that only apply when the game actually enters Play Mode." class="inline-note cfw-card__note"/>
-                <ui:VisualElement name="runtimeFields" class="fields"/>
+            <ui:VisualElement name="locationCard" class="section cfw-card">
+                <ui:VisualElement class="cfw-card__header-row">
+                    <ui:Label text="Location" class="section-title cfw-card__title"/>
+                    <ui:Label name="locationFeedbackLabel" text="Resolving..." class="cfw-location-feedback"/>
+                </ui:VisualElement>
+                <ui:Label text="Latitude, longitude and UTC offset drive the real solar path." class="inline-note cfw-card__note"/>
+                <ui:VisualElement name="locationFields" class="fields"/>
+                <ui:VisualElement name="locationSearchPopupHost" class="cfw-location-search-host"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="referencesCard" class="section cfw-card">
+                <ui:Label text="References" class="section-title cfw-card__title"/>
+                <ui:Label text="Optional artistic overrides layered on top of the astronomical solution." class="inline-note cfw-card__note"/>
+                <ui:VisualElement name="referenceFields" class="fields"/>
             </ui:VisualElement>
             <ui:VisualElement name="lightingCard" class="section cfw-card">
-                <ui:Label text="Lighting" class="section-title cfw-card__title"/>
-                <ui:Label text="Blend physically-based direction with your preferred artistic light response." class="inline-note cfw-card__note"/>
+                <ui:Label text="Lighting &amp; Sky" class="section-title cfw-card__title"/>
+                <ui:Label text="Day controls stay grouped with the sun and sky. Night controls stay grouped with stars only." class="inline-note cfw-card__note"/>
                 <ui:VisualElement name="lightingFields" class="fields"/>
             </ui:VisualElement>
             <ui:VisualElement name="debugCard" class="section cfw-card cfw-card--debug">

@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Packages/com.conceptfactory.weather/Editor/UI/WeatherLocationSearchPopupWindow.uss?fileID=7433441132597879392&amp;guid=4d053413774348549e8a31b55f1f74a6&amp;type=3#WeatherLocationSearchPopupWindow"/>
+    <ui:VisualElement name="popupRoot" class="cfw-location-search">
+        <ui:VisualElement class="cfw-location-search__panel">
+            <ui:VisualElement class="cfw-location-search__topbar">
+                <ui:TextField name="locationSearchField" label="" value="" class="cfw-location-search__field"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="LocationCount" class="cfw-location-search__meta">
+                <ui:Label name="locationSearchCount" text="" class="cfw-location-search__count"/>
+            </ui:VisualElement>
+            <ui:ScrollView name="locationSearchResults" mode="Vertical" class="cfw-location-search__results"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

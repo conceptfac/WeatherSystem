@@ -1,0 +1,15 @@
+.root {
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.title {
+    -unity-font-style: bold;
+    margin-bottom: 6px;
+}
+
+.fields {
+    margin-left: 2px;
+}
