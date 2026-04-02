@@ -39,7 +39,7 @@ Shader "Skybox/Simple"
 
     half3 _WeatherMoonColor, _WeatherMoonDirection;
     half _WeatherMoonIntensity;
-    half _WeatherMoonFalloff;
+    half _WeatherMoonDiskEdgeSoftness;
     half _WeatherMoonSize;
     half _WeatherMoonPhaseAngle;
     half _WeatherMoonIllumination;
@@ -112,9 +112,14 @@ Shader "Skybox/Simple"
         return float2(x, y) / projectedRadius;
     }
 
-    inline half ComputeMoonDiskMask(float2 local)
+    inline half ComputeMoonDiskMask(float2 local, float moonDiskEdgeSoftness)
     {
-        return saturate(1.0 - smoothstep(0.94, 1.0, length(local)));
+        float normalizedFalloff = saturate(moonDiskEdgeSoftness / 2000.0);
+        float edgeWidth = lerp(0.18, 0.002, normalizedFalloff);
+        float innerRadius = 1.0 - edgeWidth;
+        float diskMask = saturate(1.0 - smoothstep(innerRadius, 1.0, length(local)));
+        float edgeExponent = lerp(0.35, 6.0, normalizedFalloff);
+        return saturate(pow(diskMask, edgeExponent));
     }
 
     inline float ComputeMoonPhaseOrientation()
@@ -125,7 +130,7 @@ Shader "Skybox/Simple"
     inline half ComputeMoonPhaseMask(float3 viewDirection, float3 moonDirection, float3 sunDirection, float moonAngularRadius)
     {
         float2 local = ComputeMoonLocalUv(viewDirection, moonDirection, moonAngularRadius);
-        float diskMask = ComputeMoonDiskMask(local);
+        float diskMask = ComputeMoonDiskMask(local, _WeatherMoonDiskEdgeSoftness);
         float terminatorSoftness = max(_WeatherMoonTerminatorSoftness, 0.001h);
         float illumination = saturate(_WeatherMoonIllumination);
         float phaseOrientation = ComputeMoonPhaseOrientation();
@@ -259,7 +264,7 @@ Shader "Skybox/Simple"
             ? _WeatherMoonColor.rgb
             : half3(0.84h, 0.9h, 1.0h);
         half moonIntensity = max(_WeatherMoonIntensity, 0.0h);
-        half moonFalloff = _WeatherMoonFalloff > 0.0001h ? _WeatherMoonFalloff : 1400.0h;
+        half moonDiskEdgeSoftness = _WeatherMoonDiskEdgeSoftness > 0.0001h ? _WeatherMoonDiskEdgeSoftness : 1400.0h;
         half moonSize = _WeatherMoonSize > 0.0001h ? _WeatherMoonSize : 0.38h;
 
         float p = v.y;
@@ -271,7 +276,7 @@ Shader "Skybox/Simple"
         half3 c_sun = sunColor * min(pow(max(0, dot(v, sunDirection)), sunFalloff) * sunSize, 1);
         half moonAngularRadius = max(0.004h, 0.012h * moonSize);
         float2 moonLocal = ComputeMoonLocalUv(v, moonDirection, moonAngularRadius);
-        half moonDiskMask = ComputeMoonDiskMask(moonLocal);
+        half moonDiskMask = ComputeMoonDiskMask(moonLocal, moonDiskEdgeSoftness);
         float phaseOrientation = ComputeMoonPhaseOrientation();
         half moonPhaseMask = ComputeMoonPhaseMask(v, moonDirection, sunDirection, moonAngularRadius);
         half4 litMoonSample = SampleMoonTexture(_WeatherMoonTexture, moonLocal);
@@ -281,9 +286,9 @@ Shader "Skybox/Simple"
         darkMoonSample.rgb *= max(_WeatherMoonDarkTextureExposure, 0.0h);
         half litSideMask = moonPhaseMask * phaseMaskTexture;
         half baseDiskMask = moonDiskMask;
-        half litCutout = step(0.5h, litMoonSample.a);
-        half darkCutout = step(0.5h, darkMoonSample.a);
-        half3 litMoon = lerp(moonColor, (litMoonSample.rgb * litCutout) * moonColor, saturate(_WeatherMoonUseTexture));
+        half litCutout = saturate(litMoonSample.a);
+        half darkCutout = saturate(darkMoonSample.a);
+        half3 litMoon = lerp(moonColor, litMoonSample.rgb * moonColor, saturate(_WeatherMoonUseTexture));
         half darkVisibility = saturate(_WeatherMoonDarkSideVisibility);
         half litBlend = saturate(litSideMask);
         half shadowBlend = saturate(1.0h - litBlend);

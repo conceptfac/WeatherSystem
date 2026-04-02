@@ -1,5 +1,10 @@
 using System;
+using System.IO;
 using UnityEngine;
+using UnityEngine.Serialization;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace ConceptFactory.Weather
 {
@@ -13,6 +18,44 @@ namespace ConceptFactory.Weather
         WaningGibbous,
         LastQuarter,
         WaningCrescent
+    }
+
+    [Serializable]
+    public sealed class MoonPhaseVisualTuning
+    {
+        public float darkMoonExposure = 1.5f;
+        public float moonHaloIntensityMultiplier = 1f;
+        public float borderHaloIntensityMultiplier = 1f;
+        public bool applyHorizonIllusion;
+        public float horizonMoonIntensityMultiplier = 1f;
+        public float horizonWarmTintStrengthMultiplier = 1f;
+        public Color horizonTintColor = new(1f, 0.776f, 0.525f, 1f);
+    }
+
+    [Serializable]
+    public sealed class MoonPhaseVisualTuningSet
+    {
+        public MoonPhaseVisualTuning newMoon = new MoonPhaseVisualTuning { darkMoonExposure = 3f, moonHaloIntensityMultiplier = 1f, borderHaloIntensityMultiplier = 1f, applyHorizonIllusion = false, horizonMoonIntensityMultiplier = 1f, horizonWarmTintStrengthMultiplier = 1f, horizonTintColor = new Color(1f, 0.776f, 0.525f, 1f) };
+        public MoonPhaseVisualTuning waxingCrescent = new MoonPhaseVisualTuning { darkMoonExposure = 1.5f, moonHaloIntensityMultiplier = 1.25f, borderHaloIntensityMultiplier = 1.1666666f, applyHorizonIllusion = false, horizonMoonIntensityMultiplier = 1f, horizonWarmTintStrengthMultiplier = 1f, horizonTintColor = new Color(1f, 0.776f, 0.525f, 1f) };
+        public MoonPhaseVisualTuning firstQuarter = new MoonPhaseVisualTuning { darkMoonExposure = 1.5f, moonHaloIntensityMultiplier = 1.5f, borderHaloIntensityMultiplier = 1.3333334f, applyHorizonIllusion = false, horizonMoonIntensityMultiplier = 1f, horizonWarmTintStrengthMultiplier = 1f, horizonTintColor = new Color(1f, 0.776f, 0.525f, 1f) };
+        public MoonPhaseVisualTuning waxingGibbous = new MoonPhaseVisualTuning { darkMoonExposure = 1.5f, moonHaloIntensityMultiplier = 1.75f, borderHaloIntensityMultiplier = 1.6666666f, applyHorizonIllusion = true, horizonMoonIntensityMultiplier = 1f, horizonWarmTintStrengthMultiplier = 1f, horizonTintColor = new Color(1f, 0.776f, 0.525f, 1f) };
+        public MoonPhaseVisualTuning fullMoon = new MoonPhaseVisualTuning { darkMoonExposure = 1f, moonHaloIntensityMultiplier = 2f, borderHaloIntensityMultiplier = 2f, applyHorizonIllusion = true, horizonMoonIntensityMultiplier = 1f, horizonWarmTintStrengthMultiplier = 1f, horizonTintColor = new Color(1f, 0.776f, 0.525f, 1f) };
+        public MoonPhaseVisualTuning waningGibbous = new MoonPhaseVisualTuning { darkMoonExposure = 1.5f, moonHaloIntensityMultiplier = 1.75f, borderHaloIntensityMultiplier = 1.6666666f, applyHorizonIllusion = true, horizonMoonIntensityMultiplier = 1f, horizonWarmTintStrengthMultiplier = 1f, horizonTintColor = new Color(1f, 0.776f, 0.525f, 1f) };
+        public MoonPhaseVisualTuning lastQuarter = new MoonPhaseVisualTuning { darkMoonExposure = 1.5f, moonHaloIntensityMultiplier = 1.5f, borderHaloIntensityMultiplier = 1.3333334f, applyHorizonIllusion = false, horizonMoonIntensityMultiplier = 1f, horizonWarmTintStrengthMultiplier = 1f, horizonTintColor = new Color(1f, 0.776f, 0.525f, 1f) };
+        public MoonPhaseVisualTuning waningCrescent = new MoonPhaseVisualTuning { darkMoonExposure = 1.5f, moonHaloIntensityMultiplier = 1.25f, borderHaloIntensityMultiplier = 1.1666666f, applyHorizonIllusion = false, horizonMoonIntensityMultiplier = 1f, horizonWarmTintStrengthMultiplier = 1f, horizonTintColor = new Color(1f, 0.776f, 0.525f, 1f) };
+    }
+
+    [Serializable]
+    public sealed class MoonPhasePresetSet
+    {
+        public LunarVisualPreset newMoon;
+        public LunarVisualPreset waxingCrescent;
+        public LunarVisualPreset firstQuarter;
+        public LunarVisualPreset waxingGibbous;
+        public LunarVisualPreset fullMoon;
+        public LunarVisualPreset waningGibbous;
+        public LunarVisualPreset lastQuarter;
+        public LunarVisualPreset waningCrescent;
     }
 
     /// <summary>
@@ -34,6 +77,9 @@ namespace ConceptFactory.Weather
         [Tooltip("Optional transform override. If assigned, rotation is applied here instead of the Light transform.")]
         [SerializeField] private Transform _moonTransformOverride;
 
+        [Tooltip("Per-phase visual presets that own lighting, fades, halos, horizon illusion and phase-specific tuning.")]
+        [SerializeField] private MoonPhasePresetSet _phasePresets = new MoonPhasePresetSet();
+
         [Tooltip("Optional color gradient sampled over the local 24-hour cycle.")]
         [SerializeField] private Gradient _lightColorOverNight;
 
@@ -42,7 +88,7 @@ namespace ConceptFactory.Weather
 
         [Header("Lighting")]
         [Tooltip("Base intensity multiplier before optional curve, moon phase and daylight attenuation.")]
-        [SerializeField] private float _baseIntensity = 0.18f;
+        [SerializeField] private float _baseIntensity = 1f;
 
         [Tooltip("Whether the light should be disabled when the moon is below the horizon threshold.")]
         [SerializeField] private bool _disableLightBelowHorizon = true;
@@ -51,23 +97,25 @@ namespace ConceptFactory.Weather
         [SerializeField] private float _horizonDisableThreshold = -2f;
 
         [Tooltip("How strongly daylight suppresses the moon light. Higher values fade the moon faster after sunrise.")]
-        [SerializeField] private float _daylightFadeStrength = 1.65f;
+        [SerializeField] private float _daylightFadeStrength = 1.6f;
 
         [Tooltip("Minimum illumination multiplier, useful if you never want the moon to disappear completely on crescent phases.")]
-        [SerializeField] private float _minimumPhaseLight = 0.08f;
+        [SerializeField] private float _minimumPhaseLight = 2f;
 
         [Header("Skybox")]
         [Tooltip("Whether this controller should also drive the moon disk values used by the sky shader.")]
         [SerializeField] private bool _driveSkyboxMaterial = true;
 
         [Tooltip("Global moon disk intensity multiplier sent to the sky shader.")]
-        [SerializeField] private float _skyboxMoonIntensity = 0.22f;
+        [SerializeField] private float _skyboxMoonIntensity = 1f;
 
-        [Tooltip("Global moon disk sharpness sent to the sky shader.")]
-        [SerializeField] private float _skyboxMoonFalloff = 1400f;
+        [Tooltip("Controls the softness of the moon disk outer edge against the sky. Lower values make the edge softer, higher values make it crisper.")]
+        [FormerlySerializedAs("_skyboxMoonFalloff")]
+        [SerializeField] private float _moonDiskEdgeSoftness = 1598.1f;
 
         [Tooltip("Global moon disk size sent to the sky shader.")]
-        [SerializeField] private float _skyboxMoonSize = 0.38f;
+        [HideInInspector]
+        [SerializeField] private float _skyboxMoonSize = 8f;
 
         [Tooltip("Lit moon texture used for the illuminated side of the disk.")]
         [SerializeField] private Texture2D _moonTexture;
@@ -79,22 +127,25 @@ namespace ConceptFactory.Weather
         [SerializeField] private Texture2D _moonPhaseMaskTexture;
 
         [Tooltip("Brightness multiplier applied to the illuminated moon texture in the sky.")]
-        [SerializeField] private float _moonTextureExposure = 1.35f;
+        [HideInInspector]
+        [SerializeField] private float _moonTextureExposure = 2f;
 
         [Tooltip("Brightness multiplier applied to the dark moon texture in the sky.")]
-        [SerializeField] private float _darkMoonTextureExposure = 1f;
+        [HideInInspector]
+        [SerializeField] private float _darkMoonTextureExposure = 1.5f;
 
         [Tooltip("Softness of the terminator between light and shadow.")]
         [SerializeField] private float _terminatorSoftness = 0.08f;
 
         [Tooltip("How visible the dark side of the moon remains at night.")]
-        [SerializeField] private float _darkSideVisibility = 0.24f;
+        [HideInInspector]
+        [SerializeField] private float _darkSideVisibility = 3.8f;
 
         [Tooltip("Solar elevation, in degrees, where the dark side of the moon and its halos start to disappear.")]
-        [SerializeField] private float _daylightShadowFadeStart = -6f;
+        [SerializeField] private float _daylightShadowFadeStart = -15f;
 
         [Tooltip("Solar elevation range, in degrees, used to fade the dark side and its halos after the fade start.")]
-        [SerializeField] private float _daylightShadowFadeRange = 4f;
+        [SerializeField] private float _daylightShadowFadeRange = 1.5f;
 
         [Tooltip("Solar elevation, in degrees, where the illuminated side of the moon starts becoming visible against a bright sky.")]
         [SerializeField] private float _daylightLitMoonFadeStart = -6f;
@@ -105,63 +156,75 @@ namespace ConceptFactory.Weather
         [Tooltip("Extra suppression applied to the illuminated side of the moon while the sun is setting, to avoid an overly bright moon at dusk.")]
         [SerializeField] private float _duskLitMoonSuppression = 0.55f;
 
+        [Tooltip("Minimum visibility kept on the illuminated moon disk even under a bright sky, so it never disappears completely.")]
+        [Range(0f, 1f)]
+        [SerializeField] private float _minimumLitMoonSkyVisibility = 1f;
+
         [Tooltip("Tint used by the subtle glow around the moon disk.")]
         [SerializeField] private Color _moonHaloColor = new(0.72f, 0.82f, 1f, 1f);
 
         [Tooltip("Brightness of the halo around the moon.")]
-        [SerializeField] private float _moonHaloIntensity = 0.08f;
+        [SerializeField] private float _moonHaloIntensity = 0.15f;
 
         [Tooltip("Inner start of the halo relative to the moon edge. Use small negative values to pull it slightly inside.")]
-        [SerializeField] private float _moonHaloInnerSize = 0f;
+        [SerializeField] private float _moonHaloInnerSize = 0.15f;
 
         [Tooltip("Outer reach of the halo beyond the moon edge.")]
-        [SerializeField] private float _moonHaloOuterSize = 0.03f;
+        [SerializeField] private float _moonHaloOuterSize = 0.49f;
 
         [Tooltip("Softness of the halo fade from inner to outer edge.")]
-        [SerializeField] private float _moonHaloTerminator = 0.5f;
+        [SerializeField] private float _moonHaloTerminator = 3.02f;
 
         [Tooltip("Tint used by the border halo around the moon disk.")]
         [SerializeField] private Color _borderHaloColor = new(0.72f, 0.82f, 1f, 1f);
 
         [Tooltip("Brightness of the border halo around the moon.")]
-        [SerializeField] private float _borderHaloIntensity = 0.04f;
+        [SerializeField] private float _borderHaloIntensity = 0.4f;
 
         [Tooltip("Inner start of the border halo, where 0 starts at the moon center and 1 reaches the moon edge.")]
-        [SerializeField] private float _borderHaloInnerSize = 0f;
+        [SerializeField] private float _borderHaloInnerSize = 0.5f;
 
         [Tooltip("Outer reach of the border halo beyond the moon edge.")]
-        [SerializeField] private float _borderHaloOuterSize = 0.015f;
+        [SerializeField] private float _borderHaloOuterSize = 0.52f;
 
         [Tooltip("Softness of the border halo fade from inner to outer edge.")]
-        [SerializeField] private float _borderHaloTerminator = 0.25f;
+        [SerializeField] private float _borderHaloTerminator = 20f;
 
-        [Header("Horizon Illusion")]
         [Tooltip("Applies a perceptual size boost near the horizon so the moon feels larger when rising or setting.")]
         [SerializeField] private bool _enableHorizonMoonIllusion = true;
 
         [Tooltip("Maximum absolute lunar elevation, in degrees, where the horizon-size illusion fades out.")]
-        [SerializeField] private float _horizonIllusionMaxElevation = 14f;
+        [SerializeField] private float _horizonIllusionMaxElevation = 22f;
 
         [Tooltip("Multiplier applied to the moon disk size when the moon is on the horizon.")]
-        [SerializeField] private float _horizonMoonSizeMultiplier = 1.65f;
+        [SerializeField] private float _horizonMoonSizeMultiplier = 1f;
+
+        [Tooltip("Whether the moon disk size should respond to the Moon's orbital distance from Earth.")]
+        [SerializeField] private bool _useOrbitalDistanceSizeVariation = true;
+
+        [Tooltip("Size multiplier applied when the Moon is closest to Earth.")]
+        [SerializeField] private float _perigeeMoonSizeMultiplier = 1.07f;
+
+        [Tooltip("Size multiplier applied when the Moon is farthest from Earth.")]
+        [SerializeField] private float _apogeeMoonSizeMultiplier = 0.93f;
 
         [Tooltip("Extra size curve applied only while the moon is rising. Use it to exaggerate the moon near moonrise without affecting moonset.")]
         [SerializeField] private AnimationCurve _moonRiseSizeCurve = DefaultMoonRiseSizeCurve();
 
         [Tooltip("Multiplier applied to moon disk intensity when the moon is on the horizon.")]
-        [SerializeField] private float _horizonMoonIntensityMultiplier = 1.12f;
+        [SerializeField] private float _horizonMoonIntensityMultiplier = 1.2f;
 
-        [Tooltip("Multiplier applied to moon disk falloff when the moon is on the horizon. Lower values create a softer, wider disk.")]
+        [Tooltip("Multiplier applied to moon disk edge softness when the moon is on the horizon. Lower values create a softer outer edge.")]
         [SerializeField] private float _horizonMoonFalloffMultiplier = 0.68f;
 
         [Tooltip("How strongly the moon color warms near the horizon.")]
-        [SerializeField] private float _horizonMoonWarmTintStrength = 0.35f;
+        [SerializeField] private float _horizonMoonWarmTintStrength = 1.2f;
 
         [Tooltip("Warm tint blended into the moon near the horizon.")]
         [SerializeField] private Color _horizonMoonTintColor = new(1f, 0.776f, 0.525f, 1f);
 
         [Tooltip("Extra warm-tint boost applied specifically while the moon is rising near the horizon.")]
-        [SerializeField] private float _moonRiseWarmTintBoost = 1.75f;
+        [SerializeField] private float _moonRiseWarmTintBoost = 10f;
 
         [Header("Altitude Atmosphere")]
         [Tooltip("Altitude where the atmospheric moon adjustments reach their maximum effect.")]
@@ -172,6 +235,11 @@ namespace ConceptFactory.Weather
 
         [Tooltip("Extra clarity boost applied to the moon at high altitude.")]
         [SerializeField] private float _altitudeClarityBoost = 0.14f;
+
+        [Header("Phase Tuning")]
+        [Tooltip("Per-phase overrides for dark moon exposure and halo multipliers in the sky.")]
+        [HideInInspector]
+        [SerializeField] private MoonPhaseVisualTuningSet _phaseTuning = new MoonPhaseVisualTuningSet();
 
         [Header("Debug")]
         [Tooltip("Latest apparent lunar elevation in degrees.")]
@@ -189,6 +257,13 @@ namespace ConceptFactory.Weather
         [Tooltip("Approximate lunar age inside the synodic month.")]
         [SerializeField] private float _currentLunarAgeDays;
 
+        [Tooltip("Current Earth-Moon distance in kilometers.")]
+        [SerializeField] private float _currentDistanceKilometers;
+
+        [Tooltip("Normalized Earth-Moon distance where 0 is perigee and 1 is apogee.")]
+        [Range(0f, 1f)]
+        [SerializeField] private float _currentDistanceNormalized;
+
         [Tooltip("Formatted moon phase label for quick inspection.")]
         [SerializeField] private string _currentPhaseLabel = "Waxing Gibbous";
 
@@ -198,14 +273,24 @@ namespace ConceptFactory.Weather
         [Tooltip("Whether the moon is currently rising rather than setting.")]
         [SerializeField] private bool _isMoonRising;
 
+        [NonSerialized] private LunarVisualPreset _defaultNewMoonPreset;
+        [NonSerialized] private LunarVisualPreset _defaultWaxingCrescentPreset;
+        [NonSerialized] private LunarVisualPreset _defaultFirstQuarterPreset;
+        [NonSerialized] private LunarVisualPreset _defaultWaxingGibbousPreset;
+        [NonSerialized] private LunarVisualPreset _defaultFullMoonPreset;
+        [NonSerialized] private LunarVisualPreset _defaultWaningGibbousPreset;
+        [NonSerialized] private LunarVisualPreset _defaultLastQuarterPreset;
+        [NonSerialized] private LunarVisualPreset _defaultWaningCrescentPreset;
+
         public LunarPositionData CurrentLunarData { get; private set; }
 
         public WeatherSolarController SolarController => _solarController;
+        public MoonPhasePresetSet PhasePresets => _phasePresets;
 
         private static readonly int WeatherMoonDirectionShaderId = Shader.PropertyToID("_WeatherMoonDirection");
         private static readonly int WeatherMoonColorShaderId = Shader.PropertyToID("_WeatherMoonColor");
         private static readonly int WeatherMoonIntensityShaderId = Shader.PropertyToID("_WeatherMoonIntensity");
-        private static readonly int WeatherMoonFalloffShaderId = Shader.PropertyToID("_WeatherMoonFalloff");
+        private static readonly int WeatherMoonDiskEdgeSoftnessShaderId = Shader.PropertyToID("_WeatherMoonDiskEdgeSoftness");
         private static readonly int WeatherMoonSizeShaderId = Shader.PropertyToID("_WeatherMoonSize");
         private static readonly int WeatherMoonPhaseAngleShaderId = Shader.PropertyToID("_WeatherMoonPhaseAngle");
         private static readonly int WeatherMoonIlluminationShaderId = Shader.PropertyToID("_WeatherMoonIllumination");
@@ -255,16 +340,28 @@ namespace ConceptFactory.Weather
 
         private void OnValidate()
         {
+            SanitizeMoonDiskEdgeSoftness();
+
             if (_moonRiseSizeCurve == null || _moonRiseSizeCurve.length == 0)
             {
                 _moonRiseSizeCurve = DefaultMoonRiseSizeCurve();
             }
+
+            if (_phaseTuning == null)
+            {
+                _phaseTuning = new MoonPhaseVisualTuningSet();
+            }
+
+            EnsurePhasePresets();
+
             EnsureDefaults();
             UpdateLunarState();
         }
 
         private void EnsureDefaults()
         {
+            SanitizeMoonDiskEdgeSoftness();
+
             if (_solarController == null)
             {
                 _solarController = FindFirstObjectByType<WeatherSolarController>();
@@ -295,6 +392,24 @@ namespace ConceptFactory.Weather
                 _moonRiseSizeCurve = DefaultMoonRiseSizeCurve();
             }
 
+            if (_phaseTuning == null)
+            {
+                _phaseTuning = new MoonPhaseVisualTuningSet();
+            }
+
+            EnsurePhasePresets();
+
+        }
+
+        private void SanitizeMoonDiskEdgeSoftness()
+        {
+            if (float.IsNaN(_moonDiskEdgeSoftness) || float.IsInfinity(_moonDiskEdgeSoftness) || Mathf.Abs(_moonDiskEdgeSoftness) > 100000f)
+            {
+                _moonDiskEdgeSoftness = 1598.1f;
+                return;
+            }
+
+            _moonDiskEdgeSoftness = Mathf.Clamp(_moonDiskEdgeSoftness, 0f, 5000f);
         }
 
         private void UpdateLunarState()
@@ -316,6 +431,8 @@ namespace ConceptFactory.Weather
             _currentAzimuth = CurrentLunarData.AzimuthDegrees;
             _currentIlluminationFraction = CurrentLunarData.IlluminationFraction;
             _currentLunarAgeDays = CurrentLunarData.LunarAgeDays;
+            _currentDistanceKilometers = CurrentLunarData.DistanceKilometers;
+            _currentDistanceNormalized = CurrentLunarData.DistanceNormalized;
             _currentPhase = GetPhase(CurrentLunarData.PhaseAngleDegrees, CurrentLunarData.IlluminationFraction);
             _currentPhaseLabel = GetPhaseLabel(_currentPhase);
             _isMoonRising = EvaluateIsMoonRising();
@@ -363,35 +480,39 @@ namespace ConceptFactory.Weather
             }
 
             float dayFraction = GetCurrentDayFraction();
-            float curveIntensity = _lightIntensityOverNight != null && _lightIntensityOverNight.length > 0
-                ? Mathf.Max(0f, _lightIntensityOverNight.Evaluate(dayFraction))
+            Gradient lightColorOverNight = GetLightColorOverNight();
+            AnimationCurve lightIntensityOverNight = GetLightIntensityOverNight();
+            float curveIntensity = lightIntensityOverNight != null && lightIntensityOverNight.length > 0
+                ? Mathf.Max(0f, lightIntensityOverNight.Evaluate(dayFraction))
                 : 1f;
-            float phaseIntensity = Mathf.Lerp(_minimumPhaseLight, 1f, _currentIlluminationFraction);
+            float phaseIntensity = Mathf.Lerp(GetMinimumPhaseLight(), 1f, _currentIlluminationFraction);
             float daylightSuppression = 1f;
             if (_solarController != null)
             {
-                daylightSuppression = Mathf.Pow(1f - Mathf.Clamp01(_solarController.CurrentSolarData.DaylightFactor), Mathf.Max(0.01f, _daylightFadeStrength));
+                daylightSuppression = Mathf.Pow(1f - Mathf.Clamp01(_solarController.CurrentSolarData.DaylightFactor), Mathf.Max(0.01f, GetDaylightFadeStrength()));
             }
 
             bool isNight = _solarController == null || _solarController.CurrentSolarData.DaylightFactor < 0.999f;
             float elevationVisibility = isNight
                 ? 1f
-                : Mathf.InverseLerp(_horizonDisableThreshold - 8f, 8f, _currentElevation);
+                : Mathf.InverseLerp(GetHorizonDisableThreshold() - 8f, 8f, _currentElevation);
             float visibleMoonPresence = isNight
-                ? Mathf.InverseLerp(_horizonDisableThreshold, 12f, _currentElevation)
+                ? Mathf.InverseLerp(GetHorizonDisableThreshold(), 12f, _currentElevation)
                 : 1f;
             float visibleMoonIntensityBoost = Mathf.Lerp(1f, 1f + _currentIlluminationFraction, visibleMoonPresence);
             float horizonIllusion = EvaluateHorizonIllusionFactor();
             float altitudeAtmosphereFactor = EvaluateAltitudeAtmosphereFactor();
-            float altitudeClarity = 1f + (_altitudeClarityBoost * altitudeAtmosphereFactor);
-            _moonLight.intensity = _baseIntensity * curveIntensity * phaseIntensity * daylightSuppression * elevationVisibility * visibleMoonIntensityBoost * altitudeClarity;
+            float altitudeClarity = 1f + (GetAltitudeClarityBoost() * altitudeAtmosphereFactor);
+            _moonLight.intensity = GetBaseIntensity() * curveIntensity * phaseIntensity * daylightSuppression * elevationVisibility * visibleMoonIntensityBoost * altitudeClarity;
 
-            Color baseMoonColor = EvaluateBaseMoonColor(dayFraction);
+            Color baseMoonColor = lightColorOverNight != null && lightColorOverNight.colorKeys.Length > 0
+                ? lightColorOverNight.Evaluate(dayFraction)
+                : Color.white;
             _moonLight.color = EvaluateHorizonTintedMoonColor(baseMoonColor, dayFraction, altitudeAtmosphereFactor);
 
-            if (_disableLightBelowHorizon && !isNight)
+            if (GetDisableLightBelowHorizon() && !isNight)
             {
-                _moonLight.enabled = _currentElevation > _horizonDisableThreshold && _moonLight.intensity > 0.0001f;
+                _moonLight.enabled = _currentElevation > GetHorizonDisableThreshold() && _moonLight.intensity > 0.0001f;
             }
             else
             {
@@ -428,6 +549,8 @@ namespace ConceptFactory.Weather
             _currentAzimuth = 0f;
             _currentIlluminationFraction = 0f;
             _currentLunarAgeDays = 0f;
+            _currentDistanceKilometers = 0f;
+            _currentDistanceNormalized = 0f;
             _currentPhaseLabel = "No Solar Controller";
 
             if (_moonLight != null)
@@ -441,48 +564,53 @@ namespace ConceptFactory.Weather
 
         private void ApplySkyboxAppearance()
         {
-            if (!_driveSkyboxMaterial)
+            if (!GetDriveSkyboxMaterial())
             {
                 ApplySkyboxDefaults();
                 return;
             }
 
             GetSkyboxPhasePreset(_currentPhase, out float skyboxPhaseAngle, out float skyboxIllumination);
-            float phaseIntensity = Mathf.Lerp(_minimumPhaseLight, 1f, skyboxIllumination);
+            float phaseIntensity = Mathf.Lerp(GetMinimumPhaseLight(), 1f, skyboxIllumination);
             float horizonIllusion = EvaluateHorizonIllusionFactor();
             float altitudeAtmosphereFactor = EvaluateAltitudeAtmosphereFactor();
-            float altitudeClarity = 1f + (_altitudeClarityBoost * altitudeAtmosphereFactor);
+            float altitudeClarity = 1f + (GetAltitudeClarityBoost() * altitudeAtmosphereFactor);
             float dayFraction = GetCurrentDayFraction();
             Color baseMoonColor = EvaluateBaseMoonColor(dayFraction);
             Color moonColor = EvaluateHorizonTintedMoonColor(baseMoonColor, dayFraction, altitudeAtmosphereFactor);
-            float moonIntensity = Mathf.Lerp(_skyboxMoonIntensity, _skyboxMoonIntensity * _horizonMoonIntensityMultiplier, horizonIllusion) * phaseIntensity * altitudeClarity;
-            float moonFalloff = Mathf.Lerp(_skyboxMoonFalloff, _skyboxMoonFalloff * _horizonMoonFalloffMultiplier, horizonIllusion) * altitudeClarity;
+            MoonPhaseVisualTuning phaseTuning = GetPhaseTuning(_currentPhase);
+            float moonIntensity = Mathf.Lerp(GetSkyboxMoonIntensity(), GetSkyboxMoonIntensity() * GetHorizonMoonIntensityMultiplier() * Mathf.Max(0f, phaseTuning.horizonMoonIntensityMultiplier), horizonIllusion) * phaseIntensity * altitudeClarity;
+            float moonDiskEdgeSoftness = Mathf.Lerp(GetMoonDiskEdgeSoftness(), GetMoonDiskEdgeSoftness() * GetHorizonMoonFalloffMultiplier(), horizonIllusion) * altitudeClarity;
             float risingSizeMultiplier = EvaluateMoonRiseSizeMultiplier(horizonIllusion);
-            float moonSize = Mathf.Lerp(_skyboxMoonSize, _skyboxMoonSize * _horizonMoonSizeMultiplier * risingSizeMultiplier, horizonIllusion);
+            float orbitalDistanceSizeMultiplier = EvaluateOrbitalDistanceSizeMultiplier();
+            float moonSize = Mathf.Lerp(GetSkyboxMoonSize(), GetSkyboxMoonSize() * GetHorizonMoonSizeMultiplier() * risingSizeMultiplier, horizonIllusion) * orbitalDistanceSizeMultiplier;
             float moonSkyVisibility = EvaluateMoonSkyVisibility();
             float darkMoonSkyVisibility = EvaluateDarkMoonSkyVisibility();
+            float moonHaloIntensity = GetMoonHaloIntensity() * Mathf.Max(0f, phaseTuning.moonHaloIntensityMultiplier);
+            float borderHaloIntensity = GetBorderHaloIntensity() * Mathf.Max(0f, phaseTuning.borderHaloIntensityMultiplier);
 
             Shader.SetGlobalVector(WeatherMoonDirectionShaderId, _currentMoonDirection.normalized);
             Shader.SetGlobalColor(WeatherMoonColorShaderId, moonColor);
             Shader.SetGlobalFloat(WeatherMoonIntensityShaderId, moonIntensity);
-            Shader.SetGlobalFloat(WeatherMoonFalloffShaderId, moonFalloff);
+            Shader.SetGlobalFloat(WeatherMoonDiskEdgeSoftnessShaderId, moonDiskEdgeSoftness);
             Shader.SetGlobalFloat(WeatherMoonSizeShaderId, moonSize);
             Shader.SetGlobalFloat(WeatherMoonPhaseAngleShaderId, skyboxPhaseAngle);
             Shader.SetGlobalFloat(WeatherMoonIlluminationShaderId, skyboxIllumination);
-            Shader.SetGlobalFloat(WeatherMoonTextureExposureShaderId, _moonTextureExposure);
-            Shader.SetGlobalFloat(WeatherMoonDarkTextureExposureShaderId, _darkMoonTextureExposure);
-            Shader.SetGlobalFloat(WeatherMoonTerminatorSoftnessShaderId, _terminatorSoftness);
-            Shader.SetGlobalFloat(WeatherMoonDarkSideVisibilityShaderId, _darkSideVisibility);
-            Shader.SetGlobalColor(WeatherMoonHaloColorShaderId, _moonHaloColor);
-            Shader.SetGlobalFloat(WeatherMoonHaloIntensityShaderId, _moonHaloIntensity);
-            Shader.SetGlobalFloat(WeatherMoonHaloInnerSizeShaderId, _moonHaloInnerSize);
-            Shader.SetGlobalFloat(WeatherMoonHaloOuterSizeShaderId, _moonHaloOuterSize);
-            Shader.SetGlobalFloat(WeatherMoonHaloTerminatorShaderId, _moonHaloTerminator);
-            Shader.SetGlobalColor(WeatherMoonBorderHaloColorShaderId, _borderHaloColor);
-            Shader.SetGlobalFloat(WeatherMoonBorderHaloIntensityShaderId, _borderHaloIntensity);
-            Shader.SetGlobalFloat(WeatherMoonBorderHaloInnerSizeShaderId, _borderHaloInnerSize);
-            Shader.SetGlobalFloat(WeatherMoonBorderHaloOuterSizeShaderId, _borderHaloOuterSize);
-            Shader.SetGlobalFloat(WeatherMoonBorderHaloTerminatorShaderId, _borderHaloTerminator);
+            Shader.SetGlobalFloat(WeatherMoonTextureExposureShaderId, GetMoonTextureExposure());
+            float darkMoonExposure = GetDarkMoonTextureExposure() * Mathf.Max(0f, phaseTuning.darkMoonExposure);
+            Shader.SetGlobalFloat(WeatherMoonDarkTextureExposureShaderId, darkMoonExposure);
+            Shader.SetGlobalFloat(WeatherMoonTerminatorSoftnessShaderId, GetTerminatorSoftness());
+            Shader.SetGlobalFloat(WeatherMoonDarkSideVisibilityShaderId, GetDarkSideVisibility());
+            Shader.SetGlobalColor(WeatherMoonHaloColorShaderId, GetMoonHaloColor());
+            Shader.SetGlobalFloat(WeatherMoonHaloIntensityShaderId, moonHaloIntensity);
+            Shader.SetGlobalFloat(WeatherMoonHaloInnerSizeShaderId, GetMoonHaloInnerSize());
+            Shader.SetGlobalFloat(WeatherMoonHaloOuterSizeShaderId, GetMoonHaloOuterSize());
+            Shader.SetGlobalFloat(WeatherMoonHaloTerminatorShaderId, GetMoonHaloTerminator());
+            Shader.SetGlobalColor(WeatherMoonBorderHaloColorShaderId, GetBorderHaloColor());
+            Shader.SetGlobalFloat(WeatherMoonBorderHaloIntensityShaderId, borderHaloIntensity);
+            Shader.SetGlobalFloat(WeatherMoonBorderHaloInnerSizeShaderId, GetBorderHaloInnerSize());
+            Shader.SetGlobalFloat(WeatherMoonBorderHaloOuterSizeShaderId, GetBorderHaloOuterSize());
+            Shader.SetGlobalFloat(WeatherMoonBorderHaloTerminatorShaderId, GetBorderHaloTerminator());
             Shader.SetGlobalFloat(WeatherMoonSkyVisibilityShaderId, moonSkyVisibility);
             Shader.SetGlobalFloat(WeatherMoonDarkSkyVisibilityShaderId, darkMoonSkyVisibility);
             ApplyMoonTexturesToShader();
@@ -493,7 +621,7 @@ namespace ConceptFactory.Weather
             Shader.SetGlobalVector(WeatherMoonDirectionShaderId, Vector3.zero);
             Shader.SetGlobalColor(WeatherMoonColorShaderId, Color.black);
             Shader.SetGlobalFloat(WeatherMoonIntensityShaderId, 0f);
-            Shader.SetGlobalFloat(WeatherMoonFalloffShaderId, 1400f);
+            Shader.SetGlobalFloat(WeatherMoonDiskEdgeSoftnessShaderId, 1400f);
             Shader.SetGlobalFloat(WeatherMoonSizeShaderId, 0.38f);
             Shader.SetGlobalFloat(WeatherMoonPhaseAngleShaderId, 180f);
             Shader.SetGlobalFloat(WeatherMoonIlluminationShaderId, 0f);
@@ -527,17 +655,20 @@ namespace ConceptFactory.Weather
             }
 
             float solarElevation = _solarController.CurrentSolarData.ApparentElevationDegrees;
-            float fadeEnd = _daylightLitMoonFadeStart + Mathf.Max(0.01f, _daylightLitMoonFadeRange);
-            float visibility = Mathf.InverseLerp(fadeEnd, _daylightLitMoonFadeStart, solarElevation);
+            float fadeEnd = GetDaylightLitMoonFadeStart() + Mathf.Max(0.01f, GetDaylightLitMoonFadeRange());
+            float visibility = Mathf.InverseLerp(fadeEnd, GetDaylightLitMoonFadeStart(), solarElevation);
             visibility = visibility * visibility * (3f - (2f * visibility));
 
             bool isSunSetting = _solarController.CurrentSolarData.HourAngleDegrees > 0f;
             if (isSunSetting)
             {
-                visibility *= Mathf.Clamp01(1f - _duskLitMoonSuppression);
+                visibility *= Mathf.Clamp01(1f - GetDuskLitMoonSuppression());
             }
 
-            return visibility;
+            return Mathf.Lerp(
+                Mathf.Clamp01(GetMinimumLitMoonSkyVisibility()),
+                1f,
+                Mathf.Clamp01(visibility));
         }
 
         private float EvaluateDarkMoonSkyVisibility()
@@ -548,8 +679,8 @@ namespace ConceptFactory.Weather
             }
 
             float solarElevation = _solarController.CurrentSolarData.ApparentElevationDegrees;
-            float fadeRange = Mathf.Max(0.01f, _daylightShadowFadeRange);
-            float fadeCenter = _daylightShadowFadeStart + (fadeRange * 0.5f);
+            float fadeRange = Mathf.Max(0.01f, GetDaylightShadowFadeRange());
+            float fadeCenter = GetDaylightShadowFadeStart() + (fadeRange * 0.5f);
             float softness = 6f / fadeRange;
             float logistic = 1f / (1f + Mathf.Exp((solarElevation - fadeCenter) * softness));
             return logistic;
@@ -574,46 +705,62 @@ namespace ConceptFactory.Weather
 
         private float EvaluateHorizonIllusionFactor()
         {
-            if (!_enableHorizonMoonIllusion)
+            if (!GetEnableHorizonMoonIllusion() || !GetPhaseTuning(_currentPhase).applyHorizonIllusion)
             {
                 return 0f;
             }
 
-            float normalizedDistanceFromHorizon = Mathf.Clamp01(Mathf.Abs(_currentElevation) / _horizonIllusionMaxElevation);
+            float normalizedDistanceFromHorizon = Mathf.Clamp01(Mathf.Abs(_currentElevation) / GetHorizonIllusionMaxElevation());
             float proximityToHorizon = 1f - normalizedDistanceFromHorizon;
             return proximityToHorizon * proximityToHorizon * (3f - (2f * proximityToHorizon));
         }
 
         private float EvaluateMoonRiseSizeMultiplier(float horizonIllusion)
         {
-            if (!_isMoonRising || _moonRiseSizeCurve == null || _moonRiseSizeCurve.length == 0)
+            AnimationCurve moonRiseSizeCurve = GetMoonRiseSizeCurve();
+            if (!_isMoonRising || moonRiseSizeCurve == null || moonRiseSizeCurve.length == 0)
             {
                 return 1f;
             }
 
-            return Mathf.Max(1f, _moonRiseSizeCurve.Evaluate(Mathf.Clamp01(horizonIllusion)));
+            return Mathf.Max(1f, moonRiseSizeCurve.Evaluate(Mathf.Clamp01(horizonIllusion)));
+        }
+
+        private float EvaluateOrbitalDistanceSizeMultiplier()
+        {
+            if (!GetUseOrbitalDistanceSizeVariation())
+            {
+                return 1f;
+            }
+
+            return Mathf.Lerp(GetPerigeeMoonSizeMultiplier(), GetApogeeMoonSizeMultiplier(), Mathf.Clamp01(CurrentLunarData.DistanceNormalized));
         }
 
         private Color EvaluateHorizonTintedMoonColor(Color baseMoonColor, float dayFraction, float altitudeAtmosphereFactor)
         {
+            MoonPhaseVisualTuning phaseTuning = GetPhaseTuning(_currentPhase);
+            if (!phaseTuning.applyHorizonIllusion)
+            {
+                return baseMoonColor;
+            }
+
             float warmTintFactor = EvaluateHorizonWarmTintFactor();
-            float tintReduction = 1f - (_altitudeWarmTintReduction * altitudeAtmosphereFactor);
-            float tintAmount = Mathf.Clamp01(warmTintFactor * _horizonMoonWarmTintStrength * tintReduction);
-            Color targetTint = EvaluateHorizonMoonTint();
+            float tintReduction = 1f - (GetAltitudeWarmTintReduction() * altitudeAtmosphereFactor);
+            float tintAmount = Mathf.Clamp01(warmTintFactor * GetHorizonMoonWarmTintStrength() * Mathf.Max(0f, phaseTuning.horizonWarmTintStrengthMultiplier) * tintReduction);
+            Color targetTint = phaseTuning.horizonTintColor;
             return Color.Lerp(baseMoonColor, targetTint, tintAmount);
         }
 
         private Color EvaluateBaseMoonColor(float dayFraction)
         {
-            if (_lightColorOverNight != null && _lightColorOverNight.colorKeys.Length > 0)
+            Gradient lightColorOverNight = GetLightColorOverNight();
+            if (lightColorOverNight != null && lightColorOverNight.colorKeys.Length > 0)
             {
-                return _lightColorOverNight.Evaluate(dayFraction);
+                return lightColorOverNight.Evaluate(dayFraction);
             }
 
             return Color.white;
         }
-
-        private Color EvaluateHorizonMoonTint() => _horizonMoonTintColor;
 
         private float EvaluateAltitudeAtmosphereFactor()
         {
@@ -622,18 +769,18 @@ namespace ConceptFactory.Weather
                 return 0f;
             }
 
-            return Mathf.Clamp01(_solarController.AltitudeMeters / _altitudeAtmosphereMaxMeters);
+            return Mathf.Clamp01(_solarController.AltitudeMeters / GetAltitudeAtmosphereMaxMeters());
         }
 
         private float EvaluateHorizonWarmTintFactor()
         {
-            float horizonWindow = Mathf.Max(_horizonIllusionMaxElevation, 0.1f);
+            float horizonWindow = Mathf.Max(GetHorizonIllusionMaxElevation(), 0.1f);
             float proximityToHorizon = 1f - Mathf.Clamp01(Mathf.Abs(_currentElevation) / horizonWindow);
             float warmTintFactor = proximityToHorizon * proximityToHorizon;
 
             if (_isMoonRising)
             {
-                warmTintFactor *= _moonRiseWarmTintBoost;
+                warmTintFactor *= GetMoonRiseWarmTintBoost();
             }
 
             return Mathf.Clamp01(warmTintFactor);
@@ -789,9 +936,225 @@ namespace ConceptFactory.Weather
             return new AnimationCurve(
                 new Keyframe(0f, 1f),
                 new Keyframe(0.2f, 1.18f),
-                new Keyframe(0.45f, 1.42f),
-                new Keyframe(0.72f, 1.95f),
-                new Keyframe(1f, 2.45f));
+                new Keyframe(0.3708374f, 2.1732197f),
+                new Keyframe(0.9449878f, 2.2303503f),
+                new Keyframe(1f, 2.5439255f));
         }
+
+        private MoonPhaseVisualTuning GetPhaseTuning(MoonPhase phase)
+        {
+            LunarVisualPreset preset = GetVisualPreset();
+            if (preset != null)
+            {
+                return new MoonPhaseVisualTuning
+                {
+                    darkMoonExposure = preset.darkMoonExposure,
+                    moonHaloIntensityMultiplier = preset.moonHaloIntensityMultiplier,
+                    borderHaloIntensityMultiplier = preset.borderHaloIntensityMultiplier,
+                    applyHorizonIllusion = preset.applyHorizonIllusion,
+                    horizonMoonIntensityMultiplier = preset.horizonMoonIntensityMultiplier,
+                    horizonWarmTintStrengthMultiplier = preset.horizonWarmTintStrengthMultiplier,
+                    horizonTintColor = preset.horizonTintColor
+                };
+            }
+
+            MoonPhaseVisualTuningSet phaseTuning = GetPhaseTuningSet();
+
+            return phase switch
+            {
+                MoonPhase.NewMoon => phaseTuning.newMoon,
+                MoonPhase.WaxingCrescent => phaseTuning.waxingCrescent,
+                MoonPhase.FirstQuarter => phaseTuning.firstQuarter,
+                MoonPhase.WaxingGibbous => phaseTuning.waxingGibbous,
+                MoonPhase.FullMoon => phaseTuning.fullMoon,
+                MoonPhase.WaningGibbous => phaseTuning.waningGibbous,
+                MoonPhase.LastQuarter => phaseTuning.lastQuarter,
+                _ => phaseTuning.waningCrescent
+            };
+        }
+
+        private LunarVisualPreset GetVisualPreset()
+        {
+            EnsurePhasePresets();
+            return _currentPhase switch
+            {
+                MoonPhase.NewMoon => GetAssignedOrDefaultPhasePreset(_phasePresets.newMoon, ref _defaultNewMoonPreset, "NewMoonPreset"),
+                MoonPhase.WaxingCrescent => GetAssignedOrDefaultPhasePreset(_phasePresets.waxingCrescent, ref _defaultWaxingCrescentPreset, "WaxingCrescentPreset"),
+                MoonPhase.FirstQuarter => GetAssignedOrDefaultPhasePreset(_phasePresets.firstQuarter, ref _defaultFirstQuarterPreset, "FirstQuarterPreset"),
+                MoonPhase.WaxingGibbous => GetAssignedOrDefaultPhasePreset(_phasePresets.waxingGibbous, ref _defaultWaxingGibbousPreset, "WaxingGibbousPreset"),
+                MoonPhase.FullMoon => GetAssignedOrDefaultPhasePreset(_phasePresets.fullMoon, ref _defaultFullMoonPreset, "FullMoonPreset"),
+                MoonPhase.WaningGibbous => GetAssignedOrDefaultPhasePreset(_phasePresets.waningGibbous, ref _defaultWaningGibbousPreset, "WaningGibbousPreset"),
+                MoonPhase.LastQuarter => GetAssignedOrDefaultPhasePreset(_phasePresets.lastQuarter, ref _defaultLastQuarterPreset, "LastQuarterPreset"),
+                _ => GetAssignedOrDefaultPhasePreset(_phasePresets.waningCrescent, ref _defaultWaningCrescentPreset, "WaningCrescentPreset")
+            };
+        }
+
+        private Gradient GetLightColorOverNight() => GetVisualPreset() != null ? GetVisualPreset().lightColorOverNight : _lightColorOverNight;
+        private AnimationCurve GetLightIntensityOverNight() => GetVisualPreset() != null ? GetVisualPreset().lightIntensityOverNight : _lightIntensityOverNight;
+        private float GetBaseIntensity() => GetVisualPreset() != null ? GetVisualPreset().baseIntensity : _baseIntensity;
+        private bool GetDisableLightBelowHorizon() => GetVisualPreset() != null ? GetVisualPreset().disableLightBelowHorizon : _disableLightBelowHorizon;
+        private float GetHorizonDisableThreshold() => GetVisualPreset() != null ? GetVisualPreset().horizonDisableThreshold : _horizonDisableThreshold;
+        private float GetDaylightFadeStrength() => GetVisualPreset() != null ? GetVisualPreset().daylightFadeStrength : _daylightFadeStrength;
+        private float GetMinimumPhaseLight() => GetVisualPreset() != null ? GetVisualPreset().minimumPhaseLight : _minimumPhaseLight;
+        private bool GetDriveSkyboxMaterial() => _driveSkyboxMaterial;
+        private float GetSkyboxMoonIntensity() => _skyboxMoonIntensity;
+        private float GetMoonDiskEdgeSoftness() => _moonDiskEdgeSoftness;
+        private float GetSkyboxMoonSize() => GetVisualPreset() != null ? GetVisualPreset().skyboxMoonSize : _skyboxMoonSize;
+        private float GetMoonTextureExposure() => GetVisualPreset() != null ? GetVisualPreset().moonTextureExposure : _moonTextureExposure;
+        private float GetDarkMoonTextureExposure() => GetVisualPreset() != null ? GetVisualPreset().darkMoonTextureExposure : _darkMoonTextureExposure;
+        private float GetTerminatorSoftness() => _terminatorSoftness;
+        private float GetDarkSideVisibility() => GetVisualPreset() != null ? GetVisualPreset().darkSideVisibility : _darkSideVisibility;
+        private float GetDaylightShadowFadeStart() => GetVisualPreset() != null ? GetVisualPreset().daylightShadowFadeStart : _daylightShadowFadeStart;
+        private float GetDaylightShadowFadeRange() => GetVisualPreset() != null ? GetVisualPreset().daylightShadowFadeRange : _daylightShadowFadeRange;
+        private float GetDaylightLitMoonFadeStart() => GetVisualPreset() != null ? GetVisualPreset().daylightLitMoonFadeStart : _daylightLitMoonFadeStart;
+        private float GetDaylightLitMoonFadeRange() => GetVisualPreset() != null ? GetVisualPreset().daylightLitMoonFadeRange : _daylightLitMoonFadeRange;
+        private float GetDuskLitMoonSuppression() => GetVisualPreset() != null ? GetVisualPreset().duskLitMoonSuppression : _duskLitMoonSuppression;
+        private float GetMinimumLitMoonSkyVisibility() => GetVisualPreset() != null ? GetVisualPreset().minimumLitMoonSkyVisibility : _minimumLitMoonSkyVisibility;
+        private Color GetMoonHaloColor() => GetVisualPreset() != null ? GetVisualPreset().moonHaloColor : _moonHaloColor;
+        private float GetMoonHaloIntensity() => GetVisualPreset() != null ? GetVisualPreset().moonHaloIntensity : _moonHaloIntensity;
+        private float GetMoonHaloInnerSize() => GetVisualPreset() != null ? GetVisualPreset().moonHaloInnerSize : _moonHaloInnerSize;
+        private float GetMoonHaloOuterSize() => GetVisualPreset() != null ? GetVisualPreset().moonHaloOuterSize : _moonHaloOuterSize;
+        private float GetMoonHaloTerminator() => GetVisualPreset() != null ? GetVisualPreset().moonHaloTerminator : _moonHaloTerminator;
+        private Color GetBorderHaloColor() => GetVisualPreset() != null ? GetVisualPreset().borderHaloColor : _borderHaloColor;
+        private float GetBorderHaloIntensity() => GetVisualPreset() != null ? GetVisualPreset().borderHaloIntensity : _borderHaloIntensity;
+        private float GetBorderHaloInnerSize() => GetVisualPreset() != null ? GetVisualPreset().borderHaloInnerSize : _borderHaloInnerSize;
+        private float GetBorderHaloOuterSize() => GetVisualPreset() != null ? GetVisualPreset().borderHaloOuterSize : _borderHaloOuterSize;
+        private float GetBorderHaloTerminator() => GetVisualPreset() != null ? GetVisualPreset().borderHaloTerminator : _borderHaloTerminator;
+        private bool GetEnableHorizonMoonIllusion() => GetVisualPreset() != null ? GetVisualPreset().enableHorizonMoonIllusion : _enableHorizonMoonIllusion;
+        private float GetHorizonIllusionMaxElevation() => GetVisualPreset() != null ? GetVisualPreset().horizonIllusionMaxElevation : _horizonIllusionMaxElevation;
+        private float GetHorizonMoonSizeMultiplier() => _horizonMoonSizeMultiplier;
+        private bool GetUseOrbitalDistanceSizeVariation() => _useOrbitalDistanceSizeVariation;
+        private float GetPerigeeMoonSizeMultiplier() => _perigeeMoonSizeMultiplier;
+        private float GetApogeeMoonSizeMultiplier() => _apogeeMoonSizeMultiplier;
+        private AnimationCurve GetMoonRiseSizeCurve() => GetVisualPreset() != null ? GetVisualPreset().moonRiseSizeCurve : _moonRiseSizeCurve;
+        private float GetHorizonMoonIntensityMultiplier() => GetVisualPreset() != null ? GetVisualPreset().horizonMoonIntensityMultiplier : _horizonMoonIntensityMultiplier;
+        private float GetHorizonMoonFalloffMultiplier() => GetVisualPreset() != null ? GetVisualPreset().horizonMoonFalloffMultiplier : _horizonMoonFalloffMultiplier;
+        private float GetHorizonMoonWarmTintStrength() => GetVisualPreset() != null ? GetVisualPreset().horizonMoonWarmTintStrength : _horizonMoonWarmTintStrength;
+        private float GetMoonRiseWarmTintBoost() => GetVisualPreset() != null ? GetVisualPreset().moonRiseWarmTintBoost : _moonRiseWarmTintBoost;
+        private float GetAltitudeAtmosphereMaxMeters() => _altitudeAtmosphereMaxMeters;
+        private float GetAltitudeWarmTintReduction() => _altitudeWarmTintReduction;
+        private float GetAltitudeClarityBoost() => _altitudeClarityBoost;
+        private MoonPhaseVisualTuningSet GetPhaseTuningSet() => _phaseTuning;
+
+        private void EnsurePhasePresets()
+        {
+            _phasePresets ??= new MoonPhasePresetSet();
+#if UNITY_EDITOR
+            EnsureDefaultPhasePresetAssetFile("NewMoonPreset");
+            EnsureDefaultPhasePresetAssetFile("WaxingCrescentPreset");
+            EnsureDefaultPhasePresetAssetFile("FirstQuarterPreset");
+            EnsureDefaultPhasePresetAssetFile("WaxingGibbousPreset");
+            EnsureDefaultPhasePresetAssetFile("FullMoonPreset");
+            EnsureDefaultPhasePresetAssetFile("WaningGibbousPreset");
+            EnsureDefaultPhasePresetAssetFile("LastQuarterPreset");
+            EnsureDefaultPhasePresetAssetFile("WaningCrescentPreset");
+#endif
+            _phasePresets.newMoon?.EnsureDefaults();
+            _phasePresets.waxingCrescent?.EnsureDefaults();
+            _phasePresets.firstQuarter?.EnsureDefaults();
+            _phasePresets.waxingGibbous?.EnsureDefaults();
+            _phasePresets.fullMoon?.EnsureDefaults();
+            _phasePresets.waningGibbous?.EnsureDefaults();
+            _phasePresets.lastQuarter?.EnsureDefaults();
+            _phasePresets.waningCrescent?.EnsureDefaults();
+        }
+
+        private LunarVisualPreset GetAssignedOrDefaultPhasePreset(LunarVisualPreset assignedPreset, ref LunarVisualPreset defaultPresetCache, string assetName)
+        {
+            if (assignedPreset != null)
+            {
+                assignedPreset.EnsureDefaults();
+                return assignedPreset;
+            }
+
+            defaultPresetCache ??= LoadOrCreateDefaultPhasePreset(assetName);
+            defaultPresetCache?.EnsureDefaults();
+            return defaultPresetCache;
+        }
+
+        private LunarVisualPreset LoadOrCreateDefaultPhasePreset(string assetName)
+        {
+#if UNITY_EDITOR
+            const string presetsFolder = "Packages/WeatherSystem/Runtime/Scripts/Celestial/Presets";
+            string assetPath = $"{presetsFolder}/{assetName}.asset";
+            LunarVisualPreset preset = AssetDatabase.LoadAssetAtPath<LunarVisualPreset>(assetPath);
+            if (preset != null)
+            {
+                return preset;
+            }
+#endif
+
+            LunarVisualPreset runtimePreset = ScriptableObject.CreateInstance<LunarVisualPreset>();
+            runtimePreset.hideFlags = HideFlags.HideAndDontSave;
+            runtimePreset.name = assetName;
+            runtimePreset.EnsureDefaults();
+            ApplyDefaultPresetOverrides(assetName, runtimePreset);
+            return runtimePreset;
+        }
+
+#if UNITY_EDITOR
+        private void EnsureDefaultPhasePresetAssetFile(string assetName)
+        {
+            const string presetsFolder = "Packages/WeatherSystem/Runtime/Scripts/Celestial/Presets";
+            string assetPath = $"{presetsFolder}/{assetName}.asset";
+            LunarVisualPreset preset = AssetDatabase.LoadAssetAtPath<LunarVisualPreset>(assetPath);
+            if (preset != null)
+            {
+                return;
+            }
+
+            if (File.Exists(assetPath))
+            {
+                return;
+            }
+
+            preset = ScriptableObject.CreateInstance<LunarVisualPreset>();
+            preset.name = assetName;
+            preset.EnsureDefaults();
+            ApplyDefaultPresetOverrides(assetName, preset);
+            AssetDatabase.CreateAsset(preset, assetPath);
+            AssetDatabase.SaveAssets();
+        }
+
+        private static void ApplyDefaultPresetOverrides(string assetName, LunarVisualPreset preset)
+        {
+            switch (assetName)
+            {
+                case "NewMoonPreset":
+                    preset.darkMoonExposure = 3f;
+                    preset.moonHaloIntensityMultiplier = 1f;
+                    preset.borderHaloIntensityMultiplier = 1f;
+                    preset.applyHorizonIllusion = false;
+                    break;
+                case "WaxingCrescentPreset":
+                case "WaningCrescentPreset":
+                    preset.darkMoonExposure = 1.5f;
+                    preset.moonHaloIntensityMultiplier = 1.25f;
+                    preset.borderHaloIntensityMultiplier = 1.1666666f;
+                    preset.applyHorizonIllusion = false;
+                    break;
+                case "FirstQuarterPreset":
+                case "LastQuarterPreset":
+                    preset.darkMoonExposure = 1.5f;
+                    preset.moonHaloIntensityMultiplier = 1.5f;
+                    preset.borderHaloIntensityMultiplier = 1.3333334f;
+                    preset.applyHorizonIllusion = false;
+                    break;
+                case "WaxingGibbousPreset":
+                case "WaningGibbousPreset":
+                    preset.darkMoonExposure = 1.5f;
+                    preset.moonHaloIntensityMultiplier = 1.75f;
+                    preset.borderHaloIntensityMultiplier = 1.6666666f;
+                    preset.applyHorizonIllusion = true;
+                    break;
+                case "FullMoonPreset":
+                    preset.darkMoonExposure = 1f;
+                    preset.moonHaloIntensityMultiplier = 2f;
+                    preset.borderHaloIntensityMultiplier = 2f;
+                    preset.applyHorizonIllusion = true;
+                    break;
+            }
+        }
+#endif
     }
 }

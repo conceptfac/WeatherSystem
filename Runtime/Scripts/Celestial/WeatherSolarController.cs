@@ -12,6 +12,33 @@ namespace ConceptFactory.Weather
     [AddComponentMenu("Concept Factory/Weather System/Weather Solar Controller")]
     public sealed class WeatherSolarController : MonoBehaviour
     {
+        public readonly struct SolarLightChangeData
+        {
+            public SolarLightChangeData(Light light, bool isEnabled, float intensity, Color color, float elevation, float daylightFactor, DateTime localDateTime)
+            {
+                Light = light;
+                IsEnabled = isEnabled;
+                Intensity = intensity;
+                Color = color;
+                Elevation = elevation;
+                DaylightFactor = daylightFactor;
+                LocalDateTime = localDateTime;
+            }
+
+            public Light Light { get; }
+            public bool IsEnabled { get; }
+            public float Intensity { get; }
+            public Color Color { get; }
+            public float Elevation { get; }
+            public float DaylightFactor { get; }
+            public DateTime LocalDateTime { get; }
+        }
+
+        public static Action<WeatherSolarController, SolarLightChangeData> OnSunLightChanged;
+        public static bool HasSunLightState { get; private set; }
+        public static SolarLightChangeData LastSunLightChangeData { get; private set; }
+        public static WeatherSolarController ActiveInstance { get; private set; }
+
         [Header("References")]
         [Tooltip("Directional light that represents the Sun.")]
         [SerializeField] private Light _sunLight;
@@ -28,11 +55,11 @@ namespace ConceptFactory.Weather
         [Header("Location")]
         [Tooltip("Latitude in degrees. North is positive, south is negative.")]
         [Range(-90f, 90f)]
-        [SerializeField] private float _latitude = -12.9777f;
+        [SerializeField] private float _latitude = -15.7939f;
 
         [Tooltip("Longitude in degrees. East is positive, west is negative.")]
         [Range(-180f, 180f)]
-        [SerializeField] private float _longitude = -38.5016f;
+        [SerializeField] private float _longitude = -47.8828f;
 
         [Tooltip("Optional site altitude in meters. Reserved for future atmospheric extensions.")]
         [SerializeField] private float _altitudeMeters;
@@ -48,16 +75,16 @@ namespace ConceptFactory.Weather
 
         [Tooltip("Simulation month.")]
         [Range(1, 12)]
-        [SerializeField] private int _month = 3;
+        [SerializeField] private int _month = 12;
 
         [Tooltip("Simulation day.")]
         [Range(1, 31)]
-        [SerializeField] private int _day = 30;
+        [SerializeField] private int _day = 3;
 
         [Header("Local Time")]
         [Tooltip("Local civil time as total minutes from 00:00 to 23:59.")]
         [Range(0f, 1439f)]
-        [SerializeField] private float _timeOfDayMinutes = 720f;
+        [SerializeField] private float _timeOfDayMinutes = 764f;
 
         [Header("Runtime")]
         [Tooltip("Automatically starts playback only when the application enters Play Mode at runtime.")]
@@ -65,7 +92,7 @@ namespace ConceptFactory.Weather
 
         [Tooltip("Real-time minutes required to simulate a full 24-hour day.")]
         [Min(0.01f)]
-        [SerializeField] private float _dayDurationMinutes = 10f;
+        [SerializeField] private float _dayDurationMinutes = 5f;
 
         [Tooltip("Additional speed multiplier applied on top of the day duration.")]
         [Min(0f)]
@@ -105,46 +132,46 @@ namespace ConceptFactory.Weather
 
         [Tooltip("Global sky top falloff sent to the weather sky shader.")]
         [Min(0.01f)]
-        [SerializeField] private float _skyTopFalloff = 5.8f;
+        [SerializeField] private float _skyTopFalloff = 8.7f;
 
         [Tooltip("Global sky bottom falloff sent to the weather sky shader.")]
         [Min(0.01f)]
-        [SerializeField] private float _skyBottomFalloff = 15.2f;
+        [SerializeField] private float _skyBottomFalloff = 22.3f;
 
         [Tooltip("Global sun disk intensity multiplier sent to the weather sky shader.")]
         [Min(0f)]
-        [SerializeField] private float _skyboxSunIntensity = 0.45f;
+        [SerializeField] private float _skyboxSunIntensity = 20f;
 
         [Tooltip("Global sun disk sharpness sent to the weather sky shader.")]
         [Min(1f)]
-        [SerializeField] private float _skyboxSunFalloff = 900f;
+        [SerializeField] private float _skyboxSunFalloff = 5000f;
 
         [Tooltip("Global sun disk size sent to the weather sky shader.")]
         [Min(0f)]
-        [SerializeField] private float _skyboxSunSize = 0.65f;
+        [SerializeField] private float _skyboxSunSize = 1f;
 
         [Tooltip("Overall visual size of procedural stars rendered in the sky shader.")]
         [Min(0f)]
-        [SerializeField] private float _starSize = 0.58f;
+        [SerializeField] private float _starSize = 0.5f;
 
         [Tooltip("Controls how many stars are visible in the procedural night sky.")]
         [Min(0f)]
-        [SerializeField] private float _starDensity = 1f;
+        [SerializeField] private float _starDensity = 4f;
 
         [Tooltip("Gradient used to randomize star colors across the night sky.")]
         [SerializeField] private Gradient _starColorGradient;
 
         [Tooltip("Controls how much the stars pulse in brightness over time.")]
         [Min(0f)]
-        [SerializeField] private float _starTwinkleAmount = 0.45f;
+        [SerializeField] private float _starTwinkleAmount = 8f;
 
         [Tooltip("Controls how much some stars briefly shift color while twinkling.")]
         [Min(0f)]
-        [SerializeField] private float _starColorFlicker = 0.18f;
+        [SerializeField] private float _starColorFlicker = 1f;
 
         [Tooltip("Boosts chromatic twinkle closer to the horizon, mimicking atmospheric dispersion.")]
         [Min(0f)]
-        [SerializeField] private float _starHorizonChromaticShift = 0.3f;
+        [SerializeField] private float _starHorizonChromaticShift = 0.509f;
 
         [Header("Horizon Illusion")]
         [Tooltip("Applies a perceptual boost near the horizon so the sun disk feels larger at sunrise and sunset.")]
@@ -212,6 +239,11 @@ namespace ConceptFactory.Weather
         private static readonly int WeatherStarHorizonChromaticShiftShaderId = Shader.PropertyToID("_WeatherStarHorizonChromaticShift");
         private static readonly int WeatherSkyTimeShaderId = Shader.PropertyToID("_WeatherSkyTime");
         private Texture2D _starColorRampTexture;
+        private bool _lastNotifiedSunEnabled;
+        private float _lastNotifiedSunIntensity = float.MinValue;
+        private Color _lastNotifiedSunColor = new(float.MinValue, float.MinValue, float.MinValue, float.MinValue);
+        private float _lastNotifiedDaylightFactor = float.MinValue;
+        private bool _hasNotifiedSunState;
 #if UNITY_EDITOR
         private double _lastEditorTime;
 #endif
@@ -233,6 +265,24 @@ namespace ConceptFactory.Weather
         public bool IsPausedSimulation => _playbackState == SimulationPlaybackState.Paused;
 
         public bool IsStoppedSimulation => _playbackState == SimulationPlaybackState.Stopped;
+
+        public static bool TryGetCurrentSunLightState(out SolarLightChangeData data)
+        {
+            if (HasSunLightState)
+            {
+                data = LastSunLightChangeData;
+                return true;
+            }
+
+            if (ActiveInstance != null)
+            {
+                data = ActiveInstance.BuildSolarLightChangeData();
+                return true;
+            }
+
+            data = default;
+            return false;
+        }
 
         private void Reset()
         {
@@ -271,6 +321,7 @@ namespace ConceptFactory.Weather
 
         private void OnEnable()
         {
+            ActiveInstance = this;
             EnsureDefaults();
             SyncDateTimeFromInspector();
             CaptureDefaultSimulationSnapshot();
@@ -288,6 +339,11 @@ namespace ConceptFactory.Weather
 
         private void OnDisable()
         {
+            NotifySunLightChanged(force: true);
+            if (ActiveInstance == this)
+            {
+                ActiveInstance = null;
+            }
 #if UNITY_EDITOR
             UnsubscribeEditorUpdate();
 #endif
@@ -533,6 +589,7 @@ namespace ConceptFactory.Weather
         {
             if (_sunLight == null)
             {
+                NotifySunLightChanged(force: true);
                 return;
             }
 
@@ -556,6 +613,8 @@ namespace ConceptFactory.Weather
             {
                 _sunLight.enabled = true;
             }
+
+            NotifySunLightChanged();
         }
 
         private void ApplySkyboxAppearance()
@@ -725,6 +784,51 @@ namespace ConceptFactory.Weather
 #endif
         }
 
+        private void NotifySunLightChanged(bool force = false)
+        {
+            bool isEnabled = _sunLight != null && _sunLight.enabled;
+            float intensity = _sunLight != null ? _sunLight.intensity : 0f;
+            Color color = _sunLight != null ? _sunLight.color : Color.black;
+
+            bool changed = force ||
+                           !_hasNotifiedSunState ||
+                           _lastNotifiedSunEnabled != isEnabled ||
+                           !Mathf.Approximately(_lastNotifiedSunIntensity, intensity) ||
+                           !ColorsApproximatelyEqual(_lastNotifiedSunColor, color) ||
+                           !Mathf.Approximately(_lastNotifiedDaylightFactor, _currentDaylightFactor);
+
+            if (!changed)
+            {
+                return;
+            }
+
+            _hasNotifiedSunState = true;
+            _lastNotifiedSunEnabled = isEnabled;
+            _lastNotifiedSunIntensity = intensity;
+            _lastNotifiedSunColor = color;
+            _lastNotifiedDaylightFactor = _currentDaylightFactor;
+            HasSunLightState = true;
+            LastSunLightChangeData = BuildSolarLightChangeData();
+
+            OnSunLightChanged?.Invoke(this, LastSunLightChangeData);
+        }
+
+        private SolarLightChangeData BuildSolarLightChangeData()
+        {
+            bool isEnabled = _sunLight != null && _sunLight.enabled;
+            float intensity = _sunLight != null ? _sunLight.intensity : 0f;
+            Color color = _sunLight != null ? _sunLight.color : Color.black;
+            return new SolarLightChangeData(_sunLight, isEnabled, intensity, color, _currentElevation, _currentDaylightFactor, _localDateTime);
+        }
+
+        private static bool ColorsApproximatelyEqual(Color a, Color b)
+        {
+            return Mathf.Approximately(a.r, b.r) &&
+                   Mathf.Approximately(a.g, b.g) &&
+                   Mathf.Approximately(a.b, b.b) &&
+                   Mathf.Approximately(a.a, b.a);
+        }
+
 #if UNITY_EDITOR
         private void SubscribeEditorUpdate()
         {
@@ -823,7 +927,7 @@ namespace ConceptFactory.Weather
                 {
                     new GradientColorKey(new Color(0.07f, 0.1f, 0.18f), 0f),
                     new GradientColorKey(new Color(1f, 0.56f, 0.28f), 0.24f),
-                    new GradientColorKey(new Color(1f, 0.97f, 0.9f), 0.5f),
+                    new GradientColorKey(new Color(1f, 0.5803922f, 0.29803923f), 0.5f),
                     new GradientColorKey(new Color(1f, 0.58f, 0.3f), 0.76f),
                     new GradientColorKey(new Color(0.07f, 0.1f, 0.18f), 1f)
                 },
@@ -909,8 +1013,8 @@ namespace ConceptFactory.Weather
                 {
                     new GradientColorKey(new Color(0.95f, 0.42f, 0.18f), 0f),
                     new GradientColorKey(new Color(1f, 0.62f, 0.3f), 0.22f),
-                    new GradientColorKey(new Color(1f, 0.78f, 0.5f), 0.26f),
-                    new GradientColorKey(new Color(1f, 0.96f, 0.86f), 0.5f),
+                    new GradientColorKey(new Color(1f, 0.73168916f, 0.3915094f), 0.26f),
+                    new GradientColorKey(new Color(1f, 0.80919236f, 0.495283f), 0.5f),
                     new GradientColorKey(new Color(1f, 0.76f, 0.48f), 0.74f),
                     new GradientColorKey(new Color(1f, 0.6f, 0.28f), 0.78f),
                     new GradientColorKey(new Color(0.95f, 0.42f, 0.18f), 1f)

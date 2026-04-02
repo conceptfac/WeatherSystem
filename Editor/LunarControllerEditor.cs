@@ -11,6 +11,8 @@ namespace ConceptFactory.Weather.Editor
     [CustomEditor(typeof(LunarController))]
     public sealed class LunarControllerEditor : UnityEditor.Editor
     {
+        private const string DefaultLunarPresetsFolder = "Packages/WeatherSystem/Runtime/Scripts/Celestial/Presets/";
+        private const string CustomLunarPresetsFolder = "Assets/WeatherSystem/Presets/Lunar";
         private const string UxmlPath = "Packages/com.conceptfactory.weather/Editor/UI/LunarControllerEditor.uxml";
         private const string MoonBannersPath = "Packages/com.conceptfactory.weather/Editor/UI/Sprites/MoonBanners.png";
         private const string Moons2BannerPath = "Packages/com.conceptfactory.weather/Editor/UI/Sprites/Moons2Banner.png";
@@ -85,6 +87,7 @@ namespace ConceptFactory.Weather.Editor
         public override VisualElement CreateInspectorGUI()
         {
             _locationLookupService ??= new WeatherLocationLookupService();
+            SanitizeLunarSerializedValues();
             serializedObject.Update();
             RefreshSolarSerializedObject();
 
@@ -96,12 +99,11 @@ namespace ConceptFactory.Weather.Editor
             BuildSimulationFields(root.Q<VisualElement>("simulationCard"));
             BuildLocationFields(root.Q<VisualElement>("locationFields"));
             PopulateLunarFields(root.Q<VisualElement>("referenceFields"), "_solarController", "_moonLight", "_moonTransformOverride");
-            PopulateLunarFields(root.Q<VisualElement>("lightFields"), "_lightColorOverNight", "_lightIntensityOverNight", "_baseIntensity", "_disableLightBelowHorizon", "_horizonDisableThreshold", "_daylightFadeStrength", "_minimumPhaseLight");
+            BuildPhasePresetFields(root.Q<VisualElement>("lightFields"));
             BuildSkyFields(root.Q<VisualElement>("skyFields"));
-            BuildHaloFields(root.Q<VisualElement>("haloFields"));
-            PopulateLunarFields(root.Q<VisualElement>("horizonFields"), "_enableHorizonMoonIllusion", "_horizonIllusionMaxElevation", "_horizonMoonSizeMultiplier", "_moonRiseSizeCurve", "_horizonMoonIntensityMultiplier", "_horizonMoonFalloffMultiplier", "_horizonMoonWarmTintStrength", "_horizonMoonTintColor", "_moonRiseWarmTintBoost");
             PopulateLunarFields(root.Q<VisualElement>("altitudeFields"), "_altitudeAtmosphereMaxMeters", "_altitudeWarmTintReduction", "_altitudeClarityBoost");
             PopulateDebugFields(root.Q<VisualElement>("debugFields"));
+            HideObsoleteCards(root);
 
             RefreshHero();
             RefreshSolarMirrors();
@@ -116,6 +118,30 @@ namespace ConceptFactory.Weather.Editor
             root.schedule.Execute(RefreshSolarMirrors).Every(150);
 
             return root;
+        }
+
+        private void SanitizeLunarSerializedValues()
+        {
+            SerializedProperty moonDiskEdgeSoftness = serializedObject.FindProperty("_moonDiskEdgeSoftness");
+            if (moonDiskEdgeSoftness == null)
+            {
+                return;
+            }
+
+            float value = moonDiskEdgeSoftness.floatValue;
+            if (float.IsNaN(value) || float.IsInfinity(value) || Mathf.Abs(value) > 100000f)
+            {
+                moonDiskEdgeSoftness.floatValue = 1598.1f;
+                serializedObject.ApplyModifiedPropertiesWithoutUndo();
+                return;
+            }
+
+            float clampedValue = Mathf.Clamp(value, 0f, 5000f);
+            if (!Mathf.Approximately(value, clampedValue))
+            {
+                moonDiskEdgeSoftness.floatValue = clampedValue;
+                serializedObject.ApplyModifiedPropertiesWithoutUndo();
+            }
         }
 
         private void OnDisable()
@@ -807,47 +833,201 @@ namespace ConceptFactory.Weather.Editor
                 return;
             }
 
-            AddSubsectionHeader(container, "DISK", "Moon disk, textures and phase shading sent to the sky shader.");
-            AddLunarField(container, "_driveSkyboxMaterial", "Drive Skybox");
-            AddLunarField(container, "_skyboxMoonIntensity", "Moon Intensity");
-            AddLunarField(container, "_skyboxMoonFalloff", "Moon Falloff");
-            AddLunarField(container, "_skyboxMoonSize", "Moon Size");
+            container.Clear();
+            AddSubsectionHeader(container, "SKY DISC", "These controller-level values stay shared across all lunar phase presets.");
+            AddLunarField(container, "_driveSkyboxMaterial", "Drive Skybox Material");
+            AddLunarField(container, "_skyboxMoonIntensity", "Skybox Moon Intensity");
+            AddLunarField(container, "_moonDiskEdgeSoftness", "Moon Disk Edge Softness");
+            AddLunarField(container, "_terminatorSoftness", "Terminator Softness");
+            AddLunarField(container, "_useOrbitalDistanceSizeVariation", "Use Orbital Distance Size Variation");
+            AddLunarField(container, "_perigeeMoonSizeMultiplier", "Perigee Moon Size Multiplier");
+            AddLunarField(container, "_apogeeMoonSizeMultiplier", "Apogee Moon Size Multiplier");
+            AddSubsectionHeader(container, "TEXTURES", "Textures stay on the controller and are shared across all lunar phase presets.");
             AddLunarField(container, "_moonTexture", "Lit Texture");
             AddLunarField(container, "_darkMoonTexture", "Dark Texture");
             AddLunarField(container, "_moonPhaseMaskTexture", "Phase Mask Texture");
-            AddLunarField(container, "_moonTextureExposure", "Lit Exposure");
-            AddLunarField(container, "_darkMoonTextureExposure", "Dark Exposure");
-            AddLunarField(container, "_terminatorSoftness", "Terminator Softness");
-            AddLunarField(container, "_darkSideVisibility", "Dark Side Visibility");
-
-            AddSubsectionHeader(container, "DAYLIGHT FADES", "Controls how the illuminated and dark lunar layers fade through dawn and dusk.");
-            AddLunarField(container, "_daylightShadowFadeStart", "Shadow Fade Start");
-            AddLunarField(container, "_daylightShadowFadeRange", "Shadow Fade Range");
-            AddLunarField(container, "_daylightLitMoonFadeStart", "Lit Fade Start");
-            AddLunarField(container, "_daylightLitMoonFadeRange", "Lit Fade Range");
-            AddLunarField(container, "_duskLitMoonSuppression", "Dusk Suppression");
         }
 
-        private void BuildHaloFields(VisualElement container)
+        private void HideObsoleteCards(VisualElement root)
+        {
+            VisualElement haloCard = root.Q<VisualElement>("haloCard");
+            if (haloCard != null)
+            {
+                haloCard.style.display = DisplayStyle.None;
+            }
+
+            VisualElement horizonCard = root.Q<VisualElement>("horizonCard");
+            if (horizonCard != null)
+            {
+                horizonCard.style.display = DisplayStyle.None;
+            }
+        }
+
+        private void BuildPhasePresetFields(VisualElement container)
         {
             if (container == null)
             {
                 return;
             }
 
-            AddSubsectionHeader(container, "SOFT HALO", "Wide atmospheric bloom hugging the visible moon disk.");
-            AddLunarField(container, "_moonHaloColor", "Halo Color");
-            AddLunarField(container, "_moonHaloIntensity", "Halo Intensity");
-            AddLunarField(container, "_moonHaloInnerSize", "Halo Inner Size");
-            AddLunarField(container, "_moonHaloOuterSize", "Halo Outer Size");
-            AddLunarField(container, "_moonHaloTerminator", "Halo Softness");
+            container.Clear();
+            AddSubsectionHeader(container, "PHASE PRESETS", "Assign one Lunar Visual Preset per phase.\nUse the 4x2 navbar to switch phases and edit the selected preset inline.");
 
-            AddSubsectionHeader(container, "BORDER HALO", "Thin stylized rim used to accent the lunar edge in the sky.");
-            AddLunarField(container, "_borderHaloColor", "Border Color");
-            AddLunarField(container, "_borderHaloIntensity", "Border Intensity");
-            AddLunarField(container, "_borderHaloInnerSize", "Border Inner Size");
-            AddLunarField(container, "_borderHaloOuterSize", "Border Outer Size");
-            AddLunarField(container, "_borderHaloTerminator", "Border Softness");
+            (string path, string label)[] phaseItems =
+            {
+                ("_phasePresets.newMoon", "New Moon"),
+                ("_phasePresets.waxingCrescent", "Waxing Crescent"),
+                ("_phasePresets.firstQuarter", "First Quarter"),
+                ("_phasePresets.waxingGibbous", "Waxing Gibbous"),
+                ("_phasePresets.fullMoon", "Full Moon"),
+                ("_phasePresets.waningGibbous", "Waning Gibbous"),
+                ("_phasePresets.lastQuarter", "Last Quarter"),
+                ("_phasePresets.waningCrescent", "Waning Crescent")
+            };
+
+            VisualElement navGrid = new VisualElement();
+            navGrid.style.flexDirection = FlexDirection.Column;
+            navGrid.style.marginBottom = 8;
+            container.Add(navGrid);
+
+            VisualElement detailContainer = new VisualElement();
+            container.Add(detailContainer);
+
+            Button[] buttons = new Button[phaseItems.Length];
+
+            void RenderPhaseDetail(int selectedIndex)
+            {
+                detailContainer.Clear();
+
+                for (int i = 0; i < buttons.Length; i++)
+                {
+                    buttons[i].SetEnabled(i != selectedIndex);
+                }
+
+                SerializedProperty presetProperty = serializedObject.FindProperty(phaseItems[selectedIndex].path);
+                if (presetProperty == null)
+                {
+                    return;
+                }
+
+                Label selectedLabel = new Label(phaseItems[selectedIndex].label);
+                selectedLabel.AddToClassList("cfw-subsection");
+                detailContainer.Add(selectedLabel);
+
+                VisualElement presetRow = new VisualElement();
+                presetRow.style.flexDirection = FlexDirection.Row;
+                presetRow.style.alignItems = Align.Center;
+
+                PropertyField presetField = new PropertyField(presetProperty, "Preset");
+                presetField.Bind(serializedObject);
+                presetField.style.flexGrow = 1;
+                presetRow.Add(presetField);
+
+                Button newPresetButton = new Button(() =>
+                {
+                    LunarVisualPreset newPreset = CreateCustomPhasePresetAsset(phaseItems[selectedIndex].label);
+                    if (newPreset == null)
+                    {
+                        return;
+                    }
+
+                    serializedObject.Update();
+                    presetProperty.objectReferenceValue = newPreset;
+                    serializedObject.ApplyModifiedProperties();
+                    serializedObject.Update();
+                    detailContainer.schedule.Execute(() => RenderPhaseDetail(selectedIndex)).ExecuteLater(1);
+                })
+                {
+                    text = "New"
+                };
+                newPresetButton.style.marginLeft = 6;
+                presetRow.Add(newPresetButton);
+                detailContainer.Add(presetRow);
+                detailContainer.TrackPropertyValue(presetProperty, _ =>
+                {
+                    serializedObject.Update();
+                    detailContainer.schedule.Execute(() => RenderPhaseDetail(selectedIndex)).ExecuteLater(1);
+                });
+
+                if (presetProperty.objectReferenceValue is LunarVisualPreset presetAsset)
+                {
+                    string assetPath = AssetDatabase.GetAssetPath(presetAsset)?.Replace('\\', '/');
+                    bool isDefaultPreset = !string.IsNullOrWhiteSpace(assetPath) && assetPath.StartsWith(DefaultLunarPresetsFolder);
+                    if (isDefaultPreset)
+                    {
+                        detailContainer.Add(new HelpBox("This phase is using a protected default package preset. Assign a custom preset asset if you want to edit it.", HelpBoxMessageType.Info));
+                    }
+
+                    UnityEditor.Editor presetEditor = UnityEditor.Editor.CreateEditor(presetAsset);
+                    if (presetEditor != null)
+                    {
+                        VisualElement inspector = new InspectorElement(presetEditor);
+                        inspector.SetEnabled(!isDefaultPreset);
+                        detailContainer.Add(inspector);
+                    }
+                }
+                else
+                {
+                    detailContainer.Add(new HelpBox("No custom preset assigned. The controller will use the built-in default preset for this phase.", HelpBoxMessageType.Info));
+                }
+            }
+
+            for (int row = 0; row < 2; row++)
+            {
+                VisualElement rowElement = new VisualElement();
+                rowElement.style.flexDirection = FlexDirection.Row;
+                rowElement.style.marginBottom = row == 0 ? 4 : 0;
+                navGrid.Add(rowElement);
+
+                for (int col = 0; col < 4; col++)
+                {
+                    int index = row * 4 + col;
+                    Button button = new Button(() => RenderPhaseDetail(index))
+                    {
+                        text = phaseItems[index].label
+                    };
+                    button.style.flexGrow = 1;
+                    button.style.marginRight = col < 3 ? 4 : 0;
+                    buttons[index] = button;
+                    rowElement.Add(button);
+                }
+            }
+
+            RenderPhaseDetail(0);
+        }
+
+        private static LunarVisualPreset CreateCustomPhasePresetAsset(string phaseLabel)
+        {
+            EnsureFolderExists("Assets/WeatherSystem");
+            EnsureFolderExists("Assets/WeatherSystem/Presets");
+            EnsureFolderExists(CustomLunarPresetsFolder);
+
+            string sanitizedPhaseLabel = phaseLabel.Replace(" ", string.Empty);
+            string assetPath = AssetDatabase.GenerateUniqueAssetPath($"{CustomLunarPresetsFolder}/{sanitizedPhaseLabel}CustomPreset.asset");
+            LunarVisualPreset preset = ScriptableObject.CreateInstance<LunarVisualPreset>();
+            preset.name = System.IO.Path.GetFileNameWithoutExtension(assetPath);
+            preset.EnsureDefaults();
+            AssetDatabase.CreateAsset(preset, assetPath);
+            AssetDatabase.SaveAssets();
+            EditorGUIUtility.PingObject(preset);
+            return preset;
+        }
+
+        private static void EnsureFolderExists(string folderPath)
+        {
+            if (AssetDatabase.IsValidFolder(folderPath))
+            {
+                return;
+            }
+
+            string parentFolder = System.IO.Path.GetDirectoryName(folderPath)?.Replace('\\', '/');
+            string folderName = System.IO.Path.GetFileName(folderPath);
+            if (!string.IsNullOrWhiteSpace(parentFolder) && !AssetDatabase.IsValidFolder(parentFolder))
+            {
+                EnsureFolderExists(parentFolder);
+            }
+
+            AssetDatabase.CreateFolder(parentFolder, folderName);
         }
         private void PopulateDebugFields(VisualElement container)
         {
@@ -862,6 +1042,8 @@ namespace ConceptFactory.Weather.Editor
             AddLunarField(container, "_currentIlluminationFraction", "Illumination Fraction");
             AddLunarField(container, "_currentMoonDirection", "Moon Direction");
             AddLunarField(container, "_currentLunarAgeDays", "Lunar Age Days");
+            AddLunarField(container, "_currentDistanceKilometers", "Distance Kilometers");
+            AddLunarField(container, "_currentDistanceNormalized", "Distance Normalized");
             AddLunarField(container, "_currentPhaseLabel", "Phase Label");
             AddLunarField(container, "_currentPhase", "Phase Enum");
             AddLunarField(container, "_isMoonRising", "Moon Rising");

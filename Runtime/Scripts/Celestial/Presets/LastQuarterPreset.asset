@@ -1,0 +1,202 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ff7b4755f59f0c4e826a09e64f21646, type: 3}
+  m_Name: LastQuarterPreset
+  m_EditorClassIdentifier: ConceptFactory.Weather.Runtime::ConceptFactory.Weather.LunarVisualPreset
+  lightColorOverNight:
+    serializedVersion: 2
+    key0: {r: 0.59, g: 0.66, b: 0.92, a: 1}
+    key1: {r: 0.73, g: 0.78, b: 1, a: 1}
+    key2: {r: 0.92, g: 0.96, b: 1, a: 0}
+    key3: {r: 0.73, g: 0.78, b: 1, a: 0}
+    key4: {r: 0.59, g: 0.66, b: 0.92, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 13107
+    ctime2: 32768
+    ctime3: 52428
+    ctime4: 65535
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 5
+    m_NumAlphaKeys: 2
+  lightIntensityOverNight:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.9
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.2
+      value: 0.55
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.25
+      value: 0.18
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.75
+      value: 0.18
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.8
+      value: 0.55
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.9
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  baseIntensity: 1
+  disableLightBelowHorizon: 1
+  horizonDisableThreshold: -2
+  daylightFadeStrength: 1.6
+  minimumPhaseLight: 2
+  daylightShadowFadeStart: -15
+  daylightShadowFadeRange: 1.5
+  daylightLitMoonFadeStart: -6
+  daylightLitMoonFadeRange: 10
+  duskLitMoonSuppression: 0.55
+  minimumLitMoonSkyVisibility: 1
+  skyboxMoonSize: 5
+  moonTextureExposure: 2
+  darkMoonTextureExposure: 1.5
+  moonHaloColor: {r: 0.72, g: 0.82, b: 1, a: 1}
+  moonHaloIntensity: 0.15
+  moonHaloInnerSize: 0.15
+  moonHaloOuterSize: 0.49
+  moonHaloTerminator: 3.02
+  borderHaloColor: {r: 0.72, g: 0.82, b: 1, a: 1}
+  borderHaloIntensity: 0.4
+  borderHaloInnerSize: 0.5
+  borderHaloOuterSize: 0.52
+  borderHaloTerminator: 20
+  darkSideVisibility: 3.8
+  darkMoonExposure: 1.5
+  moonHaloIntensityMultiplier: 1.5
+  borderHaloIntensityMultiplier: 1.3333334
+  enableHorizonMoonIllusion: 1
+  horizonIllusionMaxElevation: 22
+  moonRiseSizeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.2
+      value: 1.18
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.3708374
+      value: 2.1732197
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.9449878
+      value: 2.2303503
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 2.5439255
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  applyHorizonIllusion: 0
+  horizonMoonIntensityMultiplier: 1.2
+  horizonMoonFalloffMultiplier: 0.68
+  horizonMoonWarmTintStrength: 1.2
+  horizonWarmTintStrengthMultiplier: 1
+  horizonMoonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
+  horizonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
+  moonRiseWarmTintBoost: 10

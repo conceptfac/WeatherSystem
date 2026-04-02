@@ -14,6 +14,10 @@ namespace ConceptFactory.Weather
         private const double ObliquityRadians = 23.4397 * DegreesToRadians;
         private const double SynodicMonthDays = 29.53058867;
         private const double SolarDistanceKilometers = 149598000.0;
+        private const double MeanLunarDistanceKilometers = 385001.0;
+        private const double LunarDistanceVariationKilometers = 20905.0;
+        private const double PerigeeDistanceKilometers = MeanLunarDistanceKilometers - LunarDistanceVariationKilometers;
+        private const double ApogeeDistanceKilometers = MeanLunarDistanceKilometers + LunarDistanceVariationKilometers;
 
         public static LunarPositionData CalculateLunarPosition(
             DateTime localDateTime,
@@ -54,6 +58,10 @@ namespace ConceptFactory.Weather
             IlluminationData illumination = CalculateIllumination(moonCoordinates, sunCoordinates);
             double phaseDegrees = RepeatDegrees(illumination.ShaderPhaseAngleRadians * RadiansToDegrees);
             double lunarAgeDays = illumination.PhaseFraction * SynodicMonthDays;
+            double distanceNormalized = Math.Clamp(
+                (moonCoordinates.DistanceKilometers - PerigeeDistanceKilometers) / (ApogeeDistanceKilometers - PerigeeDistanceKilometers),
+                0.0,
+                1.0);
 
             Vector3 moonDirection = SolarPositionCalculator.ToUnitySunDirection(azimuthDegrees, apparentElevationDegrees);
 
@@ -66,7 +74,9 @@ namespace ConceptFactory.Weather
                 (float)(hourAngleRadians * RadiansToDegrees),
                 Mathf.Clamp01((float)illumination.IlluminationFraction),
                 (float)phaseDegrees,
-                (float)lunarAgeDays);
+                (float)lunarAgeDays,
+                (float)moonCoordinates.DistanceKilometers,
+                (float)distanceNormalized);
         }
 
         private static SphericalCoordinates CalculateMoonCoordinates(double daysSinceJ2000)
@@ -77,7 +87,7 @@ namespace ConceptFactory.Weather
 
             double eclipticLongitudeRadians = meanLongitudeRadians + (6.289 * DegreesToRadians * Math.Sin(meanAnomalyRadians));
             double eclipticLatitudeRadians = 5.128 * DegreesToRadians * Math.Sin(meanDistanceRadians);
-            double distanceKilometers = 385001.0 - (20905.0 * Math.Cos(meanAnomalyRadians));
+            double distanceKilometers = MeanLunarDistanceKilometers - (LunarDistanceVariationKilometers * Math.Cos(meanAnomalyRadians));
 
             return new SphericalCoordinates(
                 distanceKilometers,

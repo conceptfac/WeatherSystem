@@ -16,7 +16,9 @@ namespace ConceptFactory.Weather
             float hourAngleDegrees,
             float illuminationFraction,
             float phaseAngleDegrees,
-            float lunarAgeDays)
+            float lunarAgeDays,
+            float distanceKilometers,
+            float distanceNormalized)
         {
             MoonDirection = moonDirection;
             ElevationDegrees = elevationDegrees;
@@ -27,6 +29,8 @@ namespace ConceptFactory.Weather
             IlluminationFraction = illuminationFraction;
             PhaseAngleDegrees = phaseAngleDegrees;
             LunarAgeDays = lunarAgeDays;
+            DistanceKilometers = distanceKilometers;
+            DistanceNormalized = distanceNormalized;
         }
 
         public Vector3 MoonDirection { get; }
@@ -38,5 +42,7 @@ namespace ConceptFactory.Weather
         public float IlluminationFraction { get; }
         public float PhaseAngleDegrees { get; }
         public float LunarAgeDays { get; }
+        public float DistanceKilometers { get; }
+        public float DistanceNormalized { get; }
     }
 }

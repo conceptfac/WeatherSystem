@@ -389,6 +389,80 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 27fe7d5ebe0353c498945b241dcc4607, type: 3}
   m_PrefabInstance: {fileID: 739049}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &47983439
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 722159976}
+    m_Modifications:
+    - target: {fileID: 997939113873905254, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_Name
+      value: LightPole (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5682814416739209841, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.0000005
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.5359597
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.9504309
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -24.970484
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.000000037748954
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+--- !u!4 &47983440 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+  m_PrefabInstance: {fileID: 47983439}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &55559411
 GameObject:
   m_ObjectHideFlags: 0
@@ -516,6 +590,288 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!1001 &82986153
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 722159976}
+    m_Modifications:
+    - target: {fileID: 997939113873905254, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_Name
+      value: LightPole (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 997939113873905254, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3116971225331348526, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 967272724}
+    - target: {fileID: 3116971225331348526, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 275136347}
+    - target: {fileID: 5682814416739209841, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -17.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.42
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.6634137
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.000000025043171
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7482528
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.000000028245761
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8676813425405755163, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+--- !u!4 &82986154 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+  m_PrefabInstance: {fileID: 82986153}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &95836839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ff7b4755f59f0c4e826a09e64f21646, type: 3}
+  m_Name: FirstQuarterPreset
+  m_EditorClassIdentifier: ConceptFactory.Weather.Runtime::ConceptFactory.Weather.LunarVisualPreset
+  lightColorOverNight:
+    serializedVersion: 2
+    key0: {r: 0.59, g: 0.66, b: 0.92, a: 1}
+    key1: {r: 0.73, g: 0.78, b: 1, a: 1}
+    key2: {r: 0.92, g: 0.96, b: 1, a: 0}
+    key3: {r: 0.73, g: 0.78, b: 1, a: 0}
+    key4: {r: 0.59, g: 0.66, b: 0.92, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 13107
+    ctime2: 32768
+    ctime3: 52428
+    ctime4: 65535
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 5
+    m_NumAlphaKeys: 2
+  lightIntensityOverNight:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.9
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.2
+      value: 0.55
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.25
+      value: 0.18
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.75
+      value: 0.18
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.8
+      value: 0.55
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.9
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  baseIntensity: 1
+  disableLightBelowHorizon: 1
+  horizonDisableThreshold: -2
+  daylightFadeStrength: 1.6
+  minimumPhaseLight: 2
+  daylightShadowFadeStart: -15
+  daylightShadowFadeRange: 1.5
+  daylightLitMoonFadeStart: -6
+  daylightLitMoonFadeRange: 10
+  duskLitMoonSuppression: 0.55
+  minimumLitMoonSkyVisibility: 1
+  skyboxMoonSize: 8
+  moonTextureExposure: 2
+  darkMoonTextureExposure: 1.5
+  moonHaloColor: {r: 0.72, g: 0.82, b: 1, a: 1}
+  moonHaloIntensity: 0.15
+  moonHaloInnerSize: 0.15
+  moonHaloOuterSize: 0.49
+  moonHaloTerminator: 3.02
+  borderHaloColor: {r: 0.72, g: 0.82, b: 1, a: 1}
+  borderHaloIntensity: 0.4
+  borderHaloInnerSize: 0.5
+  borderHaloOuterSize: 0.52
+  borderHaloTerminator: 20
+  darkSideVisibility: 3.8
+  darkMoonExposure: 1.5
+  moonHaloIntensityMultiplier: 1.5
+  borderHaloIntensityMultiplier: 1.3333334
+  enableHorizonMoonIllusion: 1
+  horizonIllusionMaxElevation: 22
+  moonRiseSizeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.2
+      value: 1.18
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.3708374
+      value: 2.1732197
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.9449878
+      value: 2.2303503
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 2.5439255
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  applyHorizonIllusion: 0
+  horizonMoonIntensityMultiplier: 1.2
+  horizonMoonFalloffMultiplier: 0.68
+  horizonMoonWarmTintStrength: 1.2
+  horizonWarmTintStrengthMultiplier: 1
+  horizonMoonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
+  horizonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
+  moonRiseWarmTintBoost: 10
 --- !u!1 &110705223
 GameObject:
   m_ObjectHideFlags: 0
@@ -640,6 +996,206 @@ Transform:
   - {fileID: 1249704921}
   m_Father: {fileID: 306742389}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &201101168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ff7b4755f59f0c4e826a09e64f21646, type: 3}
+  m_Name: LastQuarterPreset
+  m_EditorClassIdentifier: ConceptFactory.Weather.Runtime::ConceptFactory.Weather.LunarVisualPreset
+  lightColorOverNight:
+    serializedVersion: 2
+    key0: {r: 0.59, g: 0.66, b: 0.92, a: 1}
+    key1: {r: 0.73, g: 0.78, b: 1, a: 1}
+    key2: {r: 0.92, g: 0.96, b: 1, a: 0}
+    key3: {r: 0.73, g: 0.78, b: 1, a: 0}
+    key4: {r: 0.59, g: 0.66, b: 0.92, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 13107
+    ctime2: 32768
+    ctime3: 52428
+    ctime4: 65535
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 5
+    m_NumAlphaKeys: 2
+  lightIntensityOverNight:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.9
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.2
+      value: 0.55
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.25
+      value: 0.18
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.75
+      value: 0.18
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.8
+      value: 0.55
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.9
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  baseIntensity: 1
+  disableLightBelowHorizon: 1
+  horizonDisableThreshold: -2
+  daylightFadeStrength: 1.6
+  minimumPhaseLight: 2
+  daylightShadowFadeStart: -15
+  daylightShadowFadeRange: 1.5
+  daylightLitMoonFadeStart: -6
+  daylightLitMoonFadeRange: 10
+  duskLitMoonSuppression: 0.55
+  minimumLitMoonSkyVisibility: 1
+  skyboxMoonSize: 8
+  moonTextureExposure: 2
+  darkMoonTextureExposure: 1.5
+  moonHaloColor: {r: 0.72, g: 0.82, b: 1, a: 1}
+  moonHaloIntensity: 0.15
+  moonHaloInnerSize: 0.15
+  moonHaloOuterSize: 0.49
+  moonHaloTerminator: 3.02
+  borderHaloColor: {r: 0.72, g: 0.82, b: 1, a: 1}
+  borderHaloIntensity: 0.4
+  borderHaloInnerSize: 0.5
+  borderHaloOuterSize: 0.52
+  borderHaloTerminator: 20
+  darkSideVisibility: 3.8
+  darkMoonExposure: 1.5
+  moonHaloIntensityMultiplier: 1.5
+  borderHaloIntensityMultiplier: 1.3333334
+  enableHorizonMoonIllusion: 1
+  horizonIllusionMaxElevation: 22
+  moonRiseSizeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.2
+      value: 1.18
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.3708374
+      value: 2.1732197
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.9449878
+      value: 2.2303503
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 2.5439255
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  applyHorizonIllusion: 0
+  horizonMoonIntensityMultiplier: 1.2
+  horizonMoonFalloffMultiplier: 0.68
+  horizonMoonWarmTintStrength: 1.2
+  horizonWarmTintStrengthMultiplier: 1
+  horizonMoonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
+  horizonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
+  moonRiseWarmTintBoost: 10
 --- !u!1 &215421861
 GameObject:
   m_ObjectHideFlags: 0
@@ -913,6 +1469,131 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 265823895}
   m_Mesh: {fileID: -674819521343660224, guid: 1c302b0125f20264183f3d808004f34d, type: 3}
+--- !u!21 &275136347
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: LightPole (Instance)
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _EMISSION
+  m_InvalidKeywords: []
+  m_LightmapFlags: 1
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AddPrecomputedVelocity: 0
+    - _AlphaClip: 0
+    - _AlphaToMask: 0
+    - _Blend: 0
+    - _BlendModePreserveSpecular: 1
+    - _BumpScale: 1
+    - _ClearCoatMask: 0
+    - _ClearCoatSmoothness: 0
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DetailAlbedoMapScale: 1
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _DstBlendAlpha: 0
+    - _EnvironmentReflections: 1
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
+    - _Smoothness: 0
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _SrcBlendAlpha: 1
+    - _Surface: 0
+    - _UVSec: 0
+    - _WorkflowMode: 1
+    - _XRMotionVectorsPass: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _BaseColor: {r: 0.9063317, g: 0.9063317, b: 0.9063317, a: 1}
+    - _Color: {r: 0.9063317, g: 0.9063317, b: 0.9063317, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &283325806
 GameObject:
   m_ObjectHideFlags: 0
@@ -1163,6 +1844,88 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!1001 &345895545
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 722159976}
+    m_Modifications:
+    - target: {fileID: 997939113873905254, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_Name
+      value: LightPole (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 997939113873905254, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3116971225331348526, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 967272724}
+    - target: {fileID: 3116971225331348526, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 275136347}
+    - target: {fileID: 5682814416739209841, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -17.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.42
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.6634137
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.000000025043171
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7482528
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.000000028245761
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8676813425405755163, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+--- !u!4 &345895546 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+  m_PrefabInstance: {fileID: 345895545}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &470436442
 GameObject:
   m_ObjectHideFlags: 0
@@ -1417,6 +2180,206 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &516324922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ff7b4755f59f0c4e826a09e64f21646, type: 3}
+  m_Name: WaningCrescentPreset
+  m_EditorClassIdentifier: ConceptFactory.Weather.Runtime::ConceptFactory.Weather.LunarVisualPreset
+  lightColorOverNight:
+    serializedVersion: 2
+    key0: {r: 0.59, g: 0.66, b: 0.92, a: 1}
+    key1: {r: 0.73, g: 0.78, b: 1, a: 1}
+    key2: {r: 0.92, g: 0.96, b: 1, a: 0}
+    key3: {r: 0.73, g: 0.78, b: 1, a: 0}
+    key4: {r: 0.59, g: 0.66, b: 0.92, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 13107
+    ctime2: 32768
+    ctime3: 52428
+    ctime4: 65535
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 5
+    m_NumAlphaKeys: 2
+  lightIntensityOverNight:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.9
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.2
+      value: 0.55
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.25
+      value: 0.18
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.75
+      value: 0.18
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.8
+      value: 0.55
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.9
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  baseIntensity: 1
+  disableLightBelowHorizon: 1
+  horizonDisableThreshold: -2
+  daylightFadeStrength: 1.6
+  minimumPhaseLight: 2
+  daylightShadowFadeStart: -15
+  daylightShadowFadeRange: 1.5
+  daylightLitMoonFadeStart: -6
+  daylightLitMoonFadeRange: 10
+  duskLitMoonSuppression: 0.55
+  minimumLitMoonSkyVisibility: 1
+  skyboxMoonSize: 8
+  moonTextureExposure: 2
+  darkMoonTextureExposure: 1.5
+  moonHaloColor: {r: 0.72, g: 0.82, b: 1, a: 1}
+  moonHaloIntensity: 0.15
+  moonHaloInnerSize: 0.15
+  moonHaloOuterSize: 0.49
+  moonHaloTerminator: 3.02
+  borderHaloColor: {r: 0.72, g: 0.82, b: 1, a: 1}
+  borderHaloIntensity: 0.4
+  borderHaloInnerSize: 0.5
+  borderHaloOuterSize: 0.52
+  borderHaloTerminator: 20
+  darkSideVisibility: 3.8
+  darkMoonExposure: 1.5
+  moonHaloIntensityMultiplier: 1.25
+  borderHaloIntensityMultiplier: 1.1666666
+  enableHorizonMoonIllusion: 1
+  horizonIllusionMaxElevation: 22
+  moonRiseSizeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.2
+      value: 1.18
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.3708374
+      value: 2.1732197
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.9449878
+      value: 2.2303503
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 2.5439255
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  applyHorizonIllusion: 0
+  horizonMoonIntensityMultiplier: 1.2
+  horizonMoonFalloffMultiplier: 0.68
+  horizonMoonWarmTintStrength: 1.2
+  horizonWarmTintStrengthMultiplier: 1
+  horizonMoonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
+  horizonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
+  moonRiseWarmTintBoost: 10
 --- !u!1 &527386291
 GameObject:
   m_ObjectHideFlags: 0
@@ -1864,6 +2827,480 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &674022966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ff7b4755f59f0c4e826a09e64f21646, type: 3}
+  m_Name: WaxingGibbousPreset
+  m_EditorClassIdentifier: ConceptFactory.Weather.Runtime::ConceptFactory.Weather.LunarVisualPreset
+  lightColorOverNight:
+    serializedVersion: 2
+    key0: {r: 0.59, g: 0.66, b: 0.92, a: 1}
+    key1: {r: 0.73, g: 0.78, b: 1, a: 1}
+    key2: {r: 0.92, g: 0.96, b: 1, a: 0}
+    key3: {r: 0.73, g: 0.78, b: 1, a: 0}
+    key4: {r: 0.59, g: 0.66, b: 0.92, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 13107
+    ctime2: 32768
+    ctime3: 52428
+    ctime4: 65535
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 5
+    m_NumAlphaKeys: 2
+  lightIntensityOverNight:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.9
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.2
+      value: 0.55
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.25
+      value: 0.18
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.75
+      value: 0.18
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.8
+      value: 0.55
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.9
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  baseIntensity: 1
+  disableLightBelowHorizon: 1
+  horizonDisableThreshold: -2
+  daylightFadeStrength: 1.6
+  minimumPhaseLight: 2
+  daylightShadowFadeStart: -15
+  daylightShadowFadeRange: 1.5
+  daylightLitMoonFadeStart: -6
+  daylightLitMoonFadeRange: 10
+  duskLitMoonSuppression: 0.55
+  minimumLitMoonSkyVisibility: 1
+  skyboxMoonSize: 8
+  moonTextureExposure: 2
+  darkMoonTextureExposure: 1.5
+  moonHaloColor: {r: 0.72, g: 0.82, b: 1, a: 1}
+  moonHaloIntensity: 0.15
+  moonHaloInnerSize: 0.15
+  moonHaloOuterSize: 0.49
+  moonHaloTerminator: 3.02
+  borderHaloColor: {r: 0.72, g: 0.82, b: 1, a: 1}
+  borderHaloIntensity: 0.4
+  borderHaloInnerSize: 0.5
+  borderHaloOuterSize: 0.52
+  borderHaloTerminator: 20
+  darkSideVisibility: 3.8
+  darkMoonExposure: 1.5
+  moonHaloIntensityMultiplier: 1.75
+  borderHaloIntensityMultiplier: 1.6666666
+  enableHorizonMoonIllusion: 1
+  horizonIllusionMaxElevation: 22
+  moonRiseSizeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.2
+      value: 1.18
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.3708374
+      value: 2.1732197
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.9449878
+      value: 2.2303503
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 2.5439255
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  applyHorizonIllusion: 1
+  horizonMoonIntensityMultiplier: 1.2
+  horizonMoonFalloffMultiplier: 0.68
+  horizonMoonWarmTintStrength: 1.2
+  horizonWarmTintStrengthMultiplier: 1
+  horizonMoonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
+  horizonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
+  moonRiseWarmTintBoost: 10
+--- !u!1001 &693176059
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 722159976}
+    m_Modifications:
+    - target: {fileID: 997939113873905254, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_Name
+      value: LightPole (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5682814416739209841, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.0000005
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.0000005
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.1553893
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.4526274
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -38.310886
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99784446
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.000000037667583
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.06562365
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.0000000024772238
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+--- !u!4 &693176060 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+  m_PrefabInstance: {fileID: 693176059}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &717350323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ff7b4755f59f0c4e826a09e64f21646, type: 3}
+  m_Name: WaningGibbousPreset
+  m_EditorClassIdentifier: ConceptFactory.Weather.Runtime::ConceptFactory.Weather.LunarVisualPreset
+  lightColorOverNight:
+    serializedVersion: 2
+    key0: {r: 0.59, g: 0.66, b: 0.92, a: 1}
+    key1: {r: 0.73, g: 0.78, b: 1, a: 1}
+    key2: {r: 0.92, g: 0.96, b: 1, a: 0}
+    key3: {r: 0.73, g: 0.78, b: 1, a: 0}
+    key4: {r: 0.59, g: 0.66, b: 0.92, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 13107
+    ctime2: 32768
+    ctime3: 52428
+    ctime4: 65535
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 5
+    m_NumAlphaKeys: 2
+  lightIntensityOverNight:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.9
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.2
+      value: 0.55
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.25
+      value: 0.18
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.75
+      value: 0.18
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.8
+      value: 0.55
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.9
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  baseIntensity: 1
+  disableLightBelowHorizon: 1
+  horizonDisableThreshold: -2
+  daylightFadeStrength: 1.6
+  minimumPhaseLight: 2
+  daylightShadowFadeStart: -15
+  daylightShadowFadeRange: 1.5
+  daylightLitMoonFadeStart: -6
+  daylightLitMoonFadeRange: 10
+  duskLitMoonSuppression: 0.55
+  minimumLitMoonSkyVisibility: 1
+  skyboxMoonSize: 8
+  moonTextureExposure: 2
+  darkMoonTextureExposure: 1.5
+  moonHaloColor: {r: 0.72, g: 0.82, b: 1, a: 1}
+  moonHaloIntensity: 0.15
+  moonHaloInnerSize: 0.15
+  moonHaloOuterSize: 0.49
+  moonHaloTerminator: 3.02
+  borderHaloColor: {r: 0.72, g: 0.82, b: 1, a: 1}
+  borderHaloIntensity: 0.4
+  borderHaloInnerSize: 0.5
+  borderHaloOuterSize: 0.52
+  borderHaloTerminator: 20
+  darkSideVisibility: 3.8
+  darkMoonExposure: 1.5
+  moonHaloIntensityMultiplier: 1.75
+  borderHaloIntensityMultiplier: 1.6666666
+  enableHorizonMoonIllusion: 1
+  horizonIllusionMaxElevation: 22
+  moonRiseSizeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.2
+      value: 1.18
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.3708374
+      value: 2.1732197
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.9449878
+      value: 2.2303503
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 2.5439255
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  applyHorizonIllusion: 1
+  horizonMoonIntensityMultiplier: 1.2
+  horizonMoonFalloffMultiplier: 0.68
+  horizonMoonWarmTintStrength: 1.2
+  horizonWarmTintStrengthMultiplier: 1
+  horizonMoonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
+  horizonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
+  moonRiseWarmTintBoost: 10
 --- !u!1001 &722159975
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1960,6 +3397,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: -6685890608742711253, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: de70283187946b54d9c64995885fb0b4, type: 2}
     - target: {fileID: -6672043932265197012, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
@@ -2064,6 +3505,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: 1559084765817859462, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1559084765817859462, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1797070520687488319, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
@@ -2079,6 +3528,14 @@ PrefabInstance:
     - target: {fileID: 2800250516343163423, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3392421376107474067, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3392421376107474067, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3451792365157941898, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2121,6 +3578,10 @@ PrefabInstance:
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8067483180510252879, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+      propertyPath: m_Name
+      value: LightPole
+      objectReference: {fileID: 0}
+    - target: {fileID: 8067483180510252879, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -2135,7 +3596,52 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: -8380157826906577798, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
-    m_AddedGameObjects: []
+    - {fileID: 8067483180510252879, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+    - {fileID: -3379346255913274798, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+    - {fileID: 3451792365157941898, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+    - {fileID: -3463120715060584200, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+    - {fileID: -465503653618760447, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+    - {fileID: -4947834925058173567, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+    - {fileID: -9016469994189198322, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+    - {fileID: -451964297273160435, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+    - {fileID: -6672043932265197012, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+      insertIndex: 36
+      addedObject: {fileID: 1749972058}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+      insertIndex: 37
+      addedObject: {fileID: 1225381214}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+      insertIndex: 38
+      addedObject: {fileID: 826407131}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+      insertIndex: 39
+      addedObject: {fileID: 1386489747}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+      insertIndex: 40
+      addedObject: {fileID: 693176060}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+      insertIndex: 41
+      addedObject: {fileID: 828980021}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+      insertIndex: 42
+      addedObject: {fileID: 47983440}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+      insertIndex: 43
+      addedObject: {fileID: 2868787194608891074}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+      insertIndex: 44
+      addedObject: {fileID: 345895546}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+      insertIndex: 45
+      addedObject: {fileID: 1648313322}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+      insertIndex: 46
+      addedObject: {fileID: 775141031}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
+      insertIndex: 47
+      addedObject: {fileID: 82986154}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5b0921a780036543bb9e5822e5d0b28, type: 3}
 --- !u!4 &722159976 stripped
@@ -2325,6 +3831,88 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 753704471}
   m_Mesh: {fileID: 1057258198015257533, guid: 1c302b0125f20264183f3d808004f34d, type: 3}
+--- !u!1001 &775141030
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 722159976}
+    m_Modifications:
+    - target: {fileID: 997939113873905254, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_Name
+      value: LightPole (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 997939113873905254, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3116971225331348526, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 967272724}
+    - target: {fileID: 3116971225331348526, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 275136347}
+    - target: {fileID: 5682814416739209841, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -17.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.42
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.6634137
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.000000025043171
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7482528
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.000000028245761
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8676813425405755163, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+--- !u!4 &775141031 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+  m_PrefabInstance: {fileID: 775141030}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &781566407
 GameObject:
   m_ObjectHideFlags: 0
@@ -2380,6 +3968,154 @@ Transform:
   - {fileID: 1409132999}
   m_Father: {fileID: 527386292}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &826407130
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 722159976}
+    m_Modifications:
+    - target: {fileID: 997939113873905254, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_Name
+      value: LightPole (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5682814416739209841, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.0000005
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.0000005
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.4556115
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.6724336
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -46.929764
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.000000026692547
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.70710677
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.000000026692545
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+--- !u!4 &826407131 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+  m_PrefabInstance: {fileID: 826407130}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &828980020
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 722159976}
+    m_Modifications:
+    - target: {fileID: 997939113873905254, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_Name
+      value: LightPole (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5682814416739209841, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.0000005
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.0000005
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 7.052101
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.9959877
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -43.010937
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7492784
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.000000028284493
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.6622551
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.00000002499945
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+--- !u!4 &828980021 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+  m_PrefabInstance: {fileID: 828980020}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &879768511
 GameObject:
   m_ObjectHideFlags: 0
@@ -2634,6 +4370,130 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!21 &967272724
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: metal-preto (Instance)
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AddPrecomputedVelocity: 0
+    - _AlphaClip: 0
+    - _AlphaToMask: 0
+    - _Blend: 0
+    - _BlendModePreserveSpecular: 1
+    - _BumpScale: 1
+    - _ClearCoatMask: 0
+    - _ClearCoatSmoothness: 0
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DetailAlbedoMapScale: 1
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _DstBlendAlpha: 0
+    - _EnvironmentReflections: 1
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
+    - _Smoothness: 0.5
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _SrcBlendAlpha: 1
+    - _Surface: 0
+    - _UVSec: 0
+    - _WorkflowMode: 1
+    - _XRMotionVectorsPass: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _BaseColor: {r: 0.27916446, g: 0.27916446, b: 0.27916446, a: 1}
+    - _Color: {r: 0.27916443, g: 0.27916443, b: 0.27916443, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &984095764
 GameObject:
   m_ObjectHideFlags: 0
@@ -4500,6 +6360,80 @@ Transform:
   - {fileID: 1386017363}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1225381213
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 722159976}
+    m_Modifications:
+    - target: {fileID: 997939113873905254, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_Name
+      value: LightPole (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5682814416739209841, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.373216
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.5697641
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -56.064507
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.056572337
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.0000000021355462
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.99839854
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.00000003768849
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+--- !u!4 &1225381214 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+  m_PrefabInstance: {fileID: 1225381213}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1232276517
 GameObject:
   m_ObjectHideFlags: 0
@@ -4799,7 +6733,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1d7b13cda68a0c540a9bd478e2e59ea7, type: 2}
+  - {fileID: 2100000, guid: 542d55b84dd82ff48a1acbaa416ad79c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4985,7 +6919,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1386017362}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.20594712, y: -0.6151532, z: 0.17082903, w: 0.741613}
+  m_LocalRotation: {x: -0.33210194, y: 0.44287026, z: 0.18092543, w: 0.81292087}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5007,6 +6941,15 @@ MonoBehaviour:
   _solarController: {fileID: 1825588344}
   _moonLight: {fileID: 1386017366}
   _moonTransformOverride: {fileID: 0}
+  _phasePresets:
+    newMoon: {fileID: 11400000, guid: c9c51350577c52048a91afa0a2d22832, type: 2}
+    waxingCrescent: {fileID: 1784595054}
+    firstQuarter: {fileID: 95836839}
+    waxingGibbous: {fileID: 674022966}
+    fullMoon: {fileID: 11400000, guid: 8440173746d560440bd4c4d847f8a781, type: 2}
+    waningGibbous: {fileID: 717350323}
+    lastQuarter: {fileID: 201101168}
+    waningCrescent: {fileID: 516324922}
   _lightColorOverNight:
     serializedVersion: 2
     key0: {r: 0.59, g: 0.66, b: 0.92, a: 1}
@@ -5042,7 +6985,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.9
+      value: 0.25
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -5051,7 +6994,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 0.2
-      value: 0.55
+      value: 0.18
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -5060,7 +7003,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 0.25
-      value: 0.18
+      value: 0.1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -5078,7 +7021,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 0.75
-      value: 0.18
+      value: 0.1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -5087,7 +7030,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 0.8
-      value: 0.55
+      value: 0.18
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -5096,7 +7039,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 0.9
+      value: 0.25
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -5110,36 +7053,40 @@ MonoBehaviour:
   _disableLightBelowHorizon: 1
   _horizonDisableThreshold: -2
   _daylightFadeStrength: 1.6
-  _minimumPhaseLight: 1
+  _minimumPhaseLight: 2
   _driveSkyboxMaterial: 1
-  _skyboxMoonIntensity: 0.7
-  _skyboxMoonFalloff: 1598.1
+  _skyboxMoonIntensity: 1
+  _moonDiskEdgeSoftness: 0
   _skyboxMoonSize: 7
   _moonTexture: {fileID: 2800000, guid: ba97925127066a6429851b2aa2aa70e6, type: 3}
   _darkMoonTexture: {fileID: 2800000, guid: ad09545bdb7e5b542a5c9ed75ca3a37f, type: 3}
   _moonPhaseMaskTexture: {fileID: 2800000, guid: ab367edca14e7564bb34ec4679317eb6, type: 3}
-  _moonTextureExposure: 2
-  _darkMoonTextureExposure: 1.5
+  _moonTextureExposure: 1
+  _darkMoonTextureExposure: 1
   _terminatorSoftness: 0.08
-  _darkSideVisibility: 3.8
+  _darkSideVisibility: 1
   _daylightShadowFadeStart: -15
   _daylightShadowFadeRange: 1.5
   _daylightLitMoonFadeStart: -6
   _daylightLitMoonFadeRange: 10
   _duskLitMoonSuppression: 0.55
+  _minimumLitMoonSkyVisibility: 1
   _moonHaloColor: {r: 0.72, g: 0.82, b: 1, a: 1}
   _moonHaloIntensity: 0.15
   _moonHaloInnerSize: 0.15
   _moonHaloOuterSize: 0.49
   _moonHaloTerminator: 3.02
   _borderHaloColor: {r: 0.72, g: 0.82, b: 1, a: 1}
-  _borderHaloIntensity: 0.4
+  _borderHaloIntensity: 1
   _borderHaloInnerSize: 0.5
   _borderHaloOuterSize: 0.52
   _borderHaloTerminator: 20
   _enableHorizonMoonIllusion: 1
   _horizonIllusionMaxElevation: 22
   _horizonMoonSizeMultiplier: 1
+  _useOrbitalDistanceSizeVariation: 1
+  _perigeeMoonSizeMultiplier: 1.07
+  _apogeeMoonSizeMultiplier: 0.93
   _moonRiseSizeCurve:
     serializedVersion: 2
     m_Curve:
@@ -5199,14 +7146,81 @@ MonoBehaviour:
   _altitudeAtmosphereMaxMeters: 3000
   _altitudeWarmTintReduction: 0.4
   _altitudeClarityBoost: 0.14
-  _currentElevation: 31.040115
-  _currentAzimuth: 100.64994
-  _currentIlluminationFraction: 0.2915218
-  _currentMoonDirection: {x: 0.8420477, y: 0.5156381, z: -0.15834473}
-  _currentLunarAgeDays: 24.169357
-  _currentPhaseLabel: Waning Crescent
-  _currentPhase: 7
-  _isMoonRising: 1
+  _phaseTuning:
+    newMoon:
+      darkMoonExposure: 3
+      moonHaloIntensityMultiplier: 1
+      borderHaloIntensityMultiplier: 1
+      applyHorizonIllusion: 0
+      horizonMoonIntensityMultiplier: 1
+      horizonWarmTintStrengthMultiplier: 1
+      horizonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
+    waxingCrescent:
+      darkMoonExposure: 1.5
+      moonHaloIntensityMultiplier: 1.25
+      borderHaloIntensityMultiplier: 1.1666666
+      applyHorizonIllusion: 0
+      horizonMoonIntensityMultiplier: 1
+      horizonWarmTintStrengthMultiplier: 1
+      horizonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
+    firstQuarter:
+      darkMoonExposure: 1.5
+      moonHaloIntensityMultiplier: 1.5
+      borderHaloIntensityMultiplier: 1.3333334
+      applyHorizonIllusion: 0
+      horizonMoonIntensityMultiplier: 1
+      horizonWarmTintStrengthMultiplier: 1
+      horizonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
+    waxingGibbous:
+      darkMoonExposure: 1.5
+      moonHaloIntensityMultiplier: 1.75
+      borderHaloIntensityMultiplier: 1.6666666
+      applyHorizonIllusion: 1
+      horizonMoonIntensityMultiplier: 1
+      horizonWarmTintStrengthMultiplier: 1
+      horizonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
+    fullMoon:
+      darkMoonExposure: 1
+      moonHaloIntensityMultiplier: 2
+      borderHaloIntensityMultiplier: 2
+      applyHorizonIllusion: 1
+      horizonMoonIntensityMultiplier: 1
+      horizonWarmTintStrengthMultiplier: 1
+      horizonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
+    waningGibbous:
+      darkMoonExposure: 1.5
+      moonHaloIntensityMultiplier: 1.75
+      borderHaloIntensityMultiplier: 1.6666666
+      applyHorizonIllusion: 1
+      horizonMoonIntensityMultiplier: 1
+      horizonWarmTintStrengthMultiplier: 1
+      horizonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
+    lastQuarter:
+      darkMoonExposure: 1.5
+      moonHaloIntensityMultiplier: 1.5
+      borderHaloIntensityMultiplier: 1.3333334
+      applyHorizonIllusion: 0
+      horizonMoonIntensityMultiplier: 1
+      horizonWarmTintStrengthMultiplier: 1
+      horizonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
+    waningCrescent:
+      darkMoonExposure: 1.5
+      moonHaloIntensityMultiplier: 1.25
+      borderHaloIntensityMultiplier: 1.1666666
+      applyHorizonIllusion: 0
+      horizonMoonIntensityMultiplier: 1
+      horizonWarmTintStrengthMultiplier: 1
+      horizonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
+  _currentElevation: -44.442894
+  _currentAzimuth: 237.16211
+  _currentIlluminationFraction: 0.9954279
+  _currentMoonDirection: {x: -0.5998655, y: -0.70019805, z: -0.38714865}
+  _currentLunarAgeDays: 15.401373
+  _currentDistanceKilometers: 396302.03
+  _currentDistanceNormalized: 0.77029467
+  _currentPhaseLabel: Full Moon
+  _currentPhase: 4
+  _isMoonRising: 0
 --- !u!114 &1386017365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5243,11 +7257,11 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1386017362}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 12
   m_Type: 1
-  m_Color: {r: 0.708125, g: 0.76124996, b: 0.9875, a: 1}
-  m_Intensity: 0.739996
+  m_Color: {r: 0.8702974, g: 0.91291326, b: 1, a: 1}
+  m_Intensity: 0
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -5428,6 +7442,80 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!1001 &1386489746
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 722159976}
+    m_Modifications:
+    - target: {fileID: 997939113873905254, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_Name
+      value: LightPole (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5682814416739209841, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.419971
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.4424953
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -36.236774
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.8330007
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.000000031444905
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.5532719
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.000000020885432
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+--- !u!4 &1386489747 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+  m_PrefabInstance: {fileID: 1386489746}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1409132998
 GameObject:
   m_ObjectHideFlags: 0
@@ -5809,6 +7897,88 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!1001 &1648313321
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 722159976}
+    m_Modifications:
+    - target: {fileID: 997939113873905254, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_Name
+      value: LightPole (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 997939113873905254, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3116971225331348526, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 967272724}
+    - target: {fileID: 3116971225331348526, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 275136347}
+    - target: {fileID: 5682814416739209841, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -17.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.42
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.6634137
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.000000025043171
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7482528
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.000000028245761
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8676813425405755163, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+--- !u!4 &1648313322 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+  m_PrefabInstance: {fileID: 1648313321}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1678488445
 GameObject:
   m_ObjectHideFlags: 0
@@ -6183,6 +8353,272 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!1001 &1749972057
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 722159976}
+    m_Modifications:
+    - target: {fileID: 997939113873905254, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_Name
+      value: LightPole (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5682814416739209841, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -14.467037
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.7176528
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -51.51668
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.6634137
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.000000025043171
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7482528
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.000000028245761
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+--- !u!4 &1749972058 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+  m_PrefabInstance: {fileID: 1749972057}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1784595054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ff7b4755f59f0c4e826a09e64f21646, type: 3}
+  m_Name: WaxingCrescentPreset
+  m_EditorClassIdentifier: ConceptFactory.Weather.Runtime::ConceptFactory.Weather.LunarVisualPreset
+  lightColorOverNight:
+    serializedVersion: 2
+    key0: {r: 0.59, g: 0.66, b: 0.92, a: 1}
+    key1: {r: 0.73, g: 0.78, b: 1, a: 1}
+    key2: {r: 0.92, g: 0.96, b: 1, a: 0}
+    key3: {r: 0.73, g: 0.78, b: 1, a: 0}
+    key4: {r: 0.59, g: 0.66, b: 0.92, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 13107
+    ctime2: 32768
+    ctime3: 52428
+    ctime4: 65535
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 5
+    m_NumAlphaKeys: 2
+  lightIntensityOverNight:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.9
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.2
+      value: 0.55
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.25
+      value: 0.18
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.75
+      value: 0.18
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.8
+      value: 0.55
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.9
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  baseIntensity: 1
+  disableLightBelowHorizon: 1
+  horizonDisableThreshold: -2
+  daylightFadeStrength: 1.6
+  minimumPhaseLight: 2
+  daylightShadowFadeStart: -15
+  daylightShadowFadeRange: 1.5
+  daylightLitMoonFadeStart: -6
+  daylightLitMoonFadeRange: 10
+  duskLitMoonSuppression: 0.55
+  minimumLitMoonSkyVisibility: 1
+  skyboxMoonSize: 8
+  moonTextureExposure: 2
+  darkMoonTextureExposure: 1.5
+  moonHaloColor: {r: 0.72, g: 0.82, b: 1, a: 1}
+  moonHaloIntensity: 0.15
+  moonHaloInnerSize: 0.15
+  moonHaloOuterSize: 0.49
+  moonHaloTerminator: 3.02
+  borderHaloColor: {r: 0.72, g: 0.82, b: 1, a: 1}
+  borderHaloIntensity: 0.4
+  borderHaloInnerSize: 0.5
+  borderHaloOuterSize: 0.52
+  borderHaloTerminator: 20
+  darkSideVisibility: 3.8
+  darkMoonExposure: 1.5
+  moonHaloIntensityMultiplier: 1.25
+  borderHaloIntensityMultiplier: 1.1666666
+  enableHorizonMoonIllusion: 1
+  horizonIllusionMaxElevation: 22
+  moonRiseSizeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.2
+      value: 1.18
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.3708374
+      value: 2.1732197
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.9449878
+      value: 2.2303503
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 2.5439255
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  applyHorizonIllusion: 0
+  horizonMoonIntensityMultiplier: 1.2
+  horizonMoonFalloffMultiplier: 0.68
+  horizonMoonWarmTintStrength: 1.2
+  horizonWarmTintStrengthMultiplier: 1
+  horizonMoonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
+  horizonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
+  moonRiseWarmTintBoost: 10
 --- !u!1 &1786393694
 GameObject:
   m_ObjectHideFlags: 0
@@ -6377,18 +8813,18 @@ MonoBehaviour:
     serializedVersion: 2
     key0: {r: 0.07, g: 0.1, b: 0.18, a: 1}
     key1: {r: 1, g: 0.3804348, b: 0, a: 1}
-    key2: {r: 1, g: 0.5803922, b: 0.29803923, a: 0}
-    key3: {r: 1, g: 0.38039216, b: 0, a: 0}
-    key4: {r: 0.07, g: 0.1, b: 0.18, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
+    key2: {r: 1, g: 0.8352941, b: 0.72156864, a: 0}
+    key3: {r: 1, g: 0.83364075, b: 0.7216981, a: 0}
+    key4: {r: 1, g: 0.38039216, b: 0, a: 0}
+    key5: {r: 0.07, g: 0.1, b: 0.18, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
     ctime1: 15227
-    ctime2: 32768
-    ctime3: 49807
-    ctime4: 65535
-    ctime5: 0
+    ctime2: 20239
+    ctime3: 45489
+    ctime4: 49807
+    ctime5: 65535
     ctime6: 0
     ctime7: 0
     atime0: 0
@@ -6401,7 +8837,7 @@ MonoBehaviour:
     atime7: 0
     m_Mode: 0
     m_ColorSpace: -1
-    m_NumColorKeys: 5
+    m_NumColorKeys: 6
     m_NumAlphaKeys: 2
   _lightIntensityOverDay:
     serializedVersion: 2
@@ -6478,8 +8914,8 @@ MonoBehaviour:
   _utcOffsetHours: -3
   _year: 2026
   _month: 4
-  _day: 12
-  _timeOfDayMinutes: 243
+  _day: 2
+  _timeOfDayMinutes: 607
   _playOnAwake: 1
   _dayDurationMinutes: 5
   _timeScaleMultiplier: 1
@@ -6492,19 +8928,19 @@ MonoBehaviour:
     key0: {r: 0.02, g: 0.03, b: 0.07, a: 1}
     key1: {r: 0.18, g: 0.22, b: 0.38, a: 1}
     key2: {r: 0.9, g: 0.46, b: 0.28, a: 0}
-    key3: {r: 0.25, g: 0.49, b: 0.84, a: 0}
-    key4: {r: 0.92, g: 0.48, b: 0.3, a: 0}
-    key5: {r: 0.18, g: 0.22, b: 0.38, a: 0}
-    key6: {r: 0.02, g: 0.03, b: 0.07, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0.09411765, g: 0.31764707, b: 0.6431373, a: 0}
+    key4: {r: 0.09380562, g: 0.31653854, b: 0.6415094, a: 0}
+    key5: {r: 0.92, g: 0.48, b: 0.3, a: 0}
+    key6: {r: 0.18, g: 0.22, b: 0.38, a: 0}
+    key7: {r: 0.02, g: 0.03, b: 0.07, a: 0}
     ctime0: 0
     ctime1: 14418
     ctime2: 17039
-    ctime3: 32768
-    ctime4: 48496
-    ctime5: 51117
-    ctime6: 65535
-    ctime7: 0
+    ctime3: 25250
+    ctime4: 41056
+    ctime5: 48496
+    ctime6: 51117
+    ctime7: 65535
     atime0: 0
     atime1: 65535
     atime2: 0
@@ -6515,7 +8951,7 @@ MonoBehaviour:
     atime7: 0
     m_Mode: 0
     m_ColorSpace: -1
-    m_NumColorKeys: 7
+    m_NumColorKeys: 8
     m_NumAlphaKeys: 2
   _horizonColorOverDay:
     serializedVersion: 2
@@ -6790,11 +9226,11 @@ MonoBehaviour:
     m_RotationOrder: 4
   _horizonSunIntensityMultiplier: 1.15
   _horizonSunFalloffMultiplier: 0.55
-  _currentElevation: -33.335697
-  _currentAzimuth: 90.40994
-  _currentDaylightFactor: 0
-  _currentSunDirection: {x: 0.83544374, y: -0.54954344, z: -0.0059776097}
-  _currentLocalTimeLabel: 04:03
+  _currentElevation: 52.21774
+  _currentAzimuth: 59.956352
+  _currentDaylightFactor: 1
+  _currentSunDirection: {x: 0.5303477, y: 0.7903447, z: 0.30673528}
+  _currentLocalTimeLabel: 10:07
   _playbackState: 0
 --- !u!114 &1825588345
 MonoBehaviour:
@@ -6832,11 +9268,11 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1825588343}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 12
   m_Type: 1
-  m_Color: {r: 0.74543834, g: 0.30367357, b: 0.049270004, a: 1}
-  m_Intensity: 0
+  m_Color: {r: 1, g: 0.8348105, b: 0.7216065, a: 1}
+  m_Intensity: 0.85453784
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -6898,7 +9334,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1825588343}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.20353875, y: -0.674969, z: -0.20208764, w: 0.6798157}
+  m_LocalRotation: {x: -0.21989392, y: 0.77782667, z: -0.38120264, w: -0.4486835}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7722,6 +10158,88 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2063044374}
   m_Mesh: {fileID: -674819521343660224, guid: 1c302b0125f20264183f3d808004f34d, type: 3}
+--- !u!1001 &2868787194608891073
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 722159976}
+    m_Modifications:
+    - target: {fileID: 997939113873905254, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_Name
+      value: LightPole
+      objectReference: {fileID: 0}
+    - target: {fileID: 997939113873905254, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3116971225331348526, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 967272724}
+    - target: {fileID: 3116971225331348526, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 275136347}
+    - target: {fileID: 5682814416739209841, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -15.741949
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.796203
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -37.43557
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.6634137
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.000000025043171
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7482528
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.000000028245761
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8676813425405755163, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+--- !u!4 &2868787194608891074 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7867221098919012016, guid: b3982ae958bf4c64089dc983bd6f7df1, type: 3}
+  m_PrefabInstance: {fileID: 2868787194608891073}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6341188774647859530
 PrefabInstance:
   m_ObjectHideFlags: 0
