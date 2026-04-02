@@ -17,7 +17,7 @@ RenderSettings:
   m_Fog: 1
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0
+  m_FogDensity: 0.001
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -1443,7 +1443,7 @@ Transform:
   m_GameObject: {fileID: 527386291}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -3.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2894,13 +2894,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 988616381}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.17505243, y: 0.8171712, z: 0.32106882, w: -0.44553632}
+  m_LocalRotation: {x: 0.08915504, y: 0, z: 0, w: 0.99601775}
   m_LocalPosition: {x: -87.23898, y: 65.74955, z: -178.77545}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -42.9, y: -482.8, z: 0}
+  m_LocalEulerAnglesHint: {x: 10.23, y: 0, z: 0}
 --- !u!114 &988616386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4985,7 +4985,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1386017362}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.035161555, y: -0.6716094, z: 0.031938646, w: 0.7393811}
+  m_LocalRotation: {x: -0.54925114, y: 0.14859502, z: 0.0999904, w: 0.81623816}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5199,14 +5199,14 @@ MonoBehaviour:
   _altitudeAtmosphereMaxMeters: 3000
   _altitudeWarmTintReduction: 0.4
   _altitudeClarityBoost: 0.14
-  _currentElevation: 5.4453435
-  _currentAzimuth: 95.49975
-  _currentIlluminationFraction: 0.99954283
-  _currentMoonDirection: {x: 0.99090457, y: 0.09489617, z: -0.0954089}
-  _currentLunarAgeDays: 2.450471
+  _currentElevation: -67.87365
+  _currentAzimuth: 200.63525
+  _currentIlluminationFraction: 0.99859136
+  _currentMoonDirection: {x: -0.13273814, y: -0.92635554, z: -0.3524855}
+  _currentLunarAgeDays: 2.5264094
   _currentPhaseLabel: Waxing Crescent
   _currentPhase: 1
-  _isMoonRising: 1
+  _isMoonRising: 0
 --- !u!114 &1386017365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5243,11 +5243,11 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1386017362}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 12
   m_Type: 1
-  m_Color: {r: 1, g: 0.776, b: 0.525, a: 1}
-  m_Intensity: 0.5748414
+  m_Color: {r: 0.90592146, g: 0.9466624, b: 1, a: 1}
+  m_Intensity: 0
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -6377,18 +6377,18 @@ MonoBehaviour:
     serializedVersion: 2
     key0: {r: 0.07, g: 0.1, b: 0.18, a: 1}
     key1: {r: 1, g: 0.3804348, b: 0, a: 1}
-    key2: {r: 1, g: 0.5803922, b: 0.29803923, a: 0}
-    key3: {r: 1, g: 0.38039216, b: 0, a: 0}
-    key4: {r: 0.07, g: 0.1, b: 0.18, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
+    key2: {r: 1, g: 1, b: 1, a: 0}
+    key3: {r: 1, g: 1, b: 1, a: 0}
+    key4: {r: 1, g: 0.38039216, b: 0, a: 0}
+    key5: {r: 0.07, g: 0.1, b: 0.18, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
     ctime1: 15227
-    ctime2: 32768
-    ctime3: 49807
-    ctime4: 65535
-    ctime5: 0
+    ctime2: 21588
+    ctime3: 43176
+    ctime4: 49807
+    ctime5: 65535
     ctime6: 0
     ctime7: 0
     atime0: 0
@@ -6401,7 +6401,7 @@ MonoBehaviour:
     atime7: 0
     m_Mode: 0
     m_ColorSpace: -1
-    m_NumColorKeys: 5
+    m_NumColorKeys: 6
     m_NumAlphaKeys: 2
   _lightIntensityOverDay:
     serializedVersion: 2
@@ -6479,11 +6479,11 @@ MonoBehaviour:
   _year: 2026
   _month: 4
   _day: 1
-  _timeOfDayMinutes: 1105
+  _timeOfDayMinutes: 688
   _playOnAwake: 1
   _dayDurationMinutes: 5
   _timeScaleMultiplier: 1
-  _baseIntensity: 1
+  _baseIntensity: 1.8
   _disableLightAtNight: 1
   _nightDisableThreshold: -4
   _driveSkyboxMaterial: 1
@@ -6492,19 +6492,19 @@ MonoBehaviour:
     key0: {r: 0.02, g: 0.03, b: 0.07, a: 1}
     key1: {r: 0.18, g: 0.22, b: 0.38, a: 1}
     key2: {r: 0.9, g: 0.46, b: 0.28, a: 0}
-    key3: {r: 0.25, g: 0.49, b: 0.84, a: 0}
-    key4: {r: 0.92, g: 0.48, b: 0.3, a: 0}
-    key5: {r: 0.18, g: 0.22, b: 0.38, a: 0}
-    key6: {r: 0.02, g: 0.03, b: 0.07, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0.11764706, g: 0.3137255, b: 0.6039216, a: 0}
+    key4: {r: 0.116767526, g: 0.3148167, b: 0.6037736, a: 0}
+    key5: {r: 0.92, g: 0.48, b: 0.3, a: 0}
+    key6: {r: 0.18, g: 0.22, b: 0.38, a: 0}
+    key7: {r: 0.02, g: 0.03, b: 0.07, a: 0}
     ctime0: 0
     ctime1: 14418
     ctime2: 17039
-    ctime3: 32768
-    ctime4: 48496
-    ctime5: 51117
-    ctime6: 65535
-    ctime7: 0
+    ctime3: 23130
+    ctime4: 41441
+    ctime5: 48496
+    ctime6: 51117
+    ctime7: 65535
     atime0: 0
     atime1: 65535
     atime2: 0
@@ -6515,7 +6515,7 @@ MonoBehaviour:
     atime7: 0
     m_Mode: 0
     m_ColorSpace: -1
-    m_NumColorKeys: 7
+    m_NumColorKeys: 8
     m_NumAlphaKeys: 2
   _horizonColorOverDay:
     serializedVersion: 2
@@ -6790,11 +6790,11 @@ MonoBehaviour:
     m_RotationOrder: 4
   _horizonSunIntensityMultiplier: 1.15
   _horizonSunFalloffMultiplier: 0.55
-  _currentElevation: -3.2859254
-  _currentAzimuth: 273.56372
-  _currentDaylightFactor: 0.22617288
-  _currentSunDirection: {x: -0.9964254, y: -0.05731878, z: 0.062056467}
-  _currentLocalTimeLabel: 18:25
+  _currentElevation: 66.73341
+  _currentAzimuth: 31.592718
+  _currentDaylightFactor: 1
+  _currentSunDirection: {x: 0.2069368, y: 0.9186769, z: 0.3364668}
+  _currentLocalTimeLabel: 11:28
   _playbackState: 0
 --- !u!114 &1825588345
 MonoBehaviour:
@@ -6835,8 +6835,8 @@ Light:
   m_Enabled: 1
   serializedVersion: 12
   m_Type: 1
-  m_Color: {r: 0.97149855, g: 0.37179905, b: 0.005516411, a: 1}
-  m_Intensity: 0.00091173715
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 1.7743068
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -6898,7 +6898,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1825588343}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.019633384, y: 0.7284523, z: 0.020894174, w: 0.6844964}
+  m_LocalRotation: {x: -0.1497193, y: 0.8036277, z: -0.5292251, w: -0.22734857}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
