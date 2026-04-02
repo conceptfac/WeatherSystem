@@ -136,11 +136,11 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: MoonBanners_0
+      name: Moon_WaningCrescent
       rect:
         serializedVersion: 2
         x: 0
-        y: 832
+        y: 831
         width: 1024
         height: 192
       alignment: 0
@@ -158,7 +158,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MoonBanners_1
+      name: Moon_NewMoon
       rect:
         serializedVersion: 2
         x: 0
@@ -180,7 +180,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MoonBanners_2
+      name: Moon_FullMoon
       rect:
         serializedVersion: 2
         x: 0
@@ -202,7 +202,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MoonBanners_3
+      name: Moon_WaxingCrescent
       rect:
         serializedVersion: 2
         x: 0
@@ -261,11 +261,11 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":1024.0,"y":192.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":true,"isAlternate":false}'
     nameFileIdTable:
-      MoonBanners_0: -668339033
-      MoonBanners_1: -1562149067
-      MoonBanners_2: 1777850828
-      MoonBanners_3: 268586001
       MoonBanners_4: 1315711314
+      Moon_FullMoon: 1777850828
+      Moon_NewMoon: -1562149067
+      Moon_WaningCrescent: -668339033
+      Moon_WaxingCrescent: 268586001
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

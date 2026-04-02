@@ -1,0 +1,370 @@
+.cfw-lunar-root {
+    background-color: rgb(13, 18, 25);
+}
+
+.cfw-lunar-hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 88px;
+    margin-bottom: 12px;
+    background-color: rgb(26, 33, 43);
+    border-left-color: rgba(255, 198, 104, 0.45);
+    border-right-color: rgba(255, 198, 104, 0.18);
+    border-top-color: rgba(255, 198, 104, 0.18);
+    border-bottom-color: rgba(255, 198, 104, 0.28);
+}
+
+.cfw-lunar-hero__banner {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.45;
+}
+
+.cfw-lunar-hero__veil {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(26, 33, 43, 0.18);
+}
+
+.cfw-lunar-hero__content {
+    position: relative;
+    flex-direction: row;
+    align-items: center;
+}
+
+.cfw-lunar-hero__phase-title {
+    position: absolute;
+    right: 10px;
+    width: 33%;
+    min-width: 150px;
+    max-width: 240px;
+    opacity: 0.9;
+    bottom: 0;
+    margin-bottom: 4px;
+    height: 18px;
+    max-height: 18px;
+}
+
+.cfw-lunar-hero__phase-title-image {
+    width: 100%;
+    height: 100%;
+}
+
+.cfw-lunar-hero__glyph {
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+    width: 56px;
+    height: 56px;
+}
+
+.cfw-lunar-hero__text {
+    flex-grow: 1;
+}
+
+.cfw-lunar-hero__status {
+    margin-top: 6px;
+    color: rgba(255, 245, 224, 0.95);
+    font-size: 10px;
+    -unity-font-style: bold;
+    background-color: rgba(18, 24, 32, 0.4);
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    align-self: flex-start;
+}
+
+.cfw-lunar-grid {
+    flex-direction: column;
+}
+
+.cfw-card {
+    position: relative;
+    margin-top: 0;
+    margin-bottom: 10px;
+    padding-top: 12px;
+    padding-right: 12px;
+    padding-bottom: 36px;
+    padding-left: 12px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-color: rgba(255, 255, 255, 0.05);
+    border-bottom-color: rgba(255, 255, 255, 0.05);
+    border-left-color: rgba(255, 255, 255, 0.05);
+    border-right-color: rgba(255, 255, 255, 0.05);
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+    background-color: rgba(255, 255, 255, 0.04);
+}
+
+.cfw-card--highlight {
+    background-color: rgba(255, 190, 92, 0.08);
+    border-top-color: rgba(255, 190, 92, 0.22);
+    border-bottom-color: rgba(255, 190, 92, 0.22);
+    border-left-color: rgba(255, 190, 92, 0.22);
+    border-right-color: rgba(255, 190, 92, 0.22);
+}
+
+.cfw-card--debug {
+    background-color: rgba(126, 174, 255, 0.06);
+}
+
+.cfw-card__title {
+    margin-bottom: 4px;
+    color: rgb(240, 243, 247);
+    font-size: 13px;
+}
+
+.cfw-card__note {
+    margin-bottom: 8px;
+    color: rgba(214, 220, 227, 0.72);
+}
+
+.cfw-card__header-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cfw-location-feedback {
+    max-width: 190px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    color: rgb(255, 241, 214);
+    background-color: rgba(255, 198, 104, 0.14);
+    -unity-text-align: middle-right;
+    font-size: 10px;
+    -unity-font-style: bold;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.cfw-location-feedback--clickable:hover {
+    background-color: rgba(255, 198, 104, 0.26);
+}
+
+.cfw-location-search-host {
+    display: none;
+    position: absolute;
+    top: 38px;
+    right: 12px;
+    width: 306px;
+    max-width: 306px;
+}
+
+.cfw-location-search-host--open {
+    display: flex;
+}
+
+.cfw-card .fields {
+    margin-left: 0;
+}
+
+.cfw-card PropertyField {
+    margin-bottom: 4px;
+}
+
+.cfw-card PropertyField.cfw-curve-field {
+    margin-top: 4px;
+    margin-bottom: 8px;
+    min-height: 56px;
+}
+
+.cfw-date-popup-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 6px;
+    margin-bottom: 10px;
+}
+
+.cfw-date-popup-button {
+    min-width: 132px;
+    padding-top: 6px;
+    padding-right: 10px;
+    padding-bottom: 6px;
+    padding-left: 10px;
+    color: rgb(22, 17, 10);
+    background-color: rgb(255, 198, 104);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    -unity-font-style: bold;
+}
+
+.cfw-date-popup-button--secondary {
+    min-width: 74px;
+    margin-left: 6px;
+    color: rgb(238, 241, 246);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.cfw-date-popup-summary {
+    display: none;
+    color: rgba(240, 243, 247, 0.85);
+    font-size: 12px;
+    -unity-font-style: bold;
+}
+
+.cfw-time-row {
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.cfw-time-row__field {
+    flex-grow: 1;
+}
+
+.cfw-time-step-button {
+    width: 24px;
+    min-width: 24px;
+    height: 22px;
+    margin-left: 4px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    color: rgb(238, 241, 246);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.cfw-digital-time {
+    position: absolute;
+    right: 12px;
+    bottom: 6px;
+    color: rgb(255, 226, 173);
+    font-size: 16px;
+    -unity-font-style: bold;
+    -unity-text-align: lower-right;
+}
+
+.cfw-transport-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 4px;
+    margin-bottom: 10px;
+}
+
+.cfw-transport-button {
+    min-width: 72px;
+    margin-right: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    -unity-font-style: bold;
+}
+
+.cfw-transport-button--play {
+    color: rgb(20, 29, 16);
+    background-color: rgb(160, 220, 122);
+}
+
+.cfw-transport-button--pause {
+    color: rgb(41, 27, 9);
+    background-color: rgb(255, 209, 116);
+}
+
+.cfw-transport-button--stop {
+    color: rgb(38, 15, 15);
+    background-color: rgb(237, 141, 141);
+}
+
+.cfw-lunar-phase__name {
+    margin-top: 4px;
+    color: rgb(240, 243, 247);
+    font-size: 18px;
+    -unity-font-style: bold;
+}
+
+.cfw-lunar-phase__metrics {
+    margin-top: 4px;
+    color: rgba(240, 243, 247, 0.85);
+    font-size: 12px;
+    -unity-font-style: bold;
+}
+
+.cfw-lunar-phase__hint {
+    margin-top: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    color: rgba(200, 200, 200, 0.8);
+    background-color: rgba(32, 38, 43, 0.65);
+    border-left-width: 2px;
+    border-left-color: rgba(122, 150, 164, 0.9);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    white-space: normal;
+}
+
+.cfw-subsection {
+    margin-top: 12px;
+    margin-bottom: 6px;
+    padding-top: 6px;
+    border-top-width: 1px;
+    border-top-color: rgba(255, 255, 255, 0.08);
+    color: rgba(240, 243, 247, 0.94);
+    font-size: 11px;
+    -unity-font-style: bold;
+}
+
+.cfw-subsection--first {
+    margin-top: 4px;
+    padding-top: 0;
+    border-top-width: 0;
+}
+
+.cfw-subsection-note {
+    margin-top: -2px;
+    margin-bottom: 8px;
+    color: rgba(214, 220, 227, 0.62);
+    font-size: 10px;
+}

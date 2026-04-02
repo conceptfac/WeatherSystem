@@ -98,6 +98,8 @@ namespace ConceptFactory.Weather.Editor.Location
             "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat={0}&lon={1}&zoom=10&addressdetails=1&accept-language=en";
         private const string SearchEndpointTemplate =
             "https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit={0}&accept-language=en&q={1}";
+        private const string ElevationEndpointTemplate =
+            "https://api.open-meteo.com/v1/elevation?latitude={0}&longitude={1}";
 
         public async Task<WeatherLocationLookupResult> ReverseGeocodeAsync(float latitude, float longitude, CancellationToken cancellationToken)
         {
@@ -199,7 +201,9 @@ namespace ConceptFactory.Weather.Editor.Location
                 }
             }
 
-            return CompactResults(results, resultCount);
+            WeatherLocationSearchResult[] compacted = CompactResults(results, resultCount);
+            await PopulateAltitudesAsync(compacted, cancellationToken);
+            return compacted;
         }
 
         private static async Task<string> SendRequestAsync(string url, CancellationToken cancellationToken)
@@ -221,6 +225,47 @@ namespace ConceptFactory.Weather.Editor.Location
             }
 
             return request.downloadHandler.text;
+        }
+
+        private static async Task PopulateAltitudesAsync(WeatherLocationSearchResult[] results, CancellationToken cancellationToken)
+        {
+            if (results == null || results.Length == 0)
+            {
+                return;
+            }
+
+            string[] latitudeValues = new string[results.Length];
+            string[] longitudeValues = new string[results.Length];
+            for (int index = 0; index < results.Length; index++)
+            {
+                WeatherLocationSearchResult result = results[index];
+                latitudeValues[index] = result.Latitude.ToString(CultureInfo.InvariantCulture);
+                longitudeValues[index] = result.Longitude.ToString(CultureInfo.InvariantCulture);
+            }
+
+            string url = string.Format(
+                CultureInfo.InvariantCulture,
+                ElevationEndpointTemplate,
+                string.Join(",", latitudeValues),
+                string.Join(",", longitudeValues));
+
+            string payload = await SendRequestAsync(url, cancellationToken);
+            if (string.IsNullOrWhiteSpace(payload))
+            {
+                return;
+            }
+
+            ElevationResponse response = JsonUtility.FromJson<ElevationResponse>(payload);
+            if (response?.elevation == null || response.elevation.Length == 0)
+            {
+                return;
+            }
+
+            int count = Mathf.Min(results.Length, response.elevation.Length);
+            for (int index = 0; index < count; index++)
+            {
+                results[index].AltitudeMeters = response.elevation[index];
+            }
         }
 
         private static string FirstNonEmpty(params string[] values)
@@ -337,6 +382,12 @@ namespace ConceptFactory.Weather.Editor.Location
         }
 
         [Serializable]
+        private sealed class ElevationResponse
+        {
+            public float[] elevation;
+        }
+
+        [Serializable]
         private sealed class ReverseGeocodeAddress
         {
             public string city;
@@ -375,18 +426,20 @@ namespace ConceptFactory.Weather.Editor.Location
 
     public sealed class WeatherLocationSearchResult
     {
-        public WeatherLocationSearchResult(string shortLabel, string fullLabel, float latitude, float longitude)
+        public WeatherLocationSearchResult(string shortLabel, string fullLabel, float latitude, float longitude, float altitudeMeters = 0f)
         {
             ShortLabel = shortLabel;
             FullLabel = fullLabel;
             Latitude = latitude;
             Longitude = longitude;
+            AltitudeMeters = altitudeMeters;
         }
 
         public string ShortLabel { get; }
         public string FullLabel { get; }
         public float Latitude { get; }
         public float Longitude { get; }
+        public float AltitudeMeters { get; set; }
     }
 
     internal static class WeatherLocationSearchTextUtility

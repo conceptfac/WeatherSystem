@@ -126,7 +126,7 @@ namespace ConceptFactory.Weather
         [Tooltip("Brightness of the border halo around the moon.")]
         [SerializeField] private float _borderHaloIntensity = 0.04f;
 
-        [Tooltip("Inner start of the border halo relative to the moon edge.")]
+        [Tooltip("Inner start of the border halo, where 0 starts at the moon center and 1 reaches the moon edge.")]
         [SerializeField] private float _borderHaloInnerSize = 0f;
 
         [Tooltip("Outer reach of the border halo beyond the moon edge.")]
@@ -316,7 +316,7 @@ namespace ConceptFactory.Weather
             _currentAzimuth = CurrentLunarData.AzimuthDegrees;
             _currentIlluminationFraction = CurrentLunarData.IlluminationFraction;
             _currentLunarAgeDays = CurrentLunarData.LunarAgeDays;
-            _currentPhase = GetPhase(CurrentLunarData.LunarAgeDays);
+            _currentPhase = GetPhase(CurrentLunarData.PhaseAngleDegrees, CurrentLunarData.IlluminationFraction);
             _currentPhaseLabel = GetPhaseLabel(_currentPhase);
             _isMoonRising = EvaluateIsMoonRising();
 
@@ -447,7 +447,8 @@ namespace ConceptFactory.Weather
                 return;
             }
 
-            float phaseIntensity = Mathf.Lerp(_minimumPhaseLight, 1f, _currentIlluminationFraction);
+            GetSkyboxPhasePreset(_currentPhase, out float skyboxPhaseAngle, out float skyboxIllumination);
+            float phaseIntensity = Mathf.Lerp(_minimumPhaseLight, 1f, skyboxIllumination);
             float horizonIllusion = EvaluateHorizonIllusionFactor();
             float altitudeAtmosphereFactor = EvaluateAltitudeAtmosphereFactor();
             float altitudeClarity = 1f + (_altitudeClarityBoost * altitudeAtmosphereFactor);
@@ -466,8 +467,8 @@ namespace ConceptFactory.Weather
             Shader.SetGlobalFloat(WeatherMoonIntensityShaderId, moonIntensity);
             Shader.SetGlobalFloat(WeatherMoonFalloffShaderId, moonFalloff);
             Shader.SetGlobalFloat(WeatherMoonSizeShaderId, moonSize);
-            Shader.SetGlobalFloat(WeatherMoonPhaseAngleShaderId, CurrentLunarData.PhaseAngleDegrees);
-            Shader.SetGlobalFloat(WeatherMoonIlluminationShaderId, _currentIlluminationFraction);
+            Shader.SetGlobalFloat(WeatherMoonPhaseAngleShaderId, skyboxPhaseAngle);
+            Shader.SetGlobalFloat(WeatherMoonIlluminationShaderId, skyboxIllumination);
             Shader.SetGlobalFloat(WeatherMoonTextureExposureShaderId, _moonTextureExposure);
             Shader.SetGlobalFloat(WeatherMoonDarkTextureExposureShaderId, _darkMoonTextureExposure);
             Shader.SetGlobalFloat(WeatherMoonTerminatorSoftnessShaderId, _terminatorSoftness);
@@ -655,39 +656,80 @@ namespace ConceptFactory.Weather
             return futureData.ApparentElevationDegrees > _currentElevation;
         }
 
-        private static MoonPhase GetPhase(float lunarAgeDays)
+        private static void GetSkyboxPhasePreset(MoonPhase phase, out float phaseAngleDegrees, out float illuminationFraction)
         {
-            if (lunarAgeDays < 1.5f || lunarAgeDays >= 28f)
+            switch (phase)
+            {
+                case MoonPhase.NewMoon:
+                    phaseAngleDegrees = 0f;
+                    illuminationFraction = 0f;
+                    break;
+                case MoonPhase.WaxingCrescent:
+                    phaseAngleDegrees = 45f;
+                    illuminationFraction = 0.25f;
+                    break;
+                case MoonPhase.FirstQuarter:
+                    phaseAngleDegrees = 90f;
+                    illuminationFraction = 0.5f;
+                    break;
+                case MoonPhase.WaxingGibbous:
+                    phaseAngleDegrees = 135f;
+                    illuminationFraction = 0.75f;
+                    break;
+                case MoonPhase.FullMoon:
+                    phaseAngleDegrees = 180f;
+                    illuminationFraction = 1f;
+                    break;
+                case MoonPhase.WaningGibbous:
+                    phaseAngleDegrees = 225f;
+                    illuminationFraction = 0.75f;
+                    break;
+                case MoonPhase.LastQuarter:
+                    phaseAngleDegrees = 270f;
+                    illuminationFraction = 0.5f;
+                    break;
+                default:
+                    phaseAngleDegrees = 315f;
+                    illuminationFraction = 0.25f;
+                    break;
+            }
+        }
+
+        private static MoonPhase GetPhase(float phaseAngleDegrees, float illuminationFraction)
+        {
+            float normalizedPhaseAngle = Mathf.Repeat(phaseAngleDegrees, 360f);
+
+            if (illuminationFraction <= 0.12f || normalizedPhaseAngle < 22.5f || normalizedPhaseAngle >= 337.5f)
             {
                 return MoonPhase.NewMoon;
             }
 
-            if (lunarAgeDays < 6.5f)
-            {
-                return MoonPhase.WaxingCrescent;
-            }
-
-            if (lunarAgeDays < 8.5f)
-            {
-                return MoonPhase.FirstQuarter;
-            }
-
-            if (lunarAgeDays < 13.5f)
-            {
-                return MoonPhase.WaxingGibbous;
-            }
-
-            if (lunarAgeDays < 16.5f)
+            if (illuminationFraction >= 0.88f || (normalizedPhaseAngle >= 157.5f && normalizedPhaseAngle < 202.5f))
             {
                 return MoonPhase.FullMoon;
             }
 
-            if (lunarAgeDays < 21.5f)
+            if (normalizedPhaseAngle < 67.5f)
+            {
+                return MoonPhase.WaxingCrescent;
+            }
+
+            if (normalizedPhaseAngle < 112.5f)
+            {
+                return MoonPhase.FirstQuarter;
+            }
+
+            if (normalizedPhaseAngle < 157.5f)
+            {
+                return MoonPhase.WaxingGibbous;
+            }
+
+            if (normalizedPhaseAngle < 247.5f)
             {
                 return MoonPhase.WaningGibbous;
             }
 
-            if (lunarAgeDays < 23.5f)
+            if (normalizedPhaseAngle < 292.5f)
             {
                 return MoonPhase.LastQuarter;
             }
