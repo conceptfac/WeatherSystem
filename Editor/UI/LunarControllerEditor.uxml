@@ -1,0 +1,88 @@
+﻿<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Packages/com.conceptfactory.weather/Editor/UI/ConceptFactoryComponentInspectorTemplate.uss?fileID=7433441132597879392&amp;guid=3c25bbe269954304f8a222c3c24c084b&amp;type=3#ConceptFactoryComponentInspectorTemplate"/>
+    <Style src="project://database/Packages/com.conceptfactory.weather/Editor/UI/LunarControllerEditor.uss"/>
+    <ui:VisualElement class="root cfw-lunar-root">
+        <ui:VisualElement name="Header" class="hero cfw-lunar-hero">
+            <ui:Image name="heroBanner" class="cfw-lunar-hero__banner" scale-mode="scale-and-crop"/>
+            <ui:VisualElement name="heroMoonTitle" class="cfw-lunar-hero__phase-title">
+                <ui:Image name="heroMoonTitleImage" class="cfw-lunar-hero__phase-title-image" scale-mode="scale-to-fit"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="cfw-lunar-hero__veil"/>
+            <ui:VisualElement class="cfw-lunar-hero__content">
+                <ui:VisualElement name="heroGlyph" class="hero-icon cfw-lunar-hero__glyph"/>
+                <ui:VisualElement class="hero-text cfw-lunar-hero__text">
+                    <ui:Label text="Lunar Controller" class="hero-title"/>
+                    <ui:Label text="Astronomical moonlight, sky disk control and phase-aware night rendering." class="hero-subtitle"/>
+                    <ui:Label name="heroStatus" text="Assign a Weather Solar Controller to drive date, time and location" class="cfw-lunar-hero__status"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement class="cfw-lunar-grid">
+            <ui:VisualElement name="dateTimeCard" class="section cfw-card cfw-card--highlight">
+                <ui:Label text="Date &amp; Time" class="section-title cfw-card__title"/>
+                <ui:Label text="This panel edits the linked Weather Solar Controller directly." class="inline-note cfw-card__note"/>
+                <ui:VisualElement class="cfw-date-popup-row">
+                    <ui:Button name="openDatePickerButton" text="30 Marco" class="cfw-date-popup-button"/>
+                    <ui:Button name="setTodayButton" text="Today" class="cfw-date-popup-button cfw-date-popup-button--secondary"/>
+                    <ui:Label name="dateSummaryLabel" text="30 Marco" class="cfw-date-popup-summary"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="timeFields" class="fields"/>
+                <ui:Label name="digitalTimeLabel" text="12:00" class="cfw-digital-time"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="simulationCard" class="section cfw-card">
+                <ui:Label text="Simulation" class="section-title cfw-card__title"/>
+                <ui:Label text="Playback controls and duration are mirrored from the linked solar controller." class="inline-note cfw-card__note"/>
+                <ui:VisualElement name="simulationTransportRow" class="cfw-transport-row">
+                    <ui:Button name="playSimulationButton" text="Play" class="cfw-transport-button cfw-transport-button--play"/>
+                    <ui:Button name="pauseSimulationButton" text="Pause" class="cfw-transport-button cfw-transport-button--pause"/>
+                    <ui:Button name="stopSimulationButton" text="Stop" class="cfw-transport-button cfw-transport-button--stop"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="simulationFields" class="fields"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="locationCard" class="section cfw-card">
+                <ui:VisualElement class="cfw-card__header-row">
+                    <ui:Label text="Location" class="section-title cfw-card__title"/>
+                    <ui:Label name="locationFeedbackLabel" text="Resolving..." class="cfw-location-feedback"/>
+                </ui:VisualElement>
+                <ui:Label text="Latitude, longitude, UTC and altitude are edited on the linked solar controller." class="inline-note cfw-card__note"/>
+                <ui:VisualElement name="locationFields" class="fields"/>
+                <ui:VisualElement name="locationSearchPopupHost" class="cfw-location-search-host"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="referencesCard" class="section cfw-card">
+                <ui:Label text="References" class="section-title cfw-card__title"/>
+                <ui:Label text="Scene references and transform overrides for the moon light source." class="inline-note cfw-card__note"/>
+                <ui:VisualElement name="referenceFields" class="fields"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="lightCard" class="section cfw-card">
+                <ui:Label text="Light Output" class="section-title cfw-card__title"/>
+                <ui:Label text="Night-time intensity, visibility thresholds and phase-based light shaping." class="inline-note cfw-card__note"/>
+                <ui:VisualElement name="lightFields" class="fields"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="skyCard" class="section cfw-card">
+                <ui:Label text="Sky Disk &amp; Textures" class="section-title cfw-card__title"/>
+                <ui:Label text="Moon disk rendering, texture exposure and dusk or dawn fade behavior." class="inline-note cfw-card__note"/>
+                <ui:VisualElement name="skyFields" class="fields"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="haloCard" class="section cfw-card">
+                <ui:Label text="Halo Layers" class="section-title cfw-card__title"/>
+                <ui:Label text="Control the soft atmospheric glow and the sharper edge accent separately." class="inline-note cfw-card__note"/>
+                <ui:VisualElement name="haloFields" class="fields"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="horizonCard" class="section cfw-card">
+                <ui:Label text="Horizon Illusion" class="section-title cfw-card__title"/>
+                <ui:Label text="Perceptual size and tint boosts for moonrise and moonset moments." class="inline-note cfw-card__note"/>
+                <ui:VisualElement name="horizonFields" class="fields"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="altitudeCard" class="section cfw-card">
+                <ui:Label text="Altitude Atmosphere" class="section-title cfw-card__title"/>
+                <ui:Label text="Higher-altitude clarity and warm-tint reduction for cleaner mountain skies." class="inline-note cfw-card__note"/>
+                <ui:VisualElement name="altitudeFields" class="fields"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="debugCard" class="section cfw-card cfw-card--debug">
+                <ui:Label text="Debug Readout" class="section-title cfw-card__title"/>
+                <ui:Label text="Live lunar diagnostics for validating phase, age and sky-facing state." class="inline-note cfw-card__note"/>
+                <ui:VisualElement name="debugFields" class="fields"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

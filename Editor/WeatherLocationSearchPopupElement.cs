@@ -183,6 +183,7 @@ namespace ConceptFactory.Weather.Editor
 
             SerializedProperty latitude = _serializedObject.FindProperty("_latitude");
             SerializedProperty longitude = _serializedObject.FindProperty("_longitude");
+            SerializedProperty altitude = _serializedObject.FindProperty("_altitudeMeters");
             if (latitude != null)
             {
                 latitude.floatValue = result.Latitude;
@@ -191,6 +192,11 @@ namespace ConceptFactory.Weather.Editor
             if (longitude != null)
             {
                 longitude.floatValue = result.Longitude;
+            }
+
+            if (altitude != null)
+            {
+                altitude.floatValue = result.AltitudeMeters;
             }
 
             _serializedObject.ApplyModifiedProperties();

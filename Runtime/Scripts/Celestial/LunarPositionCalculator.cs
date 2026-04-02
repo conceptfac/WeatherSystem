@@ -52,8 +52,8 @@ namespace ConceptFactory.Weather
             double azimuthDegrees = RepeatDegrees((azimuthRadians * RadiansToDegrees) + 180.0);
 
             IlluminationData illumination = CalculateIllumination(moonCoordinates, sunCoordinates);
-            double phaseAngleDegrees = RepeatDegrees(illumination.PhaseAngleRadians * RadiansToDegrees);
-            double lunarAgeDays = (phaseAngleDegrees / 360.0) * SynodicMonthDays;
+            double phaseDegrees = RepeatDegrees(illumination.ShaderPhaseAngleRadians * RadiansToDegrees);
+            double lunarAgeDays = illumination.PhaseFraction * SynodicMonthDays;
 
             Vector3 moonDirection = SolarPositionCalculator.ToUnitySunDirection(azimuthDegrees, apparentElevationDegrees);
 
@@ -65,7 +65,7 @@ namespace ConceptFactory.Weather
                 (float)(declinationRadians * RadiansToDegrees),
                 (float)(hourAngleRadians * RadiansToDegrees),
                 Mathf.Clamp01((float)illumination.IlluminationFraction),
-                (float)phaseAngleDegrees,
+                (float)phaseDegrees,
                 (float)lunarAgeDays);
         }
 
@@ -118,10 +118,12 @@ namespace ConceptFactory.Weather
                  Math.Cos(sunCoordinates.RightAscensionRadians - moonCoordinates.RightAscensionRadians)));
 
             double illuminationFraction = (1.0 + Math.Cos(inc)) * 0.5;
-            double phaseAngleRadians = RepeatRadians(0.5 - (0.5 * inc * Math.Sign(angle)) + Math.PI) - Math.PI;
-            phaseAngleRadians = RepeatRadians(phaseAngleRadians);
+            double phaseFraction = 0.5 + (0.5 * inc * Math.Sign(angle) / Math.PI);
+            phaseFraction -= Math.Floor(phaseFraction);
+            double shaderPhaseAngleRadians = RepeatRadians(0.5 - (0.5 * inc * Math.Sign(angle)) + Math.PI) - Math.PI;
+            shaderPhaseAngleRadians = RepeatRadians(shaderPhaseAngleRadians);
 
-            return new IlluminationData(illuminationFraction, phaseAngleRadians);
+            return new IlluminationData(illuminationFraction, phaseFraction, shaderPhaseAngleRadians);
         }
 
         private static double RightAscension(double eclipticLongitudeRadians, double eclipticLatitudeRadians)
@@ -257,14 +259,16 @@ namespace ConceptFactory.Weather
 
         private readonly struct IlluminationData
         {
-            public IlluminationData(double illuminationFraction, double phaseAngleRadians)
+            public IlluminationData(double illuminationFraction, double phaseFraction, double shaderPhaseAngleRadians)
             {
                 IlluminationFraction = illuminationFraction;
-                PhaseAngleRadians = phaseAngleRadians;
+                PhaseFraction = phaseFraction;
+                ShaderPhaseAngleRadians = shaderPhaseAngleRadians;
             }
 
             public double IlluminationFraction { get; }
-            public double PhaseAngleRadians { get; }
+            public double PhaseFraction { get; }
+            public double ShaderPhaseAngleRadians { get; }
         }
     }
 }

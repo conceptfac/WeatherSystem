@@ -920,6 +920,7 @@ namespace ConceptFactory.Weather.Editor
 
                 SerializedObject controllerObject = new SerializedObject(controller);
                 controllerObject.Update();
+                controllerObject.FindProperty("_year").intValue = today.Year;
                 controllerObject.FindProperty("_month").intValue = today.Month;
                 controllerObject.FindProperty("_day").intValue = today.Day;
                 controllerObject.FindProperty("_utcOffsetHours").floatValue = machineOption.OffsetHours;
@@ -945,9 +946,10 @@ namespace ConceptFactory.Weather.Editor
 
             serializedObject.Update();
 
+            SerializedProperty year = serializedObject.FindProperty("_year");
             SerializedProperty day = serializedObject.FindProperty("_day");
             SerializedProperty month = serializedObject.FindProperty("_month");
-            if (day == null || month == null)
+            if (year == null || day == null || month == null)
             {
                 return;
             }
@@ -969,7 +971,7 @@ namespace ConceptFactory.Weather.Editor
             };
 
             int monthIndex = Mathf.Clamp(month.intValue, 1, 12) - 1;
-            string dateText = day.intValue.ToString("00") + " " + monthNames[monthIndex];
+            string dateText = day.intValue.ToString("00") + " " + monthNames[monthIndex] + " " + year.intValue;
             _dateSummaryLabel.text = dateText;
 
             if (_openDatePickerButton != null)

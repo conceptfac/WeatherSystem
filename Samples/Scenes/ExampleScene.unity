@@ -4799,7 +4799,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 542d55b84dd82ff48a1acbaa416ad79c, type: 2}
+  - {fileID: 2100000, guid: 1d7b13cda68a0c540a9bd478e2e59ea7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4985,7 +4985,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1386017362}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.035161555, y: -0.6716094, z: 0.031938646, w: 0.7393811}
+  m_LocalRotation: {x: 0.20594712, y: -0.6151532, z: 0.17082903, w: 0.741613}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5106,13 +5106,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _baseIntensity: 2
+  _baseIntensity: 1
   _disableLightBelowHorizon: 1
   _horizonDisableThreshold: -2
   _daylightFadeStrength: 1.6
   _minimumPhaseLight: 1
   _driveSkyboxMaterial: 1
-  _skyboxMoonIntensity: 1
+  _skyboxMoonIntensity: 0.7
   _skyboxMoonFalloff: 1598.1
   _skyboxMoonSize: 7
   _moonTexture: {fileID: 2800000, guid: ba97925127066a6429851b2aa2aa70e6, type: 3}
@@ -5121,7 +5121,7 @@ MonoBehaviour:
   _moonTextureExposure: 2
   _darkMoonTextureExposure: 1.5
   _terminatorSoftness: 0.08
-  _darkSideVisibility: 1
+  _darkSideVisibility: 3.8
   _daylightShadowFadeStart: -15
   _daylightShadowFadeRange: 1.5
   _daylightLitMoonFadeStart: -6
@@ -5129,17 +5129,17 @@ MonoBehaviour:
   _duskLitMoonSuppression: 0.55
   _moonHaloColor: {r: 0.72, g: 0.82, b: 1, a: 1}
   _moonHaloIntensity: 0.15
-  _moonHaloInnerSize: -1.1
+  _moonHaloInnerSize: 0.15
   _moonHaloOuterSize: 0.49
   _moonHaloTerminator: 3.02
   _borderHaloColor: {r: 0.72, g: 0.82, b: 1, a: 1}
-  _borderHaloIntensity: 0
-  _borderHaloInnerSize: -0.3
-  _borderHaloOuterSize: -0.4
-  _borderHaloTerminator: 0.33
+  _borderHaloIntensity: 0.4
+  _borderHaloInnerSize: 0.5
+  _borderHaloOuterSize: 0.52
+  _borderHaloTerminator: 20
   _enableHorizonMoonIllusion: 1
   _horizonIllusionMaxElevation: 22
-  _horizonMoonSizeMultiplier: 1.65
+  _horizonMoonSizeMultiplier: 1
   _moonRiseSizeCurve:
     serializedVersion: 2
     m_Curve:
@@ -5199,13 +5199,13 @@ MonoBehaviour:
   _altitudeAtmosphereMaxMeters: 3000
   _altitudeWarmTintReduction: 0.4
   _altitudeClarityBoost: 0.14
-  _currentElevation: 5.4453435
-  _currentAzimuth: 95.49975
-  _currentIlluminationFraction: 0.99954283
-  _currentMoonDirection: {x: 0.99090457, y: 0.09489617, z: -0.0954089}
-  _currentLunarAgeDays: 2.450471
-  _currentPhaseLabel: Waxing Crescent
-  _currentPhase: 1
+  _currentElevation: 31.040115
+  _currentAzimuth: 100.64994
+  _currentIlluminationFraction: 0.2915218
+  _currentMoonDirection: {x: 0.8420477, y: 0.5156381, z: -0.15834473}
+  _currentLunarAgeDays: 24.169357
+  _currentPhaseLabel: Waning Crescent
+  _currentPhase: 7
   _isMoonRising: 1
 --- !u!114 &1386017365
 MonoBehaviour:
@@ -5246,8 +5246,8 @@ Light:
   m_Enabled: 1
   serializedVersion: 12
   m_Type: 1
-  m_Color: {r: 1, g: 0.776, b: 0.525, a: 1}
-  m_Intensity: 0.5748414
+  m_Color: {r: 0.708125, g: 0.76124996, b: 0.9875, a: 1}
+  m_Intensity: 0.739996
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -6478,8 +6478,8 @@ MonoBehaviour:
   _utcOffsetHours: -3
   _year: 2026
   _month: 4
-  _day: 1
-  _timeOfDayMinutes: 1105
+  _day: 12
+  _timeOfDayMinutes: 243
   _playOnAwake: 1
   _dayDurationMinutes: 5
   _timeScaleMultiplier: 1
@@ -6681,8 +6681,8 @@ MonoBehaviour:
   _skyboxSunIntensity: 20
   _skyboxSunFalloff: 5000
   _skyboxSunSize: 1
-  _starSize: 0.8
-  _starDensity: 3
+  _starSize: 0.5
+  _starDensity: 4
   _starColorGradient:
     serializedVersion: 2
     key0: {r: 0.62, g: 0.72, b: 1, a: 1}
@@ -6790,11 +6790,11 @@ MonoBehaviour:
     m_RotationOrder: 4
   _horizonSunIntensityMultiplier: 1.15
   _horizonSunFalloffMultiplier: 0.55
-  _currentElevation: -3.2859254
-  _currentAzimuth: 273.56372
-  _currentDaylightFactor: 0.22617288
-  _currentSunDirection: {x: -0.9964254, y: -0.05731878, z: 0.062056467}
-  _currentLocalTimeLabel: 18:25
+  _currentElevation: -33.335697
+  _currentAzimuth: 90.40994
+  _currentDaylightFactor: 0
+  _currentSunDirection: {x: 0.83544374, y: -0.54954344, z: -0.0059776097}
+  _currentLocalTimeLabel: 04:03
   _playbackState: 0
 --- !u!114 &1825588345
 MonoBehaviour:
@@ -6832,11 +6832,11 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1825588343}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 12
   m_Type: 1
-  m_Color: {r: 0.97149855, g: 0.37179905, b: 0.005516411, a: 1}
-  m_Intensity: 0.00091173715
+  m_Color: {r: 0.74543834, g: 0.30367357, b: 0.049270004, a: 1}
+  m_Intensity: 0
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -6898,7 +6898,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1825588343}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.019633384, y: 0.7284523, z: 0.020894174, w: 0.6844964}
+  m_LocalRotation: {x: -0.20353875, y: -0.674969, z: -0.20208764, w: 0.6798157}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

@@ -278,7 +278,7 @@ MonoBehaviour:
   active: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 0.7
   tintColor:
     m_OverrideState: 1
     m_Value: {r: 1, g: 0.78851277, b: 0.4764151, a: 1}
@@ -287,13 +287,13 @@ MonoBehaviour:
     m_Value: 1
   firstFlareIntensity:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 0.58
   secondaryFlareIntensity:
     m_OverrideState: 1
-    m_Value: 0.15
+    m_Value: 0.34
   warpedFlareIntensity:
     m_OverrideState: 1
-    m_Value: 0.3
+    m_Value: 1
   warpedFlareScale:
     m_OverrideState: 0
     m_Value: {x: 1, y: 1}
@@ -313,23 +313,23 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 1.09
   streaksIntensity:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 0.1
   streaksLength:
-    m_OverrideState: 0
-    m_Value: 0.5
+    m_OverrideState: 1
+    m_Value: 0.059
   streaksOrientation:
     m_OverrideState: 0
     m_Value: 0
   streaksThreshold:
-    m_OverrideState: 0
-    m_Value: 0.25
+    m_OverrideState: 1
+    m_Value: 0
   resolution:
     m_OverrideState: 0
     m_Value: 4
   chromaticAbberationIntensity:
     m_OverrideState: 0
-    m_Value: 0.5
+    m_Value: 1
 --- !u!114 &2765659446367403156
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -370,24 +370,24 @@ MonoBehaviour:
     m_Value: 1
   threshold:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.5
   intensity:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 3
   scatter:
     m_OverrideState: 1
-    m_Value: 0.601
+    m_Value: 0
   clamp:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 65472
   tint:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: {r: 1, g: 0.9, b: 0.78, a: 1}
   highQualityFiltering:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 1
   filter:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   downscale:
     m_OverrideState: 0
