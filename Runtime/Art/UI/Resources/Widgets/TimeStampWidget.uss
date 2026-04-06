@@ -1,0 +1,85 @@
+/* Host do control (VisualElement raiz definido em TimeStampWidget.cs) */
+.timestamp-widget {
+    flex-grow: 1;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.timestamp-widget__root {
+    flex-grow: 1;
+}
+
+.timestamp-widget__bar {
+    flex-grow: 0;
+    width: 1012px;
+    height: 96px;
+    background-image: url("project://database/Packages/com.conceptfactory.weather/Runtime/Art/Sprites/Timestamp.png?fileID=-184108488&guid=653030ce3e858aa4a89fc26fbc7e1702&type=3#Timestamp_0");
+    margin-top: 8px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    margin-left: 8px;
+    padding-top: 0;
+    padding-right: 36px;
+    padding-bottom: 0;
+    padding-left: 0;
+    flex-direction: row-reverse;
+}
+
+.timestamp-widget__time-label {
+    align-self: center;
+    margin-top: 0;
+    margin-right: 48px;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    font-size: 48px;
+    -unity-font-style: bold;
+    -unity-font-definition: url("project://database/Assets/Mapbox/Fonts/OpenSans-Semibold.ttf?fileID=12800000&guid=218956a5c2a6e42d6a60afccf80b002b&type=3#OpenSans-Semibold");
+    color: rgb(255, 247, 225);
+    -unity-text-align: middle-right;
+}
+
+.timestamp-widget__icon {
+    flex-grow: 0;
+    height: 48px;
+    width: 48px;
+    align-self: center;
+    -unity-text-align: middle-right;
+    margin-right: 6px;
+    background-image: url("project://database/Packages/com.conceptfactory.weather/Runtime/Art/Sprites/Timestamp.png?fileID=-499392806&guid=653030ce3e858aa4a89fc26fbc7e1702&type=3#Timestamp_1");
+    -unity-background-image-tint-color: rgb(255, 247, 225);
+}
+
+.timestamp-widget__transport-row {
+    flex-grow: 0;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 64px;
+    margin-right: 64px;
+}
+
+/* Fundo base Arrow2x; em runtime ZaidenMockupInterface pode trocar para Arrow3x/Arrow4x (velocidade do scrub). */
+.timestamp-widget__rewind {
+    flex-grow: 0;
+    height: 72px;
+    background-image: url("project://database/Packages/com.conceptfactory.weather/Runtime/Art/Sprites/Timestamp.png?fileID=-1218393639&guid=653030ce3e858aa4a89fc26fbc7e1702&type=3#Arrow2x");
+    align-self: flex-end;
+    width: 256px;
+    -unity-background-scale-mode: scale-to-fit;
+    scale: -1 1;
+    display: flex;
+    visibility: hidden;
+}
+
+.timestamp-widget__ff {
+    flex-grow: 0;
+    height: 72px;
+    background-image: url("project://database/Packages/com.conceptfactory.weather/Runtime/Art/Sprites/Timestamp.png?fileID=-1218393639&guid=653030ce3e858aa4a89fc26fbc7e1702&type=3#Arrow2x");
+    align-self: flex-end;
+    width: 256px;
+    -unity-background-scale-mode: scale-to-fit;
+    visibility: hidden;
+}

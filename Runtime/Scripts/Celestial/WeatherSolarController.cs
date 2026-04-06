@@ -5,6 +5,7 @@ namespace ConceptFactory.Weather
 {
     /// <summary>
     /// Drives a directional light using approximate real-world solar astronomy.
+    /// Scene sun light is owned here; optional cloud systems are separate and do not replace this lighting role.
     /// </summary>
     [ExecuteAlways]
     [DisallowMultipleComponent]
@@ -217,6 +218,9 @@ namespace ConceptFactory.Weather
         [SerializeField] private SimulationPlaybackState _playbackState = SimulationPlaybackState.Stopped;
 
         private DateTime _localDateTime;
+
+        /// <summary>Quando verdadeiro, em Play não corre <see cref="AdvanceSimulatedTime"/> nem <see cref="SyncDateTimeFromInspector"/> (ex. scrub UI).</summary>
+        private bool _suppressAutoTimeAdvance;
         private SimulationSnapshot _defaultSimulationSnapshot;
         private bool _hasDefaultSimulationSnapshot;
         private static readonly int WeatherSunDirectionShaderId = Shader.PropertyToID("_WeatherSunDirection");
@@ -251,6 +255,23 @@ namespace ConceptFactory.Weather
         public SolarPositionData CurrentSolarData { get; private set; }
 
         public DateTime LocalDateTime => _localDateTime;
+
+        /// <summary>Suprime avanço automático e leitura do inspector por frame; não altera Playing/Paused.</summary>
+        public void SetSuppressAutoTimeAdvance(bool suppress) => _suppressAutoTimeAdvance = suppress;
+
+        /// <summary>
+        /// Soma tempo civil simulado (atravessa meia-noite e meses/dias com aritmética <see cref="DateTime"/>).
+        /// </summary>
+        public void AddSimulatedCivilTime(TimeSpan delta)
+        {
+            if (delta == default)
+                return;
+
+            _localDateTime += delta;
+            SyncInspectorFromDateTime();
+            UpdateSolarState();
+            NotifySunLightChanged(true);
+        }
 
         public float Latitude => _latitude;
 
@@ -376,13 +397,16 @@ namespace ConceptFactory.Weather
 
             if (Application.isPlaying)
             {
-                if (_playbackState == SimulationPlaybackState.Playing)
+                if (!_suppressAutoTimeAdvance)
                 {
-                    AdvanceSimulatedTime(Time.deltaTime);
-                }
-                else
-                {
-                    SyncDateTimeFromInspector();
+                    if (_playbackState == SimulationPlaybackState.Playing)
+                    {
+                        AdvanceSimulatedTime(Time.deltaTime);
+                    }
+                    else
+                    {
+                        SyncDateTimeFromInspector();
+                    }
                 }
             }
             else if (_playbackState != SimulationPlaybackState.Playing)
@@ -877,13 +901,16 @@ namespace ConceptFactory.Weather
             float deltaTime = Mathf.Max(0f, (float)(editorTime - _lastEditorTime));
             _lastEditorTime = editorTime;
 
-            if (_playbackState == SimulationPlaybackState.Playing)
+            if (!_suppressAutoTimeAdvance)
             {
-                AdvanceSimulatedTime(deltaTime);
-            }
-            else if (_playbackState != SimulationPlaybackState.Playing)
-            {
-                SyncDateTimeFromInspector();
+                if (_playbackState == SimulationPlaybackState.Playing)
+                {
+                    AdvanceSimulatedTime(deltaTime);
+                }
+                else if (_playbackState != SimulationPlaybackState.Playing)
+                {
+                    SyncDateTimeFromInspector();
+                }
             }
 
             if (_playbackState == SimulationPlaybackState.Stopped)

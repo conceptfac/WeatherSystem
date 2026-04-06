@@ -1,7 +1,7 @@
 {
     "name": "com.conceptfactory.weather",
     "displayName": "Concept Factory - Weather System",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "type": "tool",
     "unity": "6000.0",
     "unityRelease": "43f1",

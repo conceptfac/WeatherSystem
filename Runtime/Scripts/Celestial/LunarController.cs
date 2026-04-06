@@ -1090,30 +1090,6 @@ namespace ConceptFactory.Weather
             return runtimePreset;
         }
 
-#if UNITY_EDITOR
-        private void EnsureDefaultPhasePresetAssetFile(string assetName)
-        {
-            const string presetsFolder = "Packages/com.conceptfactory.weather/Runtime/Scripts/Celestial/Presets";
-            string assetPath = $"{presetsFolder}/{assetName}.asset";
-            LunarVisualPreset preset = AssetDatabase.LoadAssetAtPath<LunarVisualPreset>(assetPath);
-            if (preset != null)
-            {
-                return;
-            }
-
-            if (File.Exists(assetPath))
-            {
-                return;
-            }
-
-            preset = ScriptableObject.CreateInstance<LunarVisualPreset>();
-            preset.name = assetName;
-            preset.EnsureDefaults();
-            ApplyDefaultPresetOverrides(assetName, preset);
-            AssetDatabase.CreateAsset(preset, assetPath);
-            AssetDatabase.SaveAssets();
-        }
-
         private static void ApplyDefaultPresetOverrides(string assetName, LunarVisualPreset preset)
         {
             switch (assetName)
@@ -1152,6 +1128,30 @@ namespace ConceptFactory.Weather
                     preset.applyHorizonIllusion = true;
                     break;
             }
+        }
+
+#if UNITY_EDITOR
+        private void EnsureDefaultPhasePresetAssetFile(string assetName)
+        {
+            const string presetsFolder = "Packages/com.conceptfactory.weather/Runtime/Scripts/Celestial/Presets";
+            string assetPath = $"{presetsFolder}/{assetName}.asset";
+            LunarVisualPreset preset = AssetDatabase.LoadAssetAtPath<LunarVisualPreset>(assetPath);
+            if (preset != null)
+            {
+                return;
+            }
+
+            if (File.Exists(assetPath))
+            {
+                return;
+            }
+
+            preset = ScriptableObject.CreateInstance<LunarVisualPreset>();
+            preset.name = assetName;
+            preset.EnsureDefaults();
+            ApplyDefaultPresetOverrides(assetName, preset);
+            AssetDatabase.CreateAsset(preset, assetPath);
+            AssetDatabase.SaveAssets();
         }
 #endif
     }

@@ -1,0 +1,47 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="ConceptFactoryComponentInspectorTemplate.uss"/>
+    <Style src="WeatherSolarControllerEditor.uss"/>
+    <Style src="NimbusCloudControllerEditor.uss"/>
+    <ui:VisualElement class="root cfw-nimbus-root">
+        <ui:VisualElement name="Header" class="hero cfw-solar-hero cfw-nimbus-hero">
+            <ui:VisualElement name="heroContent" class="cfw-solar-hero__content">
+                <ui:VisualElement name="heroIcon" class="hero-icon cfw-solar-hero__icon cfw-nimbus-hero__icon"/>
+                <ui:VisualElement class="hero-text">
+                    <ui:Label name="heroTitle" text="Nimbus Cloud Controller" class="hero-title"/>
+                    <ui:Label name="heroSubtitle" text="Volumetric cloud driver synced with solar time and profile safety checks." class="hero-subtitle"/>
+                    <ui:Label name="heroStatus" text="Edit mode + runtime support | Main Camera Volume fallback" class="cfw-solar-hero__status cfw-nimbus-hero__status"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement class="cfw-solar-grid">
+            <ui:VisualElement name="driveCard" class="section cfw-card">
+                <ui:Label text="Drive" class="section-title cfw-card__title"/>
+                <ui:Label text="Cloud mode and animation. The Volume card below is shown only in Volumetric Clouds mode." class="inline-note cfw-card__note"/>
+                <ui:VisualElement name="driveFields" class="fields"/>
+            </ui:VisualElement>
+
+            <ui:VisualElement name="volumeCard" class="section cfw-card cfw-card--highlight">
+                <ui:Label text="Volume" class="section-title cfw-card__title"/>
+                <ui:Label text="Optional Volume reference. When empty, resolves Volume on the Main Camera." class="inline-note cfw-card__note"/>
+                <ui:VisualElement name="volumeFields" class="fields"/>
+                <ui:VisualElement name="volumeWarningBox" class="inline-note-box cfw-nimbus-warning">
+                    <ui:Label name="volumeWarningLabel" text="No Volume found." class="inline-note"/>
+                    <ui:Button name="createMainCameraVolumeButton" text="Create Volume on Main Camera..." />
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:VisualElement name="volumetricCloudsCard" class="section cfw-card cfw-card--debug">
+                <ui:Label text="Volumetric Clouds (URP)" class="section-title cfw-card__title"/>
+                <ui:Label text="Volume override on the resolved Volume profile. Density and other shape settings: edit here (same as Volume inspector)." class="inline-note cfw-card__note"/>
+                <ui:VisualElement name="volumetricCloudsOverrideContainer" class="fields"/>
+            </ui:VisualElement>
+
+            <ui:VisualElement name="windCard" class="section cfw-card cfw-card--debug">
+                <ui:Label text="Wind (solar sync)" class="section-title cfw-card__title"/>
+                <ui:Label text="Optional curves when sync is on. Density is only in Volumetric Clouds above." class="inline-note cfw-card__note"/>
+                <ui:VisualElement name="windFields" class="fields"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

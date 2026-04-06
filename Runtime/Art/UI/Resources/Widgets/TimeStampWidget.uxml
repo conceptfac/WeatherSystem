@@ -1,0 +1,13 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Style src="project://database/Packages/com.conceptfactory.weather/Runtime/Art/UI/Resources/Widgets/TimeStampWidget.uss?fileID=7433441132597879392&amp;guid=81a186f04c33c98449360c3b894d8644&amp;type=3#TimeStampWidget" />
+    <ui:VisualElement class="timestamp-widget__root">
+        <ui:VisualElement class="timestamp-widget__bar">
+            <ui:Label text="00:00" name="TimeStampLabel" class="timestamp-widget__time-label"/>
+            <ui:VisualElement name="Icon" class="timestamp-widget__icon"/>
+        </ui:VisualElement>
+        <ui:VisualElement class="timestamp-widget__transport-row">
+            <ui:VisualElement name="Rewind" class="timestamp-widget__rewind"/>
+            <ui:VisualElement name="FF" class="timestamp-widget__ff"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

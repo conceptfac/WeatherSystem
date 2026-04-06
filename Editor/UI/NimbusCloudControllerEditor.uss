@@ -1,0 +1,52 @@
+.cfw-nimbus-root {
+    background-color: rgb(13, 18, 25);
+}
+
+.cfw-nimbus-hero {
+    border-left-color: rgba(147, 198, 255, 0.45);
+    border-right-color: rgba(147, 198, 255, 0.18);
+    border-top-color: rgba(147, 198, 255, 0.18);
+    border-bottom-color: rgba(147, 198, 255, 0.28);
+}
+
+.cfw-nimbus-hero__icon {
+    background-color: rgb(24, 32, 42);
+}
+
+.cfw-nimbus-hero__status {
+    color: rgba(219, 238, 255, 0.95);
+}
+
+.cfw-nimbus-warning {
+    margin-top: 8px;
+    border-left-color: rgba(255, 197, 95, 0.9);
+}
+
+.cfw-nimbus-volume-field {
+    margin-bottom: 2px;
+}
+
+.cfw-nimbus-volume-label-row {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 2px;
+}
+
+.cfw-nimbus-volume-title {
+    -unity-font-style: bold;
+}
+
+.cfw-nimbus-volume-optional {
+    color: rgba(200, 205, 215, 0.55);
+    font-size: 11px;
+    margin-left: 6px;
+    padding-bottom: 1px;
+}
+
+.cfw-nimbus-volume-hint {
+    color: rgba(180, 188, 200, 0.5);
+    font-size: 11px;
+    margin-top: 4px;
+    white-space: normal;
+}
