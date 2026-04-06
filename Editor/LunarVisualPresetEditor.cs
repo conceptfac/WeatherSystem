@@ -8,29 +8,19 @@ namespace ConceptFactory.Weather.Editor
     [CustomEditor(typeof(LunarVisualPreset))]
     public sealed class LunarVisualPresetEditor : UnityEditor.Editor
     {
-        private const string DefaultPresetsFolder = "Packages/WeatherSystem/Runtime/Scripts/Celestial/Presets/";
+        private const string DefaultPresetsFolder = "Packages/com.conceptfactory.weather/Runtime/Scripts/Celestial/Presets/";
 
         public override VisualElement CreateInspectorGUI()
         {
             serializedObject.Update();
 
             VisualElement root = new VisualElement();
-            string assetPath = AssetDatabase.GetAssetPath(target);
-            bool isDefaultPreset = !string.IsNullOrWhiteSpace(assetPath) && assetPath.Replace('\\', '/').StartsWith(DefaultPresetsFolder);
-
-            if (isDefaultPreset)
-            {
-                HelpBox helpBox = new HelpBox("This is a protected default lunar preset from the package. Duplicate it to create a custom editable preset.", HelpBoxMessageType.Info);
-                root.Add(helpBox);
-            }
-
             AddSection(root, "Lighting", "lightColorOverNight", "lightIntensityOverNight", "baseIntensity", "disableLightBelowHorizon", "horizonDisableThreshold", "daylightFadeStrength", "minimumPhaseLight");
             AddSection(root, "Daylight Fades", "daylightShadowFadeStart", "daylightShadowFadeRange", "daylightLitMoonFadeStart", "daylightLitMoonFadeRange", "duskLitMoonSuppression", "minimumLitMoonSkyVisibility");
             AddSection(root, "Sky Disk", "skyboxMoonSize", "moonTextureExposure", "darkMoonTextureExposure");
             AddSection(root, "Halo Layers", "moonHaloColor", "moonHaloIntensity", "moonHaloInnerSize", "moonHaloOuterSize", "moonHaloTerminator", "borderHaloColor", "borderHaloIntensity", "borderHaloInnerSize", "borderHaloOuterSize", "borderHaloTerminator");
             AddSection(root, "Phase Look", "darkSideVisibility", "darkMoonExposure", "moonHaloIntensityMultiplier", "borderHaloIntensityMultiplier");
             AddHorizonSection(root);
-            root.SetEnabled(!isDefaultPreset);
 
             return root;
         }

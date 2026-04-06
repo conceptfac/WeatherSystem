@@ -21,10 +21,10 @@ MonoBehaviour:
     m_Value: 1
   m_CloudPreset:
     m_OverrideState: 1
-    m_Value: 4
+    m_Value: 1
   densityMultiplier:
     m_OverrideState: 1
-    m_Value: 0.108
+    m_Value: 0.4
   densityCurve:
     m_OverrideState: 1
     m_Value:
@@ -62,10 +62,10 @@ MonoBehaviour:
       m_RotationOrder: 4
   shapeFactor:
     m_OverrideState: 1
-    m_Value: 0.85
+    m_Value: 0.9
   shapeScale:
     m_OverrideState: 1
-    m_Value: 7
+    m_Value: 5
   erosionFactor:
     m_OverrideState: 1
     m_Value: 0.8
@@ -517,7 +517,7 @@ MonoBehaviour:
   active: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 0.7
+    m_Value: 0.3
   tintColor:
     m_OverrideState: 1
     m_Value: {r: 1, g: 0.78851277, b: 0.4764151, a: 1}
@@ -526,13 +526,13 @@ MonoBehaviour:
     m_Value: 1
   firstFlareIntensity:
     m_OverrideState: 1
-    m_Value: 0.58
+    m_Value: 0.4
   secondaryFlareIntensity:
     m_OverrideState: 1
-    m_Value: 0.34
+    m_Value: 0.22
   warpedFlareIntensity:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.41
   warpedFlareScale:
     m_OverrideState: 0
     m_Value: {x: 1, y: 1}

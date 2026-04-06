@@ -433,7 +433,7 @@ namespace ConceptFactory.Weather
             _currentLunarAgeDays = CurrentLunarData.LunarAgeDays;
             _currentDistanceKilometers = CurrentLunarData.DistanceKilometers;
             _currentDistanceNormalized = CurrentLunarData.DistanceNormalized;
-            _currentPhase = GetPhase(CurrentLunarData.PhaseAngleDegrees, CurrentLunarData.IlluminationFraction);
+            _currentPhase = GetPhase(CurrentLunarData.LunarAgeDays);
             _currentPhaseLabel = GetPhaseLabel(_currentPhase);
             _isMoonRising = EvaluateIsMoonRising();
 
@@ -485,7 +485,7 @@ namespace ConceptFactory.Weather
             float curveIntensity = lightIntensityOverNight != null && lightIntensityOverNight.length > 0
                 ? Mathf.Max(0f, lightIntensityOverNight.Evaluate(dayFraction))
                 : 1f;
-            float phaseIntensity = Mathf.Lerp(GetMinimumPhaseLight(), 1f, _currentIlluminationFraction);
+            float phaseIntensity = Mathf.Clamp01(_currentIlluminationFraction);
             float daylightSuppression = 1f;
             if (_solarController != null)
             {
@@ -496,14 +496,10 @@ namespace ConceptFactory.Weather
             float elevationVisibility = isNight
                 ? 1f
                 : Mathf.InverseLerp(GetHorizonDisableThreshold() - 8f, 8f, _currentElevation);
-            float visibleMoonPresence = isNight
-                ? Mathf.InverseLerp(GetHorizonDisableThreshold(), 12f, _currentElevation)
-                : 1f;
-            float visibleMoonIntensityBoost = Mathf.Lerp(1f, 1f + _currentIlluminationFraction, visibleMoonPresence);
             float horizonIllusion = EvaluateHorizonIllusionFactor();
             float altitudeAtmosphereFactor = EvaluateAltitudeAtmosphereFactor();
             float altitudeClarity = 1f + (GetAltitudeClarityBoost() * altitudeAtmosphereFactor);
-            _moonLight.intensity = GetBaseIntensity() * curveIntensity * phaseIntensity * daylightSuppression * elevationVisibility * visibleMoonIntensityBoost * altitudeClarity;
+            _moonLight.intensity = GetBaseIntensity() * curveIntensity * phaseIntensity * daylightSuppression * elevationVisibility * altitudeClarity;
 
             Color baseMoonColor = lightColorOverNight != null && lightColorOverNight.colorKeys.Length > 0
                 ? lightColorOverNight.Evaluate(dayFraction)
@@ -842,41 +838,43 @@ namespace ConceptFactory.Weather
             }
         }
 
-        private static MoonPhase GetPhase(float phaseAngleDegrees, float illuminationFraction)
+        private static MoonPhase GetPhase(float lunarAgeDays)
         {
-            float normalizedPhaseAngle = Mathf.Repeat(phaseAngleDegrees, 360f);
+            const float synodicMonthDays = 29.53058867f;
+            float normalizedLunarAgeDays = Mathf.Repeat(lunarAgeDays, synodicMonthDays);
+            float phaseSpan = synodicMonthDays / 8f;
 
-            if (illuminationFraction <= 0.12f || normalizedPhaseAngle < 22.5f || normalizedPhaseAngle >= 337.5f)
+            if (normalizedLunarAgeDays < phaseSpan * 0.5f || normalizedLunarAgeDays >= synodicMonthDays - (phaseSpan * 0.5f))
             {
                 return MoonPhase.NewMoon;
             }
 
-            if (illuminationFraction >= 0.88f || (normalizedPhaseAngle >= 157.5f && normalizedPhaseAngle < 202.5f))
-            {
-                return MoonPhase.FullMoon;
-            }
-
-            if (normalizedPhaseAngle < 67.5f)
+            if (normalizedLunarAgeDays < phaseSpan * 1.5f)
             {
                 return MoonPhase.WaxingCrescent;
             }
 
-            if (normalizedPhaseAngle < 112.5f)
+            if (normalizedLunarAgeDays < phaseSpan * 2.5f)
             {
                 return MoonPhase.FirstQuarter;
             }
 
-            if (normalizedPhaseAngle < 157.5f)
+            if (normalizedLunarAgeDays < phaseSpan * 3.5f)
             {
                 return MoonPhase.WaxingGibbous;
             }
 
-            if (normalizedPhaseAngle < 247.5f)
+            if (normalizedLunarAgeDays < phaseSpan * 4.5f)
+            {
+                return MoonPhase.FullMoon;
+            }
+
+            if (normalizedLunarAgeDays < phaseSpan * 5.5f)
             {
                 return MoonPhase.WaningGibbous;
             }
 
-            if (normalizedPhaseAngle < 292.5f)
+            if (normalizedLunarAgeDays < phaseSpan * 6.5f)
             {
                 return MoonPhase.LastQuarter;
             }
@@ -1075,7 +1073,7 @@ namespace ConceptFactory.Weather
         private LunarVisualPreset LoadOrCreateDefaultPhasePreset(string assetName)
         {
 #if UNITY_EDITOR
-            const string presetsFolder = "Packages/WeatherSystem/Runtime/Scripts/Celestial/Presets";
+            const string presetsFolder = "Packages/com.conceptfactory.weather/Runtime/Scripts/Celestial/Presets";
             string assetPath = $"{presetsFolder}/{assetName}.asset";
             LunarVisualPreset preset = AssetDatabase.LoadAssetAtPath<LunarVisualPreset>(assetPath);
             if (preset != null)
@@ -1095,7 +1093,7 @@ namespace ConceptFactory.Weather
 #if UNITY_EDITOR
         private void EnsureDefaultPhasePresetAssetFile(string assetName)
         {
-            const string presetsFolder = "Packages/WeatherSystem/Runtime/Scripts/Celestial/Presets";
+            const string presetsFolder = "Packages/com.conceptfactory.weather/Runtime/Scripts/Celestial/Presets";
             string assetPath = $"{presetsFolder}/{assetName}.asset";
             LunarVisualPreset preset = AssetDatabase.LoadAssetAtPath<LunarVisualPreset>(assetPath);
             if (preset != null)

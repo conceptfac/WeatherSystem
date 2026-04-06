@@ -11,7 +11,7 @@ namespace ConceptFactory.Weather.Editor
     [CustomEditor(typeof(LunarController))]
     public sealed class LunarControllerEditor : UnityEditor.Editor
     {
-        private const string DefaultLunarPresetsFolder = "Packages/WeatherSystem/Runtime/Scripts/Celestial/Presets/";
+        private const string DefaultLunarPresetsFolder = "Packages/com.conceptfactory.weather/Runtime/Scripts/Celestial/Presets/";
         private const string CustomLunarPresetsFolder = "Assets/WeatherSystem/Presets/Lunar";
         private const string UxmlPath = "Packages/com.conceptfactory.weather/Editor/UI/LunarControllerEditor.uxml";
         private const string MoonBannersPath = "Packages/com.conceptfactory.weather/Editor/UI/Sprites/MoonBanners.png";

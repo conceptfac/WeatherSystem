@@ -266,6 +266,19 @@ namespace ConceptFactory.Weather
 
         public bool IsStoppedSimulation => _playbackState == SimulationPlaybackState.Stopped;
 
+        public float DayDurationMinutes => _dayDurationMinutes;
+
+        public float TimeScaleMultiplier => _timeScaleMultiplier;
+
+        public float SimulatedSecondsPerRealSecond => CalculateSimulatedSecondsPerRealSecond(_dayDurationMinutes, _timeScaleMultiplier);
+
+        public float SimulatedMinutesPerRealSecond => SimulatedSecondsPerRealSecond / 60f;
+
+        public static float GetActiveSimulatedMinutesPerRealSecond()
+        {
+            return ActiveInstance != null ? ActiveInstance.SimulatedMinutesPerRealSecond : 1f;
+        }
+
         public static bool TryGetCurrentSunLightState(out SolarLightChangeData data)
         {
             if (HasSunLightState)
@@ -282,6 +295,13 @@ namespace ConceptFactory.Weather
 
             data = default;
             return false;
+        }
+
+        private static float CalculateSimulatedSecondsPerRealSecond(float dayDurationMinutes, float timeScaleMultiplier)
+        {
+            float safeDayDurationMinutes = Mathf.Max(0.01f, dayDurationMinutes);
+            float safeTimeScaleMultiplier = Mathf.Max(0f, timeScaleMultiplier);
+            return (86400f / (safeDayDurationMinutes * 60f)) * safeTimeScaleMultiplier;
         }
 
         private void Reset()

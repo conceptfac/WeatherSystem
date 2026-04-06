@@ -111,7 +111,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  baseIntensity: 1
+  baseIntensity: 0.5
   disableLightBelowHorizon: 1
   horizonDisableThreshold: -2
   daylightFadeStrength: 1.6
@@ -193,10 +193,10 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   applyHorizonIllusion: 1
-  horizonMoonIntensityMultiplier: 1.2
+  horizonMoonIntensityMultiplier: 1
   horizonMoonFalloffMultiplier: 0.68
-  horizonMoonWarmTintStrength: 1.2
-  horizonWarmTintStrengthMultiplier: 1
+  horizonMoonWarmTintStrength: 1
+  horizonWarmTintStrengthMultiplier: 0.7
   horizonMoonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
-  horizonTintColor: {r: 1, g: 0.776, b: 0.525, a: 1}
+  horizonTintColor: {r: 0.5660378, g: 0.4616434, b: 0.34442863, a: 1}
   moonRiseWarmTintBoost: 10
