@@ -85,7 +85,7 @@ namespace ConceptFactory.Weather
         [Header("Local Time")]
         [Tooltip("Local civil time as total minutes from 00:00 to 23:59.")]
         [Range(0f, 1439f)]
-        [SerializeField] private float _timeOfDayMinutes = 764f;
+        [SerializeField] private float _timeOfDayMinutes = 720f;
 
         [Header("Runtime")]
         [Tooltip("Automatically starts playback only when the application enters Play Mode at runtime.")]
@@ -103,7 +103,7 @@ namespace ConceptFactory.Weather
         [Header("Lighting")]
         [Tooltip("Base intensity multiplier before optional curve and daylight attenuation.")]
         [Min(0f)]
-        [SerializeField] private float _baseIntensity = 1f;
+        [SerializeField] private float _baseIntensity = 2.5f;
 
         [Tooltip("Whether the light should be disabled once the Sun is sufficiently below the horizon.")]
         [SerializeField] private bool _disableLightAtNight = true;
@@ -113,6 +113,9 @@ namespace ConceptFactory.Weather
         [SerializeField] private float _nightDisableThreshold = -4f;
 
         [Header("Skybox")]
+        [Tooltip("The skybox material assigned to RenderSettings when this component is added or enabled. If left empty the current skybox is kept.")]
+        [SerializeField] private Material _skyboxMaterial;
+
         [Tooltip("Whether this controller should also update the global weather sky shader values.")]
         [SerializeField] private bool _driveSkyboxMaterial = true;
 
@@ -329,6 +332,14 @@ namespace ConceptFactory.Weather
         {
             _sunLight = GetComponent<Light>();
             EnsureDirectionalLightReference();
+#if UNITY_EDITOR
+            if (_skyboxMaterial == null)
+            {
+                _skyboxMaterial = UnityEditor.AssetDatabase.LoadAssetAtPath<Material>(
+                    "Packages/com.conceptfactory.weather/Runtime/Art/Materials/Skybox/WeatherSkybox.mat");
+            }
+            ApplySkyboxToRenderSettings();
+#endif
             if (_lightColorOverDay == null || _lightColorOverDay.colorKeys.Length == 0)
             {
                 _lightColorOverDay = CreateDefaultGradient();
@@ -363,6 +374,8 @@ namespace ConceptFactory.Weather
         private void OnEnable()
         {
             ActiveInstance = this;
+            if (Application.isPlaying)
+                ApplySkyboxToRenderSettings();
             EnsureDefaults();
             SyncDateTimeFromInspector();
             CaptureDefaultSimulationSnapshot();
@@ -483,6 +496,27 @@ namespace ConceptFactory.Weather
             _playbackState = SimulationPlaybackState.Stopped;
             UpdateSolarState();
             RefreshEditorState();
+        }
+
+        private void ApplySkyboxToRenderSettings()
+        {
+            if (_skyboxMaterial != null && RenderSettings.skybox != _skyboxMaterial)
+                RenderSettings.skybox = _skyboxMaterial;
+        }
+
+        [ContextMenu("Reset Color Gradients to Default")]
+        private void ResetColorGradientsToDefault()
+        {
+            _lightColorOverDay = CreateDefaultGradient();
+            _skyboxSunColorOverDay = CreateDefaultSkyboxSunGradient();
+            UpdateSolarState();
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                UnityEditor.EditorUtility.SetDirty(this);
+                UnityEditor.SceneView.RepaintAll();
+            }
+#endif
         }
 
         private void EnsureDefaults()
@@ -919,13 +953,6 @@ namespace ConceptFactory.Weather
             }
 
             UpdateSolarState();
-
-            if (_sunLight != null)
-            {
-                UnityEditor.EditorUtility.SetDirty(_sunLight);
-            }
-
-            UnityEditor.EditorUtility.SetDirty(this);
             UnityEditor.SceneView.RepaintAll();
         }
 #endif
@@ -968,15 +995,19 @@ namespace ConceptFactory.Weather
 
         private static Gradient CreateDefaultGradient()
         {
+            // 8-key limit. Flat plateau t=0.40–0.60 keeps noon near-white (~9:40am–2:24pm).
             Gradient gradient = new Gradient();
             gradient.SetKeys(
                 new[]
                 {
-                    new GradientColorKey(new Color(0.07f, 0.1f, 0.18f), 0f),
-                    new GradientColorKey(new Color(1f, 0.56f, 0.28f), 0.24f),
-                    new GradientColorKey(new Color(1f, 0.5803922f, 0.29803923f), 0.5f),
-                    new GradientColorKey(new Color(1f, 0.58f, 0.3f), 0.76f),
-                    new GradientColorKey(new Color(0.07f, 0.1f, 0.18f), 1f)
+                    new GradientColorKey(new Color(0.07f, 0.10f, 0.18f), 0f),    // midnight
+                    new GradientColorKey(new Color(1f,    0.56f, 0.28f), 0.25f), // sunrise orange
+                    new GradientColorKey(new Color(1f,    0.91f, 0.70f), 0.30f), // post-sunrise golden
+                    new GradientColorKey(new Color(1f,    0.97f, 0.93f), 0.40f), // morning near-white
+                    new GradientColorKey(new Color(1f,    0.97f, 0.93f), 0.50f), // noon near-white
+                    new GradientColorKey(new Color(1f,    0.97f, 0.93f), 0.60f), // afternoon near-white
+                    new GradientColorKey(new Color(1f,    0.91f, 0.70f), 0.70f), // pre-sunset golden
+                    new GradientColorKey(new Color(0.07f, 0.10f, 0.18f), 1f)     // midnight
                 },
                 new[]
                 {
@@ -1058,13 +1089,13 @@ namespace ConceptFactory.Weather
             gradient.SetKeys(
                 new[]
                 {
-                    new GradientColorKey(new Color(0.95f, 0.42f, 0.18f), 0f),
-                    new GradientColorKey(new Color(1f, 0.62f, 0.3f), 0.22f),
-                    new GradientColorKey(new Color(1f, 0.73168916f, 0.3915094f), 0.26f),
-                    new GradientColorKey(new Color(1f, 0.80919236f, 0.495283f), 0.5f),
-                    new GradientColorKey(new Color(1f, 0.76f, 0.48f), 0.74f),
-                    new GradientColorKey(new Color(1f, 0.6f, 0.28f), 0.78f),
-                    new GradientColorKey(new Color(0.95f, 0.42f, 0.18f), 1f)
+                    new GradientColorKey(new Color(0.95f, 0.42f, 0.18f), 0f),      // midnight glow
+                    new GradientColorKey(new Color(1f,    0.62f, 0.30f), 0.23f),   // pre-dawn
+                    new GradientColorKey(new Color(1f,    0.78f, 0.45f), 0.27f),   // dawn golden
+                    new GradientColorKey(new Color(1f,    0.97f, 0.92f), 0.50f),   // noon near-white
+                    new GradientColorKey(new Color(1f,    0.78f, 0.45f), 0.73f),   // pre-sunset golden
+                    new GradientColorKey(new Color(1f,    0.62f, 0.30f), 0.77f),   // sunset
+                    new GradientColorKey(new Color(0.95f, 0.42f, 0.18f), 1f)       // midnight glow
                 },
                 new[]
                 {

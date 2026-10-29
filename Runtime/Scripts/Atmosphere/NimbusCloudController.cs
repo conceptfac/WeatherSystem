@@ -17,7 +17,7 @@ namespace ConceptFactory.Weather.Atmosphere
     public sealed class NimbusCloudController : MonoBehaviour
     {
 
-        [SerializeField] private NimbusCloudRenderMode _renderMode = NimbusCloudRenderMode.CloudPlane;
+        [SerializeField] private NimbusCloudRenderMode _renderMode = NimbusCloudRenderMode.VolumetricClouds;
 
         [Tooltip("Optional. When empty, resolves Volume on the Main Camera (Camera.main / MainCamera tag).")]
         [SerializeField] private Volume _volume;
@@ -28,6 +28,36 @@ namespace ConceptFactory.Weather.Atmosphere
         [SerializeField] private AnimationCurve _globalWindSpeedKmhOverDay = AnimationCurve.Linear(0f, 15f, 1f, 15f);
 
         [SerializeField] private AnimationCurve _globalWindOrientationOverDay = AnimationCurve.Linear(0f, 0f, 1f, 360f);
+
+        [Header("Cloud Appearance")]
+        [Tooltip("Tint for multi-scattered light inside the cloud. A slight cool-blue counteracts the warm Mie bias of URP VolumetricClouds, giving white/grey clouds under midday sun. Darken for overcast / storm.")]
+        [SerializeField, ColorUsage(false)] private Color _cloudTint = new Color(0.68f, 0.80f, 1.00f);
+
+        [Tooltip("Overall cloud density. 0 = very thin, 1 = thick storm mass.")]
+        [SerializeField, Range(0f, 1f)] private float _cloudDensityMultiplier = 0.35f;
+
+        [Tooltip("Darkens cloud undersides for a lit-top / shadowed-bottom look. Low = even glow. High = heavy rain contrast.")]
+        [SerializeField, Range(0f, 1f)] private float _powderEffectIntensity = 0.25f;
+
+        [Tooltip("Internal light scattering. High = bright fluffy white clouds. Low = dark overcast.")]
+        [SerializeField, Range(0f, 1f)] private float _multiScattering = 0.85f;
+
+        [Header("Cloud Shape")]
+        [Tooltip("Cloud mass. Low = thin cirrus wisps. High = dense stratus sheets. ~0.55 = natural cumulus.")]
+        [SerializeField, Range(0f, 1f)] private float _cloudShapeFactor = 0.55f;
+
+        [Tooltip("Surface erosion detail. Low = smooth. High = heavily textured. ~0.45 = natural cumulus.")]
+        [SerializeField, Range(0f, 1f)] private float _cloudErosionFactor = 0.45f;
+
+        [Tooltip("Vertical extent of the cloud layer in metres. Smaller = compact puffy clouds. Larger = flat extended sheets.")]
+        [SerializeField, Range(100f, 5000f)] private float _cloudAltitudeRange = 1000f;
+
+        [Header("Cloud Shadows")]
+        [Tooltip("Project cloud shadows onto terrain and objects.")]
+        [SerializeField] private bool _cloudShadows = true;
+
+        [Tooltip("How dark the cloud shadow is. 0 = invisible, 1 = fully opaque.")]
+        [SerializeField, Range(0f, 1f)] private float _cloudShadowOpacity = 0.35f;
 
         private WeatherVolumetricClouds _clouds;
         private bool _loggedMissingClouds;
@@ -48,6 +78,18 @@ namespace ConceptFactory.Weather.Atmosphere
             if (!Application.isPlaying)
                 MarkVolumeDirtyIfEditor();
 #endif
+        }
+
+        /// <summary>
+        /// Sets cloud appearance at runtime. Intended to be called by weather state controllers (clear sky, overcast, rain, storm).
+        /// </summary>
+        public void SetCloudAppearance(Color tint, float density, float powderEffect, float multiScattering)
+        {
+            _cloudTint = tint;
+            _cloudDensityMultiplier = density;
+            _powderEffectIntensity = powderEffect;
+            _multiScattering = multiScattering;
+            ApplyCloudAppearanceToOverride();
         }
 
         private void OnEnable()
@@ -303,11 +345,48 @@ namespace ConceptFactory.Weather.Atmosphere
                 _loggedMissingClouds = false;
             }
 
+            _clouds = clouds;
+
             // Always re-apply when Nimbus is in volumetric mode (e.g. override was turned off for Cloud Plane, or new scene load).
             // VolumeManager skips overrides unless VolumeComponent.active is true (not only state.value).
             clouds.active = true;
             clouds.state.overrideState = true;
             clouds.state.value = true;
+
+            ApplyCloudAppearanceToOverride();
+        }
+
+        private void ApplyCloudAppearanceToOverride()
+        {
+            if (_clouds == null)
+                return;
+
+            _clouds.scatteringTint.overrideState = true;
+            _clouds.scatteringTint.value = _cloudTint;
+
+            _clouds.densityMultiplier.overrideState = true;
+            _clouds.densityMultiplier.value = _cloudDensityMultiplier;
+
+            _clouds.powderEffectIntensity.overrideState = true;
+            _clouds.powderEffectIntensity.value = _powderEffectIntensity;
+
+            _clouds.multiScattering.overrideState = true;
+            _clouds.multiScattering.value = _multiScattering;
+
+            _clouds.shapeFactor.overrideState = true;
+            _clouds.shapeFactor.value = _cloudShapeFactor;
+
+            _clouds.erosionFactor.overrideState = true;
+            _clouds.erosionFactor.value = _cloudErosionFactor;
+
+            _clouds.altitudeRange.overrideState = true;
+            _clouds.altitudeRange.value = _cloudAltitudeRange;
+
+            _clouds.shadows.overrideState = true;
+            _clouds.shadows.value = _cloudShadows;
+
+            _clouds.shadowOpacity.overrideState = true;
+            _clouds.shadowOpacity.value = _cloudShadowOpacity;
         }
 
         private void ResolveVolumeComponent(Volume vol)
@@ -345,6 +424,8 @@ namespace ConceptFactory.Weather.Atmosphere
 
             _clouds.globalOrientation.overrideState = true;
             _clouds.globalOrientation.value = Mathf.Clamp(_globalWindOrientationOverDay.Evaluate(dayFraction), 0f, 360f);
+
+            ApplyCloudAppearanceToOverride();
         }
 
         private float EvaluateDayFraction()

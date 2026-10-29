@@ -35,6 +35,9 @@
                 <ui:Label text="Volumetric Clouds (URP)" class="section-title cfw-card__title"/>
                 <ui:Label text="Volume override on the resolved Volume profile. Density and other shape settings: edit here (same as Volume inspector)." class="inline-note cfw-card__note"/>
                 <ui:VisualElement name="volumetricCloudsOverrideContainer" class="fields"/>
+                <ui:VisualElement name="rendererFeatureWarningBox" class="inline-note-box cfw-nimbus-warning">
+                    <ui:Button name="fixRendererFeatureButton" text="Fix It — Enable Volumetric Clouds Renderer Feature" />
+                </ui:VisualElement>
             </ui:VisualElement>
 
             <ui:VisualElement name="windCard" class="section cfw-card cfw-card--debug">

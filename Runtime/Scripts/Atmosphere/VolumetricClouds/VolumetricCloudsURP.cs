@@ -1879,8 +1879,8 @@ public class VolumetricCloudsURP : ScriptableRendererFeature
                 RenderingUtils.ReAllocateHandleIfNeeded(ref shadowTextureHandle, desc, FilterMode.Bilinear, TextureWrapMode.Clamp, name: _VolumetricCloudsShadowTexture);
                 TextureHandle shadowTexture = renderGraph.ImportTexture(shadowTextureHandle);
 
-                TextureHandle intermediateShadowTexture = renderGraph.CreateTexture(new TextureDesc(shadowResolution, shadowResolution, false, false)
-                { colorFormat = cookieTextureFormat, enableRandomWrite = false, name = _VolumetricCloudsShadowTempTexture });
+                RenderingUtils.ReAllocateHandleIfNeeded(ref intermediateShadowTextureHandle, desc, FilterMode.Bilinear, TextureWrapMode.Clamp, name: _VolumetricCloudsShadowTempTexture);
+                TextureHandle intermediateShadowTexture = renderGraph.ImportTexture(intermediateShadowTextureHandle);
                 
                 // Update material properties
                 cloudsMaterial.SetFloat(shadowCookieResolution, shadowResolution);

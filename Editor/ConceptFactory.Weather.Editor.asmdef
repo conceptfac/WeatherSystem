@@ -4,7 +4,8 @@
     "references": [
         "ConceptFactory.Weather.Runtime",
         "GUID:4e5cd923c15d98644bd2779e74e6a0f8",
-        "GUID:df380645f10b7bc4b97d4f5eb6303d95"
+        "GUID:df380645f10b7bc4b97d4f5eb6303d95",
+        "GUID:15fc0a57446b3144c949da3e2b9737a9"
     ],
     "includePlatforms": [
         "Editor"

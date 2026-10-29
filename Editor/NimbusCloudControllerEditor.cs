@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using System.Reflection;
 using ConceptFactory.Weather.Atmosphere;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UIElements;
 using WeatherVolumetricClouds = global::VolumetricClouds;
 
@@ -37,6 +39,8 @@ namespace ConceptFactory.Weather.Editor
         private VisualElement _warningBox;
         private Label _warningLabel;
         private Button _createButton;
+        private VisualElement _rendererFeatureWarningBox;
+        private Button _fixRendererFeatureButton;
 
         private void ReapplyVolumetricCloudsAndRepaint()
         {
@@ -72,6 +76,7 @@ namespace ConceptFactory.Weather.Editor
                 _lastRenderMode = (NimbusCloudRenderMode)modeProp.enumValueIndex;
 
             RefreshVolumeWarning();
+            RefreshRendererFeatureWarning();
 
             EditorApplication.delayCall += InitialVolumetricEnsureIfNeeded;
 
@@ -391,6 +396,8 @@ namespace ConceptFactory.Weather.Editor
             _warningBox = root.Q<VisualElement>("volumeWarningBox");
             _warningLabel = root.Q<Label>("volumeWarningLabel");
             _createButton = root.Q<Button>("createMainCameraVolumeButton");
+            _rendererFeatureWarningBox = root.Q<VisualElement>("rendererFeatureWarningBox");
+            _fixRendererFeatureButton = root.Q<Button>("fixRendererFeatureButton");
         }
 
         private void HookButtons()
@@ -401,6 +408,13 @@ namespace ConceptFactory.Weather.Editor
                     TryEnsureVolumetricVolumeAndClouds(promptIfMissingVolume: false);
                     ReapplyVolumetricCloudsAndRepaint();
                     RefreshVolumeWarning();
+                };
+
+            if (_fixRendererFeatureButton != null)
+                _fixRendererFeatureButton.clicked += () =>
+                {
+                    FixVolumetricCloudsRendererFeature();
+                    RefreshRendererFeatureWarning();
                 };
         }
 
@@ -433,6 +447,8 @@ namespace ConceptFactory.Weather.Editor
 
             if (_warningBox != null)
                 _warningBox.style.display = showWarning ? DisplayStyle.Flex : DisplayStyle.None;
+
+            RefreshRendererFeatureWarning();
 
             if (!showWarning)
                 return;
@@ -574,6 +590,151 @@ namespace ConceptFactory.Weather.Editor
             GameObject go = volume.gameObject;
             if (go != null && !Application.isPlaying)
                 EditorSceneManager.MarkSceneDirty(go.scene);
+        }
+
+        private void RefreshRendererFeatureWarning()
+        {
+            if (_rendererFeatureWarningBox == null)
+                return;
+
+            serializedObject.Update();
+            SerializedProperty modeProp = serializedObject.FindProperty("_renderMode");
+            var mode = modeProp != null
+                ? (NimbusCloudRenderMode)modeProp.enumValueIndex
+                : NimbusCloudRenderMode.CloudPlane;
+
+            bool featureDisabled = mode == NimbusCloudRenderMode.VolumetricClouds
+                && !IsVolumetricCloudsFeatureActive();
+
+            _rendererFeatureWarningBox.style.display = featureDisabled ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        private static ScriptableRendererData[] GetRendererDataList(UniversalRenderPipelineAsset urpAsset)
+        {
+            // Primary: reflection (fastest)
+            var fi = typeof(UniversalRenderPipelineAsset).GetField("m_RendererDataList",
+                BindingFlags.NonPublic | BindingFlags.Instance);
+            if (fi?.GetValue(urpAsset) is ScriptableRendererData[] arr && arr != null)
+                return arr;
+
+            // Fallback: SerializedObject
+            var so = new SerializedObject(urpAsset);
+            var prop = so.FindProperty("m_RendererDataList");
+            if (prop == null || !prop.isArray)
+                return System.Array.Empty<ScriptableRendererData>();
+
+            var list = new ScriptableRendererData[prop.arraySize];
+            for (int i = 0; i < prop.arraySize; i++)
+                list[i] = prop.GetArrayElementAtIndex(i).objectReferenceValue as ScriptableRendererData;
+            return list;
+        }
+
+        private static bool IsVolumetricCloudsFeatureActive()
+        {
+            var urpAsset = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
+            if (urpAsset == null) return true;
+
+            foreach (ScriptableRendererData data in GetRendererDataList(urpAsset))
+            {
+                if (data == null) continue;
+                foreach (ScriptableRendererFeature feature in data.rendererFeatures)
+                {
+                    if (feature == null) continue;
+                    if (feature.GetType().Name.Contains("VolumetricClouds"))
+                        return feature.isActive;
+                }
+            }
+            return false;
+        }
+
+        private static System.Type FindVolumetricCloudsFeatureType()
+        {
+            foreach (var asm in System.AppDomain.CurrentDomain.GetAssemblies())
+            {
+                try
+                {
+                    foreach (var t in asm.GetTypes())
+                    {
+                        if (t.IsAbstract) continue;
+                        if (!typeof(ScriptableRendererFeature).IsAssignableFrom(t)) continue;
+                        if (t.Name.Contains("VolumetricCloud"))
+                            return t;
+                    }
+                }
+                catch { }
+            }
+            return null;
+        }
+
+        private static void FixVolumetricCloudsRendererFeature()
+        {
+            var urpAsset = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
+            if (urpAsset == null)
+            {
+                Debug.LogWarning("[Nimbus] No URP pipeline asset found.");
+                return;
+            }
+
+            var dataList = GetRendererDataList(urpAsset);
+
+            // Enable existing disabled feature if present
+            foreach (ScriptableRendererData data in dataList)
+            {
+                if (data == null) continue;
+                foreach (ScriptableRendererFeature feature in data.rendererFeatures)
+                {
+                    if (feature == null) continue;
+                    if (!feature.GetType().Name.Contains("VolumetricClouds")) continue;
+                    Undo.RecordObject(data, "Enable Volumetric Clouds Renderer Feature");
+                    feature.SetActive(true);
+                    EditorUtility.SetDirty(data);
+                    AssetDatabase.SaveAssets();
+                    Debug.Log($"[Nimbus] Enabled {feature.GetType().Name} on '{data.name}'.");
+                    return;
+                }
+            }
+
+            // Feature missing — find type and add it
+            System.Type featureType = FindVolumetricCloudsFeatureType();
+            if (featureType == null)
+            {
+                Debug.LogWarning("[Nimbus] VolumetricCloudsRendererFeature type not found in loaded assemblies. Make sure com.unity.render-pipelines.universal is installed and includes Volumetric Clouds.");
+                return;
+            }
+
+            ScriptableRendererData targetData = dataList.Length > 0 ? dataList[0] : null;
+            if (targetData == null)
+            {
+                Debug.LogWarning("[Nimbus] No renderer data found in URP asset.");
+                return;
+            }
+
+            var newFeature = (ScriptableRendererFeature)ScriptableObject.CreateInstance(featureType);
+            newFeature.name = featureType.Name;
+
+            Undo.RegisterCreatedObjectUndo(newFeature, "Add Volumetric Clouds Renderer Feature");
+            AssetDatabase.AddObjectToAsset(newFeature, targetData);
+
+            var so = new SerializedObject(targetData);
+            so.Update();
+            SerializedProperty featuresProp = so.FindProperty("m_RendererFeatures");
+            if (featuresProp != null && featuresProp.isArray)
+            {
+                Undo.RecordObject(targetData, "Add Volumetric Clouds Renderer Feature");
+                int idx = featuresProp.arraySize;
+                featuresProp.InsertArrayElementAtIndex(idx);
+                SerializedProperty elem = featuresProp.GetArrayElementAtIndex(idx);
+                if (elem.propertyType == SerializedPropertyType.ObjectReference)
+                    elem.objectReferenceValue = newFeature;
+                else
+                    elem.managedReferenceValue = newFeature;
+                so.ApplyModifiedProperties();
+            }
+
+            EditorUtility.SetDirty(targetData);
+            EditorUtility.SetDirty(urpAsset);
+            AssetDatabase.SaveAssets();
+            Debug.Log($"[Nimbus] Added {featureType.Name} to renderer '{targetData.name}'.");
         }
 
         private void Populate(VisualElement container, params string[] propertyNames)
