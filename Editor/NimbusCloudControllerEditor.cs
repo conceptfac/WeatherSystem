@@ -26,7 +26,7 @@ namespace ConceptFactory.Weather.Editor
             "Volumetric mode needs a camera tagged MainCamera to create a Volume automatically.\n\n" +
             "Assign a Main Camera or drag a Volume into the Nimbus Volume field.";
 
-        private static readonly HashSet<int> s_VolumetricMissingVolumePrompted = new HashSet<int>();
+        private static readonly HashSet<NimbusCloudController> s_VolumetricMissingVolumePrompted = new HashSet<NimbusCloudController>();
 
         private NimbusCloudRenderMode _lastRenderMode;
         private VisualElement _volumeCard;
@@ -276,10 +276,9 @@ namespace ConceptFactory.Weather.Editor
             var nimbus = (NimbusCloudController)target;
             if (HasResolvedVolume(nimbus))
                 return;
-            int id = nimbus.GetInstanceID();
-            if (s_VolumetricMissingVolumePrompted.Contains(id))
+            if (s_VolumetricMissingVolumePrompted.Contains(nimbus))
                 return;
-            s_VolumetricMissingVolumePrompted.Add(id);
+            s_VolumetricMissingVolumePrompted.Add(nimbus);
             TryEnsureVolumetricVolumeAndClouds(promptIfMissingVolume: true);
             ReapplyVolumetricCloudsAndRepaint();
             RefreshVolumeWarning();

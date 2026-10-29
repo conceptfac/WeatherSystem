@@ -8,7 +8,8 @@ namespace ConceptFactory.Weather.UI
     /// Widget reutilizável de carimbo de tempo (UI Toolkit). Carrega
     /// <see cref="UxmlResourcesPath"/> de uma pasta <c>Resources</c> no pacote Weather.
     /// </summary>
-    public sealed class TimeStampWidget : VisualElement
+    [UxmlElement]
+    public sealed partial class TimeStampWidget : VisualElement
     {
         /// <summary>
         /// Caminho relativo a qualquer pasta <c>Resources</c> (sem extensão), ex.: <c>Widgets/TimeStampWidget</c>.
@@ -26,6 +27,7 @@ namespace ConceptFactory.Weather.UI
         private bool _iconVisible = true;
 
         /// <summary>Texto mostrado no relógio (ex. <c>14:30</c>).</summary>
+        [UxmlAttribute("time-text")]
         public string TimeText
         {
             get => _timeLabel != null ? _timeLabel.text : string.Empty;
@@ -37,6 +39,7 @@ namespace ConceptFactory.Weather.UI
         }
 
         /// <summary>Mostrar ou ocultar os controlos rewind / fast-forward.</summary>
+        [UxmlAttribute("show-transport")]
         public bool TransportControlsVisible
         {
             get => _transportVisible;
@@ -48,6 +51,7 @@ namespace ConceptFactory.Weather.UI
         }
 
         /// <summary>Mostrar ou ocultar o ícone ao lado do texto.</summary>
+        [UxmlAttribute("show-icon")]
         public bool IconVisible
         {
             get => _iconVisible;
@@ -137,27 +141,5 @@ namespace ConceptFactory.Weather.UI
             _icon.style.backgroundImage = new StyleBackground(sprite);
         }
 
-        public new class UxmlFactory : UxmlFactory<TimeStampWidget, UxmlTraits> { }
-
-        public new class UxmlTraits : VisualElement.UxmlTraits
-        {
-            private readonly UxmlStringAttributeDescription _timeText =
-                new UxmlStringAttributeDescription { name = "time-text", defaultValue = "00:00" };
-
-            private readonly UxmlBoolAttributeDescription _showTransport =
-                new UxmlBoolAttributeDescription { name = "show-transport", defaultValue = false };
-
-            private readonly UxmlBoolAttributeDescription _showIcon =
-                new UxmlBoolAttributeDescription { name = "show-icon", defaultValue = true };
-
-            public override void Init(VisualElement ve, IUxmlAttributes bag, CreationContext cc)
-            {
-                base.Init(ve, bag, cc);
-                var w = (TimeStampWidget)ve;
-                w.TimeText = _timeText.GetValueFromBag(bag, cc);
-                w.TransportControlsVisible = _showTransport.GetValueFromBag(bag, cc);
-                w.IconVisible = _showIcon.GetValueFromBag(bag, cc);
-            }
-        }
     }
 }
