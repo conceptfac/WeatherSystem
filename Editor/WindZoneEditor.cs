@@ -1,5 +1,5 @@
-using ConceptFactory.Weather.Atmosphere;
 using UnityEditor;
+using WindZone = ConceptFactory.Weather.Atmosphere.WindZone;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
