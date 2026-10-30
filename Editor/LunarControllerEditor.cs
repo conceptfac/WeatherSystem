@@ -1,4 +1,5 @@
-﻿using ConceptFactory.Weather.Editor.Location;
+﻿using ConceptFactory.Weather;
+using ConceptFactory.Weather.Editor.Location;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -83,6 +84,7 @@ namespace ConceptFactory.Weather.Editor
         private string _resolvedLocationFeedbackKey;
         private string _currentCustomGmtLabel;
         private string _resolvedLocationName;
+        private VisualElement _phaseJumpContainer;
 
         public override VisualElement CreateInspectorGUI()
         {
@@ -204,6 +206,12 @@ namespace ConceptFactory.Weather.Editor
             timeFields.Clear();
             timeFields.Add(CreateTimeOfDayControl());
             timeFields.SetEnabled(_solarSerializedObject != null);
+
+            _phaseJumpContainer = new VisualElement();
+            _phaseJumpContainer.style.marginTop = 6;
+            BuildPhaseJumpButtons(_phaseJumpContainer);
+            _phaseJumpContainer.SetEnabled(_solarSerializedObject != null);
+            card?.Add(_phaseJumpContainer);
         }
 
         private VisualElement CreateTimeOfDayControl()
@@ -692,11 +700,13 @@ namespace ConceptFactory.Weather.Editor
                     _setTodayButton.SetEnabled(false);
                 }
 
+                _phaseJumpContainer?.SetEnabled(false);
                 return;
             }
 
             _openDatePickerButton?.SetEnabled(true);
             _setTodayButton?.SetEnabled(true);
+            _phaseJumpContainer?.SetEnabled(true);
 
             _solarSerializedObject.Update();
             SerializedProperty year = FindSolarProperty("_year");
@@ -846,6 +856,9 @@ namespace ConceptFactory.Weather.Editor
             AddLunarField(container, "_moonTexture", "Lit Texture");
             AddLunarField(container, "_darkMoonTexture", "Dark Texture");
             AddLunarField(container, "_moonPhaseMaskTexture", "Phase Mask Texture");
+            AddLunarField(container, "_moonTextureUvRect", "Lit Texture UV Bounds");
+            AddLunarField(container, "_darkMoonTextureUvRect", "Dark Texture UV Bounds");
+            AddLunarField(container, "_moonMaskTextureUvRect", "Phase Mask UV Bounds");
         }
 
         private void HideObsoleteCards(VisualElement root)
@@ -1320,6 +1333,121 @@ namespace ConceptFactory.Weather.Editor
             const float threshold = 0.01f;
             return Mathf.Abs(latitude - option.DefaultLatitude) <= threshold &&
                    Mathf.Abs(longitude - option.DefaultLongitude) <= threshold;
+        }
+
+        private void BuildPhaseJumpButtons(VisualElement container)
+        {
+            (MoonPhase phase, string label)[] phases =
+            {
+                (MoonPhase.NewMoon, "Lua Nova"),
+                (MoonPhase.WaxingCrescent, "Crescente"),
+                (MoonPhase.FirstQuarter, "Primeiro Quarto"),
+                (MoonPhase.WaxingGibbous, "Gibosa Crescente"),
+                (MoonPhase.FullMoon, "Lua Cheia"),
+                (MoonPhase.WaningGibbous, "Gibosa Minguante"),
+                (MoonPhase.LastQuarter, "Último Quarto"),
+                (MoonPhase.WaningCrescent, "Minguante")
+            };
+
+            for (int row = 0; row < 2; row++)
+            {
+                VisualElement rowEl = new VisualElement();
+                rowEl.style.flexDirection = FlexDirection.Row;
+                rowEl.style.marginBottom = row == 0 ? 2 : 0;
+                container.Add(rowEl);
+
+                for (int col = 0; col < 4; col++)
+                {
+                    int idx = row * 4 + col;
+                    MoonPhase phase = phases[idx].phase;
+
+                    Button btn = new Button(() => SetDateToNextPhase(phase));
+                    btn.tooltip = "Próxima: " + phases[idx].label;
+                    btn.style.flexGrow = 1;
+                    btn.style.height = 36;
+                    btn.style.paddingTop = 1;
+                    btn.style.paddingBottom = 1;
+                    btn.style.paddingLeft = 1;
+                    btn.style.paddingRight = 1;
+                    btn.style.marginRight = col < 3 ? 2 : 0;
+
+                    Sprite icon = LoadPhaseBanner(phase);
+                    if (icon != null)
+                    {
+                        Image img = new Image { sprite = icon, scaleMode = ScaleMode.ScaleToFit };
+                        img.style.flexGrow = 1;
+                        btn.Add(img);
+                    }
+                    else
+                    {
+                        btn.text = phases[idx].label[..1];
+                    }
+
+                    rowEl.Add(btn);
+                }
+            }
+        }
+
+        private void SetDateToNextPhase(MoonPhase targetPhase)
+        {
+            if (_cachedSolarController == null || _solarSerializedObject == null)
+            {
+                return;
+            }
+
+            _solarSerializedObject.Update();
+            SerializedProperty yearProp = FindSolarProperty("_year");
+            SerializedProperty monthProp = FindSolarProperty("_month");
+            SerializedProperty dayProp = FindSolarProperty("_day");
+            SerializedProperty latProp = FindSolarProperty("_latitude");
+            SerializedProperty lonProp = FindSolarProperty("_longitude");
+            SerializedProperty utcProp = FindSolarProperty("_utcOffsetHours");
+            if (yearProp == null || monthProp == null || dayProp == null)
+            {
+                return;
+            }
+
+            DateTime startDate;
+            try { startDate = new DateTime(yearProp.intValue, monthProp.intValue, dayProp.intValue); }
+            catch { return; }
+
+            float lat = latProp?.floatValue ?? 0f;
+            float lon = lonProp?.floatValue ?? 0f;
+            float utc = utcProp?.floatValue ?? 0f;
+
+            for (int daysAhead = 1; daysAhead <= 30; daysAhead++)
+            {
+                DateTime candidate = startDate.AddDays(daysAhead);
+                DateTime candidateNoon = new DateTime(candidate.Year, candidate.Month, candidate.Day, 12, 0, 0);
+                LunarPositionData data = LunarPositionCalculator.CalculateLunarPosition(candidateNoon, lat, lon, utc);
+                if (GetPhaseFromLunarAge(data.LunarAgeDays) == targetPhase)
+                {
+                    Undo.RecordObject(_cachedSolarController, "Set Moon Phase Date");
+                    _solarSerializedObject.FindProperty("_year").intValue = candidate.Year;
+                    _solarSerializedObject.FindProperty("_month").intValue = candidate.Month;
+                    _solarSerializedObject.FindProperty("_day").intValue = candidate.Day;
+                    _solarSerializedObject.ApplyModifiedProperties();
+                    EditorUtility.SetDirty(_cachedSolarController);
+                    RefreshSolarSerializedObject();
+                    RefreshSolarMirrors();
+                    return;
+                }
+            }
+        }
+
+        private static MoonPhase GetPhaseFromLunarAge(float lunarAgeDays)
+        {
+            const float synodicMonth = 29.53058867f;
+            float norm = Mathf.Repeat(lunarAgeDays, synodicMonth);
+            float span = synodicMonth / 8f;
+            if (norm < span * 0.5f || norm >= synodicMonth - span * 0.5f) return MoonPhase.NewMoon;
+            if (norm < span * 1.5f) return MoonPhase.WaxingCrescent;
+            if (norm < span * 2.5f) return MoonPhase.FirstQuarter;
+            if (norm < span * 3.5f) return MoonPhase.WaxingGibbous;
+            if (norm < span * 4.5f) return MoonPhase.FullMoon;
+            if (norm < span * 5.5f) return MoonPhase.WaningGibbous;
+            if (norm < span * 6.5f) return MoonPhase.LastQuarter;
+            return MoonPhase.WaningCrescent;
         }
 
         private readonly struct GmtOption
