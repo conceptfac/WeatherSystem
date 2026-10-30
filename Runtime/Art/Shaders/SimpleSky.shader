@@ -296,7 +296,9 @@ Shader "Skybox/Simple"
         half litMoonVisibility = saturate(_WeatherMoonSkyVisibility);
         half darkMoonVisibility = saturate(_WeatherMoonDarkSkyVisibility);
         half3 moonSurface = ((darkMoonBase * darkMoonVisibility) + ((litMoon * moonIntensity) * litBlend * litMoonVisibility)) * baseDiskMask;
-        half moonCoverage = saturate(max((darkCutout * darkVisibility * darkMoonVisibility * shadowBlend), (litCutout * litMoonVisibility * litBlend)) * baseDiskMask);
+        // When no texture is used, texture alpha cannot be trusted for disk coverage — use full disk mask so halos are properly occluded.
+        half textureDiskCoverage = saturate(max(darkCutout * darkVisibility * darkMoonVisibility * shadowBlend, litCutout * litMoonVisibility * litBlend));
+        half moonCoverage = lerp(baseDiskMask, textureDiskCoverage * baseDiskMask, saturate(_WeatherMoonUseTexture));
         half haloOcclusion = moonCoverage;
         float moonDistance = length(moonLocal);
         float innerRadius = 1.0 + _WeatherMoonHaloInnerSize;

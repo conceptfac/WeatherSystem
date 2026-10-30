@@ -372,6 +372,10 @@ namespace ConceptFactory.Weather
                 _moonLight = GetComponent<Light>();
             }
 
+#if UNITY_EDITOR
+            EnsureDefaultMoonTextures();
+#endif
+
             if (_moonLight != null && _moonLight.type != LightType.Directional)
             {
                 _moonLight.type = LightType.Directional;
@@ -1131,6 +1135,36 @@ namespace ConceptFactory.Weather
         }
 
 #if UNITY_EDITOR
+        private void EnsureDefaultMoonTextures()
+        {
+            if (Application.isPlaying)
+                return;
+
+            const string sprites = "Packages/com.conceptfactory.weather/Runtime/Art/Sprites/";
+            bool changed = false;
+
+            if (_moonTexture == null)
+            {
+                _moonTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(sprites + "Moon.png");
+                if (_moonTexture != null) changed = true;
+            }
+
+            if (_darkMoonTexture == null)
+            {
+                _darkMoonTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(sprites + "DarkSideMoon.png");
+                if (_darkMoonTexture != null) changed = true;
+            }
+
+            if (_moonPhaseMaskTexture == null)
+            {
+                _moonPhaseMaskTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(sprites + "MoonMask.png");
+                if (_moonPhaseMaskTexture != null) changed = true;
+            }
+
+            if (changed)
+                UnityEditor.EditorUtility.SetDirty(this);
+        }
+
         private void EnsureDefaultPhasePresetAssetFile(string assetName)
         {
             const string presetsFolder = "Packages/com.conceptfactory.weather/Runtime/Scripts/Celestial/Presets";
