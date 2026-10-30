@@ -68,6 +68,10 @@ Shader "Skybox/Simple"
     sampler2D _WeatherMoonTexture;
     sampler2D _WeatherMoonDarkTexture;
     sampler2D _WeatherMoonPhaseMaskTexture;
+    // UV rectangles (offset.xy, size.zw) exclude transparent texture padding.
+    float4 _WeatherMoonTextureUvRect;
+    float4 _WeatherMoonDarkTextureUvRect;
+    float4 _WeatherMoonMaskTextureUvRect;
     sampler2D _WeatherStarColorRamp;
 
     inline float hash21(float2 p)
@@ -144,23 +148,21 @@ Shader "Skybox/Simple"
         return illuminatedMask * diskMask;
     }
 
-    inline half4 SampleMoonTexture(sampler2D moonTexture, float2 local)
+    inline float2 ComputeMoonTextureUv(float2 local, float4 uvRect)
     {
         float2 moonUv = saturate(local * 0.5 + 0.5);
         moonUv = clamp(moonUv, 0.002, 0.998);
-        return tex2D(moonTexture, moonUv);
+        return uvRect.xy + moonUv * uvRect.zw;
     }
 
-    inline half SampleMoonAlpha(sampler2D moonTexture, float2 local)
+    inline half4 SampleMoonTexture(sampler2D moonTexture, float2 local, float4 uvRect)
     {
-        float2 moonUv = saturate(local * 0.5 + 0.5);
-        moonUv = clamp(moonUv, 0.002, 0.998);
-        return tex2D(moonTexture, moonUv).a;
+        return tex2D(moonTexture, ComputeMoonTextureUv(local, uvRect));
     }
 
     inline half SampleMoonMaskTexture(float2 local)
     {
-        float2 moonUv = local * 0.5 + 0.5;
+        float2 moonUv = ComputeMoonTextureUv(local, _WeatherMoonMaskTextureUvRect);
         return tex2D(_WeatherMoonPhaseMaskTexture, moonUv).a;
     }
 
@@ -275,12 +277,14 @@ Shader "Skybox/Simple"
         half3 c_sky = ambientSky * p1 + ambientHorizon * p2 + ambientGround * p3;
         half3 c_sun = sunColor * min(pow(max(0, dot(v, sunDirection)), sunFalloff) * sunSize, 1);
         half moonAngularRadius = max(0.004h, 0.012h * moonSize);
+        // Preserve the visible diameter when removing the texture's transparent margins.
+        moonAngularRadius = atan(tan(moonAngularRadius) * lerp(1.0, _WeatherMoonTextureUvRect.z, saturate(_WeatherMoonUseTexture)));
         float2 moonLocal = ComputeMoonLocalUv(v, moonDirection, moonAngularRadius);
         half moonDiskMask = ComputeMoonDiskMask(moonLocal, moonDiskEdgeSoftness);
         float phaseOrientation = ComputeMoonPhaseOrientation();
         half moonPhaseMask = ComputeMoonPhaseMask(v, moonDirection, sunDirection, moonAngularRadius);
-        half4 litMoonSample = SampleMoonTexture(_WeatherMoonTexture, moonLocal);
-        half4 darkMoonSample = SampleMoonTexture(_WeatherMoonDarkTexture, moonLocal);
+        half4 litMoonSample = SampleMoonTexture(_WeatherMoonTexture, moonLocal, _WeatherMoonTextureUvRect);
+        half4 darkMoonSample = SampleMoonTexture(_WeatherMoonDarkTexture, moonLocal, _WeatherMoonDarkTextureUvRect);
         half phaseMaskTexture = SampleMoonMaskTexture(moonLocal);
         litMoonSample.rgb *= max(_WeatherMoonTextureExposure, 0.0h);
         darkMoonSample.rgb *= max(_WeatherMoonDarkTextureExposure, 0.0h);

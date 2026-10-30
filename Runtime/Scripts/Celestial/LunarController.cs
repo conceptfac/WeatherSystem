@@ -126,6 +126,16 @@ namespace ConceptFactory.Weather
         [Tooltip("Optional negative phase mask texture used to crop the illuminated moon disk.")]
         [SerializeField] private Texture2D _moonPhaseMaskTexture;
 
+        // Bounds of the supplied PNGs, expressed in bottom-left-origin texture UVs.
+        [Tooltip("Lit texture disk bounds: UV offset X/Y and width/height. Use (0, 0, 1, 1) for an unpadded disk.")]
+        [SerializeField] private Vector4 _moonTextureUvRect = new(225f / 1024f, 235f / 1024f, 573f / 1024f, 561f / 1024f);
+
+        [Tooltip("Dark texture disk bounds: UV offset X/Y and width/height.")]
+        [SerializeField] private Vector4 _darkMoonTextureUvRect = new(225f / 1024f, 235f / 1024f, 573f / 1024f, 561f / 1024f);
+
+        [Tooltip("Phase mask disk bounds: UV offset X/Y and width/height.")]
+        [SerializeField] private Vector4 _moonMaskTextureUvRect = new(158f / 1024f, 158f / 1024f, 708f / 1024f, 708f / 1024f);
+
         [Tooltip("Brightness multiplier applied to the illuminated moon texture in the sky.")]
         [HideInInspector]
         [SerializeField] private float _moonTextureExposure = 2f;
@@ -297,6 +307,9 @@ namespace ConceptFactory.Weather
         private static readonly int WeatherMoonTextureShaderId = Shader.PropertyToID("_WeatherMoonTexture");
         private static readonly int WeatherMoonDarkTextureShaderId = Shader.PropertyToID("_WeatherMoonDarkTexture");
         private static readonly int WeatherMoonPhaseMaskTextureShaderId = Shader.PropertyToID("_WeatherMoonPhaseMaskTexture");
+        private static readonly int WeatherMoonTextureUvRectShaderId = Shader.PropertyToID("_WeatherMoonTextureUvRect");
+        private static readonly int WeatherMoonDarkTextureUvRectShaderId = Shader.PropertyToID("_WeatherMoonDarkTextureUvRect");
+        private static readonly int WeatherMoonMaskTextureUvRectShaderId = Shader.PropertyToID("_WeatherMoonMaskTextureUvRect");
         private static readonly int WeatherMoonUseTextureShaderId = Shader.PropertyToID("_WeatherMoonUseTexture");
         private static readonly int WeatherMoonTextureExposureShaderId = Shader.PropertyToID("_WeatherMoonTextureExposure");
         private static readonly int WeatherMoonDarkTextureExposureShaderId = Shader.PropertyToID("_WeatherMoonDarkTextureExposure");
@@ -690,6 +703,10 @@ namespace ConceptFactory.Weather
 
         private void ApplyMoonTexturesToShader()
         {
+            Shader.SetGlobalVector(WeatherMoonTextureUvRectShaderId, _moonTextureUvRect);
+            Shader.SetGlobalVector(WeatherMoonDarkTextureUvRectShaderId, _darkMoonTextureUvRect);
+            Shader.SetGlobalVector(WeatherMoonMaskTextureUvRectShaderId, _moonMaskTextureUvRect);
+
             if (_moonTexture == null && _darkMoonTexture == null)
             {
                 Shader.SetGlobalTexture(WeatherMoonTextureShaderId, Texture2D.whiteTexture);
