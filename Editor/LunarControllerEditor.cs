@@ -1388,6 +1388,7 @@ namespace ConceptFactory.Weather.Editor
             SerializedProperty latProp = FindSolarProperty("_latitude");
             SerializedProperty lonProp = FindSolarProperty("_longitude");
             SerializedProperty utcProp = FindSolarProperty("_utcOffsetHours");
+            SerializedProperty timeProp = FindSolarProperty("_timeOfDayMinutes");
             if (yearProp == null || monthProp == null || dayProp == null)
             {
                 return;
@@ -1408,10 +1409,16 @@ namespace ConceptFactory.Weather.Editor
                 LunarPositionData data = LunarPositionCalculator.CalculateLunarPosition(candidateNoon, lat, lon, utc);
                 if (GetPhaseFromLunarAge(data.LunarAgeDays) == targetPhase)
                 {
+                    float peakMinutes = FindPeakMoonElevationMinutes(candidate, lat, lon, utc);
                     Undo.RecordObject(_cachedSolarController, "Set Moon Phase Date");
                     _solarSerializedObject.FindProperty("_year").intValue = candidate.Year;
                     _solarSerializedObject.FindProperty("_month").intValue = candidate.Month;
                     _solarSerializedObject.FindProperty("_day").intValue = candidate.Day;
+                    if (timeProp != null)
+                    {
+                        timeProp.floatValue = peakMinutes;
+                    }
+
                     _solarSerializedObject.ApplyModifiedProperties();
                     EditorUtility.SetDirty(_cachedSolarController);
                     RefreshSolarSerializedObject();
@@ -1419,6 +1426,26 @@ namespace ConceptFactory.Weather.Editor
                     return;
                 }
             }
+        }
+
+        private static float FindPeakMoonElevationMinutes(DateTime date, float lat, float lon, float utc)
+        {
+            float bestMinutes = 720f;
+            float bestElevation = float.MinValue;
+
+            for (int step = 0; step < 48; step++)
+            {
+                int minutes = step * 30;
+                DateTime sample = new DateTime(date.Year, date.Month, date.Day, minutes / 60, minutes % 60, 0);
+                LunarPositionData posData = LunarPositionCalculator.CalculateLunarPosition(sample, lat, lon, utc);
+                if (posData.ApparentElevationDegrees > bestElevation)
+                {
+                    bestElevation = posData.ApparentElevationDegrees;
+                    bestMinutes = minutes;
+                }
+            }
+
+            return bestMinutes;
         }
 
         private static MoonPhase GetPhaseFromLunarAge(float lunarAgeDays)
