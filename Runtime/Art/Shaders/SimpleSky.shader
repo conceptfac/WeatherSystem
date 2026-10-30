@@ -310,8 +310,10 @@ Shader "Skybox/Simple"
         half haloDayVisibility = darkMoonVisibility;
         // Concentrate halos on the illuminated side of the moon.
         // At full moon (illumination=1) this is always 1; at crescent it falls to 0 on the dark side.
+        // phaseScale: halos dim quadratically with illumination so a crescent produces almost no halo.
         float moonLocalNormX = moonDistance > 0.0001 ? moonLocal.x / moonDistance : 0.0;
-        float litHaloWeight = saturate(phaseOrientation * moonLocalNormX + saturate(_WeatherMoonIllumination));
+        float phaseScale = _WeatherMoonIllumination * _WeatherMoonIllumination;
+        float litHaloWeight = saturate(phaseOrientation * moonLocalNormX + saturate(_WeatherMoonIllumination)) * phaseScale;
         half3 moonHalo = _WeatherMoonHaloColor * _WeatherMoonHaloIntensity * haloMask * moonIntensity * haloDayVisibility * litHaloWeight;
         float borderInnerRadius = max(_WeatherMoonBorderHaloInnerSize, 0.0h);
         float borderOuterRadius = max(_WeatherMoonBorderHaloOuterSize, 0.0h);
