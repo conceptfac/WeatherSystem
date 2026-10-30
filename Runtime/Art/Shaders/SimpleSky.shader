@@ -135,13 +135,13 @@ Shader "Skybox/Simple"
         float illumination = saturate(_WeatherMoonIllumination);
         float phaseOrientation = ComputeMoonPhaseOrientation();
 
-        // Circular occulting mask sliding on the moon's local horizontal axis.
-        float shadowOffset = lerp(0.0, 2.1, illumination);
-        float2 shadowCenter = float2(-phaseOrientation * shadowOffset, 0.0);
-        float shadowDistance = length(local - shadowCenter);
-        float shadowMask = 1.0 - smoothstep(1.0 - terminatorSoftness, 1.0 + terminatorSoftness, shadowDistance);
-        float illuminatedMask = saturate(diskMask - shadowMask);
-        return illuminatedMask;
+        // Physically correct half-ellipse terminator.
+        // norm is the disk semi-width at this vertical position.
+        // signedDist is positive on the illuminated side and negative on the dark side.
+        float norm = sqrt(max(0.0, 1.0 - local.y * local.y));
+        float signedDist = phaseOrientation * local.x - (1.0 - 2.0 * illumination) * norm;
+        float illuminatedMask = smoothstep(-terminatorSoftness, terminatorSoftness, signedDist);
+        return illuminatedMask * diskMask;
     }
 
     inline half4 SampleMoonTexture(sampler2D moonTexture, float2 local)

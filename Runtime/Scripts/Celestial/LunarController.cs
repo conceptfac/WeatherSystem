@@ -571,6 +571,8 @@ namespace ConceptFactory.Weather
             }
 
             GetSkyboxPhasePreset(_currentPhase, out float skyboxPhaseAngle, out float skyboxIllumination);
+            // Use real astronomical illumination — the phase bucket gives only the waxing/waning orientation via skyboxPhaseAngle.
+            skyboxIllumination = _currentIlluminationFraction;
             float phaseIntensity = Mathf.Lerp(GetMinimumPhaseLight(), 1f, skyboxIllumination);
             float horizonIllusion = EvaluateHorizonIllusionFactor();
             float altitudeAtmosphereFactor = EvaluateAltitudeAtmosphereFactor();
