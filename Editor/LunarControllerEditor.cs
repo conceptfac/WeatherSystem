@@ -1430,22 +1430,43 @@ namespace ConceptFactory.Weather.Editor
 
         private static float FindPeakMoonElevationMinutes(DateTime date, float lat, float lon, float utc)
         {
-            float bestMinutes = 720f;
-            float bestElevation = float.MinValue;
+            // Prefer nighttime (sun below civil twilight -6°). Fall back to overall peak only if
+            // the moon never rises while it is dark.
+            const float civilTwilightDeg = -6f;
+
+            float bestNightMinutes = 1320f; // 22:00 default
+            float bestNightElevation = float.MinValue;
+            bool foundNight = false;
+
+            float bestAnyMinutes = 720f;
+            float bestAnyElevation = float.MinValue;
 
             for (int step = 0; step < 48; step++)
             {
                 int minutes = step * 30;
                 DateTime sample = new DateTime(date.Year, date.Month, date.Day, minutes / 60, minutes % 60, 0);
-                LunarPositionData posData = LunarPositionCalculator.CalculateLunarPosition(sample, lat, lon, utc);
-                if (posData.ApparentElevationDegrees > bestElevation)
+                SolarPositionData sunData = SolarPositionCalculator.CalculateSolarPosition(sample, lat, lon, utc);
+                LunarPositionData moonData = LunarPositionCalculator.CalculateLunarPosition(sample, lat, lon, utc);
+                float moonElev = moonData.ApparentElevationDegrees;
+
+                if (moonElev > bestAnyElevation)
                 {
-                    bestElevation = posData.ApparentElevationDegrees;
-                    bestMinutes = minutes;
+                    bestAnyElevation = moonElev;
+                    bestAnyMinutes = minutes;
+                }
+
+                if (sunData.ApparentElevationDegrees < civilTwilightDeg)
+                {
+                    foundNight = true;
+                    if (moonElev > bestNightElevation)
+                    {
+                        bestNightElevation = moonElev;
+                        bestNightMinutes = minutes;
+                    }
                 }
             }
 
-            return bestMinutes;
+            return foundNight ? bestNightMinutes : bestAnyMinutes;
         }
 
         private static MoonPhase GetPhaseFromLunarAge(float lunarAgeDays)
