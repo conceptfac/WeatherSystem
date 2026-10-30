@@ -1337,16 +1337,16 @@ namespace ConceptFactory.Weather.Editor
 
         private void BuildPhaseJumpButtons(VisualElement container)
         {
-            (MoonPhase phase, string label)[] phases =
+            (MoonPhase phase, string icon, string label)[] phases =
             {
-                (MoonPhase.NewMoon, "Lua Nova"),
-                (MoonPhase.WaxingCrescent, "Crescente"),
-                (MoonPhase.FirstQuarter, "Primeiro Quarto"),
-                (MoonPhase.WaxingGibbous, "Gibosa Crescente"),
-                (MoonPhase.FullMoon, "Lua Cheia"),
-                (MoonPhase.WaningGibbous, "Gibosa Minguante"),
-                (MoonPhase.LastQuarter, "Último Quarto"),
-                (MoonPhase.WaningCrescent, "Minguante")
+                (MoonPhase.NewMoon,        "🌑", "Lua Nova"),
+                (MoonPhase.WaxingCrescent, "🌒", "Crescente"),
+                (MoonPhase.FirstQuarter,   "🌓", "Primeiro Quarto"),
+                (MoonPhase.WaxingGibbous,  "🌔", "Gibosa Crescente"),
+                (MoonPhase.FullMoon,       "🌕", "Lua Cheia"),
+                (MoonPhase.WaningGibbous,  "🌖", "Gibosa Minguante"),
+                (MoonPhase.LastQuarter,    "🌗", "Último Quarto"),
+                (MoonPhase.WaningCrescent, "🌘", "Minguante")
             };
 
             for (int row = 0; row < 2; row++)
@@ -1362,26 +1362,12 @@ namespace ConceptFactory.Weather.Editor
                     MoonPhase phase = phases[idx].phase;
 
                     Button btn = new Button(() => SetDateToNextPhase(phase));
+                    btn.text = phases[idx].icon;
                     btn.tooltip = "Próxima: " + phases[idx].label;
                     btn.style.flexGrow = 1;
                     btn.style.height = 36;
-                    btn.style.paddingTop = 1;
-                    btn.style.paddingBottom = 1;
-                    btn.style.paddingLeft = 1;
-                    btn.style.paddingRight = 1;
+                    btn.style.fontSize = 20;
                     btn.style.marginRight = col < 3 ? 2 : 0;
-
-                    Sprite icon = LoadPhaseBanner(phase);
-                    if (icon != null)
-                    {
-                        Image img = new Image { sprite = icon, scaleMode = ScaleMode.ScaleToFit };
-                        img.style.flexGrow = 1;
-                        btn.Add(img);
-                    }
-                    else
-                    {
-                        btn.text = phases[idx].label[..1];
-                    }
 
                     rowEl.Add(btn);
                 }
