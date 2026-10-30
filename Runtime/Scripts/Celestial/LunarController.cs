@@ -139,7 +139,7 @@ namespace ConceptFactory.Weather
 
         [Tooltip("How visible the dark side of the moon remains at night.")]
         [HideInInspector]
-        [SerializeField] private float _darkSideVisibility = 3.8f;
+        [SerializeField] private float _darkSideVisibility = 0.08f;
 
         [Tooltip("Solar elevation, in degrees, where the dark side of the moon and its halos start to disappear.")]
         [SerializeField] private float _daylightShadowFadeStart = -15f;
@@ -181,11 +181,11 @@ namespace ConceptFactory.Weather
         [Tooltip("Brightness of the border halo around the moon.")]
         [SerializeField] private float _borderHaloIntensity = 0.4f;
 
-        [Tooltip("Inner start of the border halo, where 0 starts at the moon center and 1 reaches the moon edge.")]
-        [SerializeField] private float _borderHaloInnerSize = 0.5f;
+        [Tooltip("Inner start of the border halo rim, relative to the moon disk radius (1 = disk edge). Keep below 1 so the inner half is occluded by the disk.")]
+        [SerializeField] private float _borderHaloInnerSize = 0.88f;
 
-        [Tooltip("Outer reach of the border halo beyond the moon edge.")]
-        [SerializeField] private float _borderHaloOuterSize = 0.52f;
+        [Tooltip("Outer reach of the border halo rim beyond the moon disk edge.")]
+        [SerializeField] private float _borderHaloOuterSize = 1.12f;
 
         [Tooltip("Softness of the border halo fade from inner to outer edge.")]
         [SerializeField] private float _borderHaloTerminator = 20f;
@@ -1100,35 +1100,35 @@ namespace ConceptFactory.Weather
             {
                 case "NewMoonPreset":
                     preset.darkMoonExposure = 3f;
-                    preset.moonHaloIntensityMultiplier = 1f;
-                    preset.borderHaloIntensityMultiplier = 1f;
+                    preset.moonHaloIntensityMultiplier = 0f;
+                    preset.borderHaloIntensityMultiplier = 0f;
                     preset.applyHorizonIllusion = false;
                     break;
                 case "WaxingCrescentPreset":
                 case "WaningCrescentPreset":
                     preset.darkMoonExposure = 1.5f;
-                    preset.moonHaloIntensityMultiplier = 1.25f;
-                    preset.borderHaloIntensityMultiplier = 1.1666666f;
+                    preset.moonHaloIntensityMultiplier = 0.05f;
+                    preset.borderHaloIntensityMultiplier = 0.06f;
                     preset.applyHorizonIllusion = false;
                     break;
                 case "FirstQuarterPreset":
                 case "LastQuarterPreset":
                     preset.darkMoonExposure = 1.5f;
-                    preset.moonHaloIntensityMultiplier = 1.5f;
-                    preset.borderHaloIntensityMultiplier = 1.3333334f;
+                    preset.moonHaloIntensityMultiplier = 0.25f;
+                    preset.borderHaloIntensityMultiplier = 0.25f;
                     preset.applyHorizonIllusion = false;
                     break;
                 case "WaxingGibbousPreset":
                 case "WaningGibbousPreset":
                     preset.darkMoonExposure = 1.5f;
-                    preset.moonHaloIntensityMultiplier = 1.75f;
-                    preset.borderHaloIntensityMultiplier = 1.6666666f;
+                    preset.moonHaloIntensityMultiplier = 0.6f;
+                    preset.borderHaloIntensityMultiplier = 0.6f;
                     preset.applyHorizonIllusion = true;
                     break;
                 case "FullMoonPreset":
                     preset.darkMoonExposure = 1f;
-                    preset.moonHaloIntensityMultiplier = 2f;
-                    preset.borderHaloIntensityMultiplier = 2f;
+                    preset.moonHaloIntensityMultiplier = 1f;
+                    preset.borderHaloIntensityMultiplier = 1f;
                     preset.applyHorizonIllusion = true;
                     break;
             }

@@ -36,12 +36,12 @@ namespace ConceptFactory.Weather
         public float moonHaloTerminator = 3.02f;
         public Color borderHaloColor = new(0.72f, 0.82f, 1f, 1f);
         public float borderHaloIntensity = 0.4f;
-        public float borderHaloInnerSize = 0.5f;
-        public float borderHaloOuterSize = 0.52f;
-        public float borderHaloTerminator = 20f;
+        public float borderHaloInnerSize = 0.88f;
+        public float borderHaloOuterSize = 1.12f;
+        public float borderHaloTerminator = 5f;
 
         [Header("Phase Look")]
-        public float darkSideVisibility = 3.8f;
+        public float darkSideVisibility = 0.08f;
         public float darkMoonExposure = 1.5f;
         public float moonHaloIntensityMultiplier = 1f;
         public float borderHaloIntensityMultiplier = 1f;

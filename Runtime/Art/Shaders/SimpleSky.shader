@@ -308,7 +308,11 @@ Shader "Skybox/Simple"
         float outerMask = 1.0 - smoothstep(outerRadius - haloSoftness, outerRadius + haloSoftness, moonDistance);
         float haloMask = saturate(innerMask * outerMask);
         half haloDayVisibility = darkMoonVisibility;
-        half3 moonHalo = _WeatherMoonHaloColor * _WeatherMoonHaloIntensity * haloMask * moonIntensity * haloDayVisibility;
+        // Concentrate halos on the illuminated side of the moon.
+        // At full moon (illumination=1) this is always 1; at crescent it falls to 0 on the dark side.
+        float moonLocalNormX = moonDistance > 0.0001 ? moonLocal.x / moonDistance : 0.0;
+        float litHaloWeight = saturate(phaseOrientation * moonLocalNormX + saturate(_WeatherMoonIllumination));
+        half3 moonHalo = _WeatherMoonHaloColor * _WeatherMoonHaloIntensity * haloMask * moonIntensity * haloDayVisibility * litHaloWeight;
         float borderInnerRadius = max(_WeatherMoonBorderHaloInnerSize, 0.0h);
         float borderOuterRadius = max(_WeatherMoonBorderHaloOuterSize, 0.0h);
         float borderHaloEnabled = step(borderInnerRadius + 0.0001h, borderOuterRadius);
@@ -318,7 +322,7 @@ Shader "Skybox/Simple"
         float borderSoftness = max(0.0001h, borderHalfWidth * max(_WeatherMoonBorderHaloTerminator, 0.001h));
         float borderDistanceFromCenter = abs(moonDistance - borderCenterRadius);
         float borderHaloMask = (1.0 - smoothstep(borderHalfWidth - borderSoftness, borderHalfWidth + borderSoftness, borderDistanceFromCenter)) * borderHaloEnabled;
-        half3 borderHalo = _WeatherMoonBorderHaloColor * _WeatherMoonBorderHaloIntensity * borderHaloMask * moonIntensity * haloDayVisibility;
+        half3 borderHalo = _WeatherMoonBorderHaloColor * _WeatherMoonBorderHaloIntensity * borderHaloMask * moonIntensity * haloDayVisibility * litHaloWeight;
         half3 c_stars = ComputeProceduralStars(v, nightValue);
         half3 background = c_sky * skyIntensity + c_sun * sunIntensity;
         half starOcclusion = saturate(max(haloMask, borderHaloMask));
